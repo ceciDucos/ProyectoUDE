@@ -1,4 +1,4 @@
-package com.example.bombsaway;
+package com.proyecto.bombsaway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

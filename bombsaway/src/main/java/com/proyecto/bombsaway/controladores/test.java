@@ -1,4 +1,4 @@
-package com.example.bombsaway.controladores;
+package com.proyecto.bombsaway.controladores;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

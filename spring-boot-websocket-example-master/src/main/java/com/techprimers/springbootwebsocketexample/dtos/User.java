@@ -1,4 +1,4 @@
-package com.techprimers.springbootwebsocketexample.model;
+package com.techprimers.springbootwebsocketexample.dtos;
 
 public class User {
 

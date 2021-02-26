@@ -18,7 +18,7 @@ import java.util.List;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-        stompEndpointRegistry.addEndpoint("/websocket-example").setAllowedOrigins("*")
+        stompEndpointRegistry.addEndpoint("/bombs-away").setAllowedOrigins("*")
                 .withSockJS();
     }
 

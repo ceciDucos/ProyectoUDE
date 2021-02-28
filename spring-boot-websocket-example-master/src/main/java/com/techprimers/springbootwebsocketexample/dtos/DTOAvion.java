@@ -2,6 +2,9 @@ package com.techprimers.springbootwebsocketexample.dtos;
 
 import com.techprimers.springbootwebsocketexample.clases.EstadoAvion;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 public class DTOAvion {
     private String nombrePartida;
     private int idJugador;
@@ -13,6 +16,7 @@ public class DTOAvion {
     private int vida;
     private int combustible;
     private boolean tieneBomba;
+    private boolean visible;
 
     public DTOAvion(){};
 
@@ -26,6 +30,51 @@ public class DTOAvion {
         this.estado = estado;
         this.vida = vida;
         this.combustible = combustible;
+        this.tieneBomba = tieneBomba;
+    }
+
+    public DTOAvion(DTOAvion dtoAvion) {
+        this.nombrePartida = dtoAvion.getNombrePartida();
+        this.idJugador = dtoAvion.getIdJugador();
+        this.idAvion = dtoAvion.getIdAvion();
+        this.ejeX = dtoAvion.getEjeX();
+        this.ejeY = dtoAvion.getEjeY();
+        this.angulo = dtoAvion.getAngulo();
+        this.estado = dtoAvion.getEstado();
+        this.vida = dtoAvion.getVida();
+        this.combustible = dtoAvion.getCombustible();
+        this.tieneBomba = dtoAvion.isTieneBomba();
+        this.visible = dtoAvion.isVisible();
+    }
+    public void setNombrePartida(String nombrePartida) {
+        this.nombrePartida = nombrePartida;
+    }
+
+    public void setEjeX(int ejeX) {
+        this.ejeX = ejeX;
+    }
+
+    public void setEjeY(int ejeY) {
+        this.ejeY = ejeY;
+    }
+
+    public void setAngulo(int angulo) {
+        this.angulo = angulo;
+    }
+
+    public void setEstado(EstadoAvion estado) {
+        this.estado = estado;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    public void setCombustible(int combustible) {
+        this.combustible = combustible;
+    }
+
+    public void setTieneBomba(boolean tieneBomba) {
         this.tieneBomba = tieneBomba;
     }
 
@@ -57,10 +106,57 @@ public class DTOAvion {
         return idAvion;
     }
 
+    public String getNombrePartida() {
+        return nombrePartida;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public EstadoAvion getEstado() {
+        return estado;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public int getCombustible() {
+        return combustible;
+    }
+
+    public boolean isTieneBomba() {
+        return tieneBomba;
+    }
+
     @Override
     public String toString() {
         String res = "Avion: [" + this.idAvion + ", " + this.ejeX + ", " +
-                this.ejeY + ", " + this.angulo + " ]";
+                this.ejeY + ", " + this.angulo +
+                ", " + this.estado + ", " + this.vida +
+                ", " + this.combustible + ", " + this.tieneBomba + " ]";
         return res;
+    }
+
+    public JsonObject toJSON() {
+        return Json.createObjectBuilder()
+                .add("avion:", Json.createObjectBuilder()
+                        .add("nombrePartida", this.nombrePartida)
+                        .add("idAvion", String.valueOf(this.idAvion))
+                        .add("idJugador", String.valueOf(this.idJugador))
+                        .add("ejeX", String.valueOf(this.ejeX))
+                        .add("ejeY", String.valueOf(this.ejeX))
+                        .add("angulo", String.valueOf(this.angulo))
+                        .add("estado", String.valueOf(this.estado))
+                        .add("vida", String.valueOf(this.vida))
+                        .add("combustible", String.valueOf(this.combustible))
+                        .add("tieneBomba", this.tieneBomba)
+                        .add("visible", this.visible)
+                ).build();
     }
 }

@@ -6,32 +6,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class Partida {
     private String nombre;
-    private Usuario usuarioUno;
-    private Usuario usuarioDos;
+    private Jugador jugadorUno;
+    private Jugador jugadorDos;
 
     @Autowired
-    public Partida(Usuario usuarioUno, Usuario usuarioDos, String nombrePartida) {
+    public Partida(Jugador jugadorUno, Jugador jugadorDos, String nombrePartida) {
         this.nombre = nombrePartida;
-        this.usuarioUno = usuarioUno;
-        this.usuarioDos = usuarioDos;
+        this.jugadorUno = jugadorUno;
+        this.jugadorDos = jugadorDos;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public Usuario getJugadorUno() {
-        return usuarioUno;
+    public Jugador getJugadorUno() {
+        return jugadorUno;
     }
 
-    public Usuario getJugadorDos() {
-        return usuarioDos;
+    public Jugador getJugadorDos() {
+        return jugadorDos;
     }
 
     public DTOPartidaCompleto getDTOCompleto() {
-        DTOPartidaCompleto res = new DTOPartidaCompleto(this.usuarioUno.getNombre(), this.usuarioDos.getNombre(), this.nombre);
-        DTOUsuario usuarioUno =  this.usuarioUno.getDTO();
-        DTOUsuario usuarioDos =  this.usuarioDos.getDTO();
+        DTOPartidaCompleto res = new DTOPartidaCompleto(this.jugadorUno.getNombre(), this.jugadorDos.getNombre(), this.nombre);
+        DTOUsuario usuarioUno =  this.jugadorUno.getDTO();
+        DTOUsuario usuarioDos =  this.jugadorDos.getDTO();
         res.setUsuarioUno(usuarioUno);
         res.setUsuarioDos(usuarioDos);
         return res;
@@ -39,8 +39,20 @@ public class Partida {
 
     @Override
     public String toString() {
-        String res = "Partida: [" + this.getNombre() + ", " + this.usuarioUno.toString() + ", " +
-                this.usuarioDos.toString() + " ]";
+        String res = "Partida: [" + this.getNombre() + ", " + this.jugadorUno.toString() + ", " +
+                this.jugadorDos.toString() + " ]";
         return res;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setJugadorUno(Jugador jugadorUno) {
+        this.jugadorUno = jugadorUno;
+    }
+
+    public void setJugadorDos(Jugador jugadorDos) {
+        this.jugadorDos = jugadorDos;
     }
 }

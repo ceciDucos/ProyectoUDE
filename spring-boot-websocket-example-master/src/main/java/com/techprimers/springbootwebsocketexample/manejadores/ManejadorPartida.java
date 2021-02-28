@@ -39,13 +39,31 @@ public class ManejadorPartida {
         //se elimina la partida de la espera y se agrega a partidas en juego
         PartidaEnEspera partidaParaRemover = null;
         for (PartidaEnEspera partidaEnEspera: partidasEnEspera) {
-            if (partidaEnEspera.getNombrePartida() == partidaEnJuego.getNombre()) {
+            if (partidaEnEspera.getNombrePartida().equalsIgnoreCase(partidaEnJuego.getNombre())) {
                partidaParaRemover = partidaEnEspera;
             }
         }
         if(partidaParaRemover != null) {
             this.partidasEnEspera.remove(partidaParaRemover);
             this.partidasEnJuego.add(partidaEnJuego);
+        }
+    }
+
+    public Partida getPartidaEnJuego(String nombrePartida) {
+        Partida res = null;
+        for (Partida partidaEnJuego: partidasEnJuego) {
+            if (partidaEnJuego.getNombre().equalsIgnoreCase(nombrePartida)) {
+                res = partidaEnJuego;
+            }
+        }
+        return res;
+    }
+
+    public void updatePartidaEnJuego(Partida partidaActual) {
+        Partida partidaAnterior =  getPartidaEnJuego(partidaActual.getNombre());
+        if(partidaAnterior != null) {
+            this.partidasEnJuego.remove(partidaAnterior);
+            this.addPartidaEnJuego(partidaActual);
         }
     }
 }

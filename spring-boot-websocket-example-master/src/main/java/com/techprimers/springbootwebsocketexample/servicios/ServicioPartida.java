@@ -31,9 +31,9 @@ public class ServicioPartida {
 
     private Partida crearPartida(String nombrePartida, String nombreJugadorUno, String nombreJugadorDos) {
         System.out.println("nombreJugadorDos" + nombreJugadorDos);
-        Usuario jugadorUno = new Usuario(nombreJugadorUno);
+        Jugador jugadorUno = new Jugador(nombreJugadorUno);
         jugadorUno.setId(1);
-        Usuario jugadorDos = new Usuario(nombreJugadorDos);
+        Jugador jugadorDos = new Jugador(nombreJugadorDos);
         jugadorUno.setId(2);
         List<Avion> listAvionesUno = new ArrayList<Avion>();
         List<Avion> listAvionesDos = new ArrayList<Avion>();
@@ -90,5 +90,111 @@ public class ServicioPartida {
             listPartidasDTOS.add(partidaDTO);
         }
         return listPartidasDTOS;
+    }
+
+    private Partida recuperarPartida(String nombrePartida) {
+        return this.manejadorPartida.getPartidaEnJuego(nombrePartida);
+    }
+
+    public JsonObject cambiarAltitudAvion(DTOAvion avionDTO) {
+//        Partida partida = this.recuperarPartida(avionDTO.getNombrePartida());
+//        DTOAvion notificacion = null;
+//        if(partida != null) {
+//            System.out.println(partida.toString());
+//            Jugador jugador = null;
+//            Avion avion = null;
+//            if(avionDTO.getIdJugador() == 1) {
+//                System.out.println("el jugador 1 cambio altura avion");
+//                jugador = partida.getJugadorUno();
+//                avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion());
+//                System.out.println("se crea notificacion");
+//
+//                //se crea la notificacion para dibujar el avion enemigo
+//                avionDTO.setIdJugador(2);
+//                int idAvion = avionDTO.getIdAvion();
+//                avionDTO.setIdAvion(idAvion + 4);
+//                notificacion = new DTOAvion(avionDTO);
+//
+//                //actualizar avion, en usuario de partida
+//                Posicion nuevaPosicion = new Posicion(avionDTO.getEjeX(), avionDTO.getEjeY(), avionDTO.getAngulo());
+//                avion.setPosicion(nuevaPosicion);
+//                avion.setEstado(avionDTO.getEstado());
+//                jugador.getListAviones().remove(avion.getId());
+//                jugador.getListAviones().add(avion);
+//                partida.setJugadorUno(jugador);
+//            } else {
+//                System.out.println("el jugador 2 cambio altura avion");
+//                jugador = partida.getJugadorUno();
+//                avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion());
+//                System.out.println("se crea notificacion");
+//
+//                //se crea la notificacion para dibujar el avion enemigo
+//                avionDTO.setIdJugador(2);
+//                int idAvion = avionDTO.getIdAvion();
+//                avionDTO.setIdAvion(idAvion + 4);
+//                notificacion = new DTOAvion(avionDTO);
+//
+//                //actualizar avion, en usuario de partida
+//                Posicion nuevaPosicion = new Posicion(avionDTO.getEjeX(), avionDTO.getEjeY(), avionDTO.getAngulo());
+//                avion.setPosicion(nuevaPosicion);
+//                avion.setEstado(avionDTO.getEstado());
+//                jugador.getListAviones().remove(avion.getId());
+//                jugador.getListAviones().add(avion);
+//                partida.setJugadorUno(jugador);
+//
+//            }
+//        }
+        return null;
+    }
+
+    public JsonObject moverAvion(DTOAvion avionDTO) {
+        DTOAvion notificacion = null;
+        Partida partida =recuperarPartida(avionDTO.getNombrePartida());
+        if(partida != null) {
+            System.out.println(partida.toString());
+            Jugador jugador = null;
+            Avion avion = null;
+            if(avionDTO.getIdJugador() == 1) {
+                System.out.println("el jugador 1 movio avion");
+                jugador = partida.getJugadorUno();
+                avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion());
+                System.out.println("se crea notificacion");
+
+                //se crea la notificacion para dibujar el avion enemigo
+                avionDTO.setIdJugador(2);
+                int idAvion = avionDTO.getIdAvion();
+                avionDTO.setIdAvion(idAvion + 4);
+                notificacion = new DTOAvion(avionDTO);
+
+                //actualizar avion, en usuario de partida
+                Posicion nuevaPosicion = new Posicion(avionDTO.getEjeX(), avionDTO.getEjeY(), avionDTO.getAngulo());
+                avion.setPosicion(nuevaPosicion);
+                jugador.getListAviones().remove(avion.getId());
+                jugador.getListAviones().add(avion);
+                partida.setJugadorUno(jugador);
+            } else {
+                jugador = partida.getJugadorDos();
+                avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion());
+
+                //se crea la notificacion para dibujar el avion enemigo
+                avionDTO.setIdJugador(1);
+                int idAvion = avionDTO.getIdAvion();
+                avionDTO.setIdAvion(idAvion + 4);
+                notificacion = new DTOAvion(avionDTO);
+
+                //actualizar avion, en usuario de partida
+                Posicion nuevaPosicion = new Posicion(avionDTO.getEjeX(), avionDTO.getEjeY(), avionDTO.getAngulo());
+                avion.setPosicion(nuevaPosicion);
+                jugador.getListAviones().remove(avion.getId());
+                jugador.getListAviones().add(avion);
+                partida.setJugadorUno(jugador);
+            }
+            this.manejadorPartida.updatePartidaEnJuego(partida);
+        }
+        if(notificacion == null){
+            return null;
+        } else {
+            return notificacion.toJSON();
+        }
     }
 }

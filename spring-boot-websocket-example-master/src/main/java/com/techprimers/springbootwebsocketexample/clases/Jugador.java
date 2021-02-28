@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Usuario {
+public class Jugador {
     private int id;
     private String nombre;
     private List<Avion> listAviones;
 
-    public Usuario(String nomUsuario) {
+    public Jugador(String nomUsuario) {
         this.nombre = nomUsuario;
         this.listAviones = new ArrayList<Avion>();
     }

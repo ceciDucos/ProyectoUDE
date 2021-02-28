@@ -13,6 +13,7 @@ public class Avion {
     private int vida;
     private int combustible;
     private boolean tieneBomba;
+    private boolean visible;
 
     public Avion(){};
 
@@ -57,5 +58,45 @@ public class Avion {
                         .add("combustible", this.combustible)
                         .add("tieneBomba", this.tieneBomba)
                 ).build();
+    }
+
+    public void setEstado(EstadoAvion estado) {
+        this.estado = estado;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    public void setCombustible(int combustible) {
+        this.combustible = combustible;
+    }
+
+    public void setTieneBomba(boolean tieneBomba) {
+        this.tieneBomba = tieneBomba;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public EstadoAvion getEstado() {
+        return estado;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public int getCombustible() {
+        return combustible;
+    }
+
+    public boolean isTieneBomba() {
+        return tieneBomba;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 }

@@ -1,14 +1,13 @@
 package com.techprimers.springbootwebsocketexample.controladores;
 
-import com.techprimers.springbootwebsocketexample.dtos.DTOAvion;
-import com.techprimers.springbootwebsocketexample.dtos.DTOPartida;
-import com.techprimers.springbootwebsocketexample.dtos.User;
-import com.techprimers.springbootwebsocketexample.dtos.UserResponse;
+import com.techprimers.springbootwebsocketexample.dtos.*;
 import com.techprimers.springbootwebsocketexample.servicios.ServicioPartida;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import javax.json.JsonObject;
 
 @Controller
 public class ControladorPartida {
@@ -23,17 +22,24 @@ public class ControladorPartida {
 
     @MessageMapping("/nueva-partida")
     @SendTo("/topic/user")
-    public UserResponse getUser(DTOPartida nuevaPartida) {
-        this.servicioIniciarPartida.addPartida(nuevaPartida);
-        System.out.println(nuevaPartida.toString());
-        return new UserResponse("partida iniciada correctamente, jugadores:  " +
-                nuevaPartida.getNombreJugadorUno() + ",  " + nuevaPartida.getNombreJugadorDos()
+    public UserResponse getUser(DTOPartidaEnEspera nuevaPartida) {
+        System.out.println("usuario que llega: " + nuevaPartida.getNombreJugador());
+        this.servicioIniciarPartida.crearPartidaEnEspera(nuevaPartida);
+        return new UserResponse("partida en espera, usuario:  " +
+                nuevaPartida.getNombreJugador() + ",  partida: " + nuevaPartida.getNombrePartida()
         );
+    }
+
+    @MessageMapping("/unirse-a-partida")
+    @SendTo("/topic/user")
+    public DTOMensaje getUser(DTOUsuario nuevoJugador) {
+        return this.servicioIniciarPartida.unirseAPartida(nuevoJugador);
     }
 
     @MessageMapping("/mover-avion")
     @SendTo("/topic/user")
-    public UserResponse getUser(DTOAvion avionDto) {
+        public UserResponse getUser(DTOAvion avionDto) {
+//        this.servicioIniciarPartida.moverAvion(avionDto);
         System.out.println(avionDto.toString());
         return new UserResponse("avion movido correctamente");
     }

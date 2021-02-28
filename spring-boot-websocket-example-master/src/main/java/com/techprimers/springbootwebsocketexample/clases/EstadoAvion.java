@@ -1,5 +1,3 @@
 package com.techprimers.springbootwebsocketexample.clases;
 
-public enum EstadoAvion {
-
-}
+public enum EstadoAvion { DESTRUIDO, FUERA_ALCANCE, DENTRO_ALCANCE}

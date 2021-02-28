@@ -6,25 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DTOUsuario {
-    private String nombre;
+    private String nombreJugador;
     private List<DTOAvion> listAviones;
 
+    public DTOUsuario() {}
 
-    public DTOUsuario(@JsonProperty("nombre") String nomUsuario) {
-        this.nombre = nomUsuario;
+    public DTOUsuario(String nombreJugador) {
+        this.nombreJugador = nombreJugador;
         this.listAviones = new ArrayList<DTOAvion>();
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String nombreJugador) {
+        this.nombreJugador = nombreJugador;
     }
 
     public void setListAviones(List<DTOAvion> listaAviones) {
         this.listAviones = listaAviones;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreJugador() {
+        return nombreJugador;
     }
 
     public List<DTOAvion> getListAviones() {

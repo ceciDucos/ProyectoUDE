@@ -3,11 +3,14 @@ package com.techprimers.springbootwebsocketexample.clases;
 import com.techprimers.springbootwebsocketexample.dtos.DTOAvion;
 import com.techprimers.springbootwebsocketexample.dtos.DTOUsuario;
 
+import javax.json.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Usuario {
+    private int id;
     private String nombre;
     private List<Avion> listAviones;
 
@@ -25,6 +28,9 @@ public class Usuario {
         }
         res.setListAviones(resListAviones);
         return res;
+    }
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -47,5 +53,24 @@ public class Usuario {
 
     public List<Avion> getListAviones() {
         return listAviones;
+    }
+
+    public JsonObject toJSON() {
+        JsonArrayBuilder arrAvionesBld = Json.createArrayBuilder();
+        int i = 0;
+        for (Avion avion: this.listAviones) {
+            arrAvionesBld.add(this.listAviones.get(i).toJSON());
+            i++;
+        }
+        JsonObject res = Json.createObjectBuilder()
+                .add("jugador:", Json.createObjectBuilder()
+                        .add("nombre", this.nombre)
+                        .add("listAviones:", arrAvionesBld.build())
+                ).build();
+        return res;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -18,8 +18,8 @@ public class DTOPartidaCompleto extends DTOPartida{
 
     @Override
     public String toString() {
-        String res = "DTOPartidaCompleto: [" + this.getNombrePartida() + ", " + this.usuarioUno.getNombre() + ", " +
-                this.usuarioDos.getNombre() + " ]";
+        String res = "DTOPartidaCompleto: [" + this.getNombrePartida() + ", " + this.usuarioUno.getNombreJugador() + ", " +
+                this.usuarioDos.getNombreJugador() + " ]";
         return res;
     }
 }

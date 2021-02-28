@@ -11,8 +11,8 @@ public class DAOAvion implements IDAOAvion {
 
     @Override
     public int insertAvion(int id, Avion avion) {
-        DB.add(new Avion(avion.getId(), avion.getPosicion().getEjeX(),avion.getPosicion().getEjeY(),
-                avion.getPosicion().getAngulo()));
+
+//        DB.add(new Avion(avion.getId(), avion.getPosicion()));
         return 1;
     }
 

@@ -113,7 +113,7 @@ public class ServicioPartida {
 
     private boolean checkAvionFueraLimites(DTOAvion dtoAvion) {
         boolean res = false;
-        if(dtoAvion.getEjeX() <= -12 || dtoAvion.getEjeX() >= 193 || dtoAvion.getEjeY() <= -17 || dtoAvion.getEjeY() > 737) {
+        if(dtoAvion.getEjeX() <= 10 || dtoAvion.getEjeX() >= 1070 || dtoAvion.getEjeY() <= 10 || dtoAvion.getEjeY() > 710) {
             res = true;
         }
         return res;
@@ -129,7 +129,7 @@ public class ServicioPartida {
             if (avionDTO.getIdJugador() == 1) {
                 System.out.println("el jugador 1 movio avion");
                 jugador = partida.getJugadorUno();
-                avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion());
+                avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion()-1);
                 System.out.println("se crea notificacion");
 
                 //se crea la notificacion para dibujar el avion enemigo
@@ -144,7 +144,7 @@ public class ServicioPartida {
                 partida.setJugadorUno(jugador);
             } else {
                 jugador = partida.getJugadorDos();
-                avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion());
+                avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion()-1);
 
                 //se crea la notificacion para dibujar el avion enemigo
                 int idAvion = avionDTO.getIdAvion();

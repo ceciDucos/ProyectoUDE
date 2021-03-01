@@ -136,11 +136,10 @@ public class DTOAvion {
 
     @Override
     public String toString() {
-        String res = "{\"nombrePartida\":\"" + this.nombrePartida + "\",\"idAvion\":" + this.idAvion +
-                ",\"idJugador\":" + this.idJugador + ",\"ejeX\":" + this.ejeX + ",\"ejeY\":" + this.ejeY +
-                ",\"angulo\":" + this.angulo + ",\"estado\":" + 1 + ",\"vida\":" + this.vida +
-                ",\"combustible\":" + this.combustible + ",\"tieneBomba\":" + this.tieneBomba + ",\"visible\":" +
-                this.visible + "}";
+        String res = "Avion: [" + this.idAvion + ", " + this.ejeX + ", " +
+                this.ejeY + ", " + this.angulo +
+                ", " + this.estado + ", " + this.vida +
+                ", " + this.combustible + ", " + this.tieneBomba + " ]";
         return res;
     }
 

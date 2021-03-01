@@ -111,14 +111,22 @@ public class ServicioPartida {
         return avion;
     }
 
-    public void moverAvion(DTOAvion avionDTO) {
+    private boolean checkAvionFueraLimites(DTOAvion dtoAvion) {
+        boolean res = false;
+        if(dtoAvion.getEjeX() <= -12 || dtoAvion.getEjeX() >= 193 || dtoAvion.getEjeY() <= -17 || dtoAvion.getEjeY() > 737) {
+            res = true;
+        }
+        return res;
+    }
+
+    private String updateAvionEnPartida(DTOAvion avionDTO) {
         DTOAvion notificacion = null;
         Partida partida = recuperarPartida(avionDTO.getNombrePartida());
-        if(partida != null) {
+        if (partida != null) {
             System.out.println(partida.toString());
             Jugador jugador = null;
             Avion avion = null;
-            if(avionDTO.getIdJugador() == 1) {
+            if (avionDTO.getIdJugador() == 1) {
                 System.out.println("el jugador 1 movio avion");
                 jugador = partida.getJugadorUno();
                 avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion());
@@ -151,6 +159,22 @@ public class ServicioPartida {
             }
             this.manejadorPartida.updatePartidaEnJuego(partida);
         }
-        this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
+        return notificacion.toString();
+    }
+
+    public void moverAvion(DTOAvion avionDTO) {
+        String notificacion = null;
+        //si el avion se fue de los limites, estalla
+        boolean estallarAvion = this.checkAvionFueraLimites(avionDTO);
+        if(estallarAvion) {
+            avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+            //se actualiza la partida y se envia el avion a estallar
+            notificacion = this.updateAvionEnPartida(avionDTO);
+            this.mensajeriaUpdate.sendEstallarAviones(notificacion.toString());
+        } else {
+            //se actualiza la partida y se envia el status del avion a el canal aviones-enemigos
+            notificacion = this.updateAvionEnPartida(avionDTO);
+            this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
+        }
     }
 }

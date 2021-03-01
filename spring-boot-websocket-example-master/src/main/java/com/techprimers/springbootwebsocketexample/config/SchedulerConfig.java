@@ -22,9 +22,12 @@ public class SchedulerConfig {
 //        template.convertAndSend("/topic/user", value);
 //    }
 
-        public void sendAvionesEnemigos(String data) {
+    public void sendAvionesEnemigos(String data) {
         template.convertAndSend("/topic/aviones-enemigos", data);
     }
 
+    public void sendEstallarAviones(String data) {
+        template.convertAndSend("/topic/estallar-aviones", data);
+    }
 }
 

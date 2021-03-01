@@ -138,7 +138,8 @@ public class DTOAvion {
     public String toString() {
         String res = "{\"nombrePartida\":\"" + this.nombrePartida + "\",\"idAvion\":" + this.idAvion +
                 ",\"idJugador\":" + this.idJugador + ",\"ejeX\":" + this.ejeX + ",\"ejeY\":" + this.ejeY +
-                ",\"angulo\":" + this.angulo + ",\"estado\":" + 1 + ",\"vida\":" + this.vida +
+                ",\"angulo\":" + this.angulo + ",\"estado\":" + EstadoAvion.valueOf(this.estado.toString()).ordinal() +
+                ",\"vida\":" + this.vida +
                 ",\"combustible\":" + this.combustible + ",\"tieneBomba\":" + this.tieneBomba + ",\"visible\":" +
                 this.visible + "}";
         return res;

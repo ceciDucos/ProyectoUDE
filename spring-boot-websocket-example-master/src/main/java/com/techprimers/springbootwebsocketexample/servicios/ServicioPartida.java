@@ -147,7 +147,7 @@ public class ServicioPartida {
         return null;
     }
 
-    public JsonObject moverAvion(DTOAvion avionDTO) {
+    public String moverAvion(DTOAvion avionDTO) {
         DTOAvion notificacion = null;
         Partida partida =recuperarPartida(avionDTO.getNombrePartida());
         if(partida != null) {
@@ -191,10 +191,6 @@ public class ServicioPartida {
             }
             this.manejadorPartida.updatePartidaEnJuego(partida);
         }
-        if(notificacion == null){
-            return null;
-        } else {
-            return notificacion.toJSON();
-        }
+        return notificacion.toString();
     }
 }

@@ -38,7 +38,7 @@ public class ControladorPartida {
 
     @MessageMapping("/mover-avion")
     @SendTo("/topic/mover-avion")
-        public JsonObject moverAvion(DTOAvion avionDto) {
+        public String moverAvion(DTOAvion avionDto) {
         return this.servicioIniciarPartida.moverAvion(avionDto);
     }
 

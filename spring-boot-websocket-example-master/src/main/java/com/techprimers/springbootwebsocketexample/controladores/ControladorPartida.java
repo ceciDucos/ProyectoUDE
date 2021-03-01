@@ -37,14 +37,8 @@ public class ControladorPartida {
     }
 
     @MessageMapping("/mover-avion")
-    @SendTo("/topic/mover-avion")
-        public JsonObject moverAvion(DTOAvion avionDto) {
-        return this.servicioIniciarPartida.moverAvion(avionDto);
+    public void moverAvion(DTOAvion avionDto) {
+        this.servicioIniciarPartida.moverAvion(avionDto);
     }
-
-//    @MessageMapping("/cambiar-altitud-avion")
-//    @SendTo("/topic/cambiar-altitud-avion")
-//    public JsonObject cambiarAltitud(DTOAvion avionDto) {
-//        return this.servicioIniciarPartida.cambiarAltitudAvion(avionDto);
-//    }
 }
+

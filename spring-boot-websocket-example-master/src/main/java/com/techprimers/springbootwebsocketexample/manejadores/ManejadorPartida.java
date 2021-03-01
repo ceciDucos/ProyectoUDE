@@ -60,10 +60,10 @@ public class ManejadorPartida {
     }
 
     public void updatePartidaEnJuego(Partida partidaActual) {
-        Partida partidaAnterior =  getPartidaEnJuego(partidaActual.getNombre());
+        Partida partidaAnterior =  this.getPartidaEnJuego(partidaActual.getNombre());
         if(partidaAnterior != null) {
             this.partidasEnJuego.remove(partidaAnterior);
-            this.addPartidaEnJuego(partidaActual);
+            this.partidasEnJuego.add(partidaActual);
         }
     }
 }

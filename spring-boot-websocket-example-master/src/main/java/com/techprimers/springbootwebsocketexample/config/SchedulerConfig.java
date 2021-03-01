@@ -19,46 +19,12 @@ public class SchedulerConfig {
 
 //    @Scheduled(fixedDelay = 3000)
 //    public void sendAdhocMessages() {
-//        JsonObject value = Json.createObjectBuilder()
-//                .add("nombrePartida", "nuevaPartida")
-//                .add("jugadorUno", Json.createObjectBuilder()
-//                        .add("nombreJugadorUno", "Smith")
-//                        .add("avionUno",Json.createObjectBuilder()
-//                                .add("ejeX", "100")
-//                                .add("ejeY", "100")
-//                                .add("angulo", "100"))
-//                        .add("avionDos",Json.createObjectBuilder()
-//                                .add("ejeX", "100")
-//                                .add("ejeY", "100")
-//                                .add("angulo", "100"))
-//                        .add("avionTres",Json.createObjectBuilder()
-//                                .add("ejeX", "100")
-//                                .add("ejeY", "100")
-//                                .add("angulo", "100"))
-//                        .add("avionCuatro",Json.createObjectBuilder()
-//                                .add("ejeX", "100")
-//                                .add("ejeY", "100")
-//                                .add("angulo", "100")))
-//                    .add("jugadorUno", Json.createObjectBuilder()
-//                            .add("nombreJugadorDos", "Lincon")
-//                            .add("avionUno",Json.createObjectBuilder()
-//                                    .add("ejeX", "100")
-//                                    .add("ejeY", "100")
-//                                    .add("angulo", "100"))
-//                            .add("avionDos",Json.createObjectBuilder()
-//                                    .add("ejeX", "100")
-//                                    .add("ejeY", "100")
-//                                    .add("angulo", "100"))
-//                            .add("avionTres",Json.createObjectBuilder()
-//                                    .add("ejeX", "100")
-//                                    .add("ejeY", "100")
-//                                    .add("angulo", "100"))
-//                            .add("avionCuatro",Json.createObjectBuilder()
-//                                    .add("ejeX", "100")
-//                                    .add("ejeY", "100")
-//                                    .add("angulo", "100"))
-//                ).build();
 //        template.convertAndSend("/topic/user", value);
 //    }
+
+        public void sendAvionesEnemigos(String data) {
+        template.convertAndSend("/topic/aviones-enemigos", data);
+    }
+
 }
 

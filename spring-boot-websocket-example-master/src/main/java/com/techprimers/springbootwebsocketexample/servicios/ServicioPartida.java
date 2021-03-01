@@ -126,7 +126,7 @@ public class ServicioPartida {
 
                 //se crea la notificacion para dibujar el avion enemigo
                 int idAvion = avionDTO.getIdAvion();
-                avionDTO.setIdAvion(idAvion + 4);
+                avionDTO.setIdAvion(idAvion);
                 notificacion = new DTOAvion(avionDTO);
 
                 //actualizar avion, en usuario de partida
@@ -140,7 +140,7 @@ public class ServicioPartida {
 
                 //se crea la notificacion para dibujar el avion enemigo
                 int idAvion = avionDTO.getIdAvion();
-                avionDTO.setIdAvion(idAvion + 4);
+                avionDTO.setIdAvion(idAvion);
                 notificacion = new DTOAvion(avionDTO);
 
                 //actualizar avion, en usuario de partida

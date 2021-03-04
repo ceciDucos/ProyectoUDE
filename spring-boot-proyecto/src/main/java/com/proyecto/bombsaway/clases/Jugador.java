@@ -35,18 +35,17 @@ public class Jugador {
         avionActual.setCombustible(nuevoAvion.getCombustible());
         avionActual.setPosicion(nuevoAvion.getPosicion());
         avionActual.setListaBalas(nuevoAvion.getListaBalas());
-
     }
 
     public int getId() {
         return id;
     }
 
-    @Override
-    public String toString() {
-        String res = "Usuario: [" + this.nombre + ", " + this.listAviones.toString() + " ]";
-        return res;
-    }
+//    @Override
+//    public String toString() {
+//        String res = "Usuario: [" + this.nombre + ", " + this.listAviones.toString() + " ]";
+//        return res;
+//    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;

@@ -18,6 +18,9 @@ import java.util.List;
 public class ServicioPartida {
     private final int MAX_VIDA = 100;
     private final int DANIO_DISPARO_BALA = 10;
+    private final int RADIO_AVION_ALTURA_ALTA = 25;
+    private final int RADIO_AVION_ALTURA_BAJA = 19;
+    private final int RADIO_BALA = 1;
     private final ManejadorPartida manejadorPartida;
     private final SchedulerConfig mensajeriaUpdate;
     private final IDAOPartida DAOPartida;
@@ -80,15 +83,6 @@ public class ServicioPartida {
         return new DTOMensaje("No se encuentran partidas creadas");
     }
 
-    private JsonObject partidaToJSON (Partida partida) {
-        System.out.println(partida.toString());
-        return Json.createObjectBuilder()
-                .add("nombrePartida", partida.getNombre())
-                .add("jugadorUno", partida.getJugadorUno().toJSON())
-                .add("jugadorDos", partida.getJugadorDos().toJSON())
-                .build();
-    }
-
     public List<DTOPartidaCompleto> getListPartidas() {
         List<Partida> listPartidas = this.DAOPartida.getListPartidas();
         List<DTOPartidaCompleto> listPartidasDTOS = new ArrayList<DTOPartidaCompleto>();
@@ -122,16 +116,26 @@ public class ServicioPartida {
     }
 
     private boolean validarImpactoRadioAvion(Posicion posicion, Avion avion){
-//        boolean res = false;
-//        if(avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
-//            if()
-//            //        37.2ancho x 51.9alto a altura alta
-//        } else {
-//            //        24.8ancho x 34.6alto
-//        }
-////        en altura baja
+        boolean res = false;
+        double distancia = 0;
+        int radioAvion;
+        if(avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+            radioAvion = this.RADIO_AVION_ALTURA_ALTA;
+        } else {
+            radioAvion = this.RADIO_AVION_ALTURA_BAJA;
+        }
+        int coordX1 = posicion.getEjeX();
+        int coordY1 = posicion.getEjeY();
+        int coordX2 = avion.getPosicion().getEjeX();
+        int coordY2 = avion.getPosicion().getEjeX();
 
-        return true;
+        double ecuacion = ((coordX1 - coordX2)*(coordX1 - coordX2) + (coordY1 - coordY2)*(coordY1 - coordY2));
+        distancia = Math.sqrt(ecuacion);
+
+        if(distancia < this.RADIO_BALA + radioAvion) {
+            res = true;
+        }
+        return res;
     }
 
     //fijarse si esta funcion puede ser pasada al avion.
@@ -176,46 +180,46 @@ public class ServicioPartida {
     }
 
     public void dispararBala(DTOBala balaDto) {
-//        Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-//        if(partida != null) {
-//            Jugador jugadorEnemigo = null;
-//            Jugador jugadorActual = null;
-//            if(balaDto.getIdJugador() == 1) {
-//                jugadorEnemigo = partida.getJugadorDos();
-//                jugadorActual =  partida.getJugadorUno();
-//            } else {
-//                jugadorEnemigo = partida.getJugadorUno();
-//                jugadorActual =  partida.getJugadorDos();
-//            }
-//
-//            List<Avion> listAvionesJugadorActual = jugadorActual.getListAviones();
-//            Avion avionAutorDisparo = listAvionesJugadorActual.get(balaDto.getIdAvion());
-//            Bala balaDisparada = avionAutorDisparo.getListaBalas().get(balaDto.getIdBala());
-//
-//            //se obtienen los aviones del enemigo para chequear si impacto o no
-//
-//            List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
-//            DTOAvion dtoAvion = this.impactoBala(balaDto, jugadorEnemigo);
-//
-//            if(dtoAvion!= null ) {
-//                //si la bala impacto contra avion enemigo
-//                if(dtoAvion.getEstado() == EstadoAvion.DESTRUIDO){
-//                    this.estallarAvion(dtoAvion.toString());
-//                } else {
-//                    this.bajarVidaAvion(dtoAvion.toString());
-//                }
-//                balaDisparada.setVisible(false);
-//                balaDto.setVisible(false);
-//                this.mensajeriaUpdate.sendPosicionBala(balaDto.toString());
-//            } else {
-//                //se actualiza la posicion de la bala y se avisa a los clientes
-//                balaDisparada.setPosicion(new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo()));
-//                //chequeamos que si la visibilidad de la bala cambio, si cambio notificamos y actualizamos la bala
-//                if(balaDisparada.isVisible() != balaDto.isVisible()) {
-//                    this.mensajeriaUpdate.sendPosicionBala(balaDto.toString());
-//                }
-//            }
-//        }
+        Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
+        if(partida != null) {
+            Jugador jugadorEnemigo = null;
+            Jugador jugadorActual = null;
+            if(balaDto.getIdJugador() == 1) {
+                jugadorEnemigo = partida.getJugadorDos();
+                jugadorActual =  partida.getJugadorUno();
+            } else {
+                jugadorEnemigo = partida.getJugadorUno();
+                jugadorActual =  partida.getJugadorDos();
+            }
+
+            List<Avion> listAvionesJugadorActual = jugadorActual.getListAviones();
+            Avion avionAutorDisparo = listAvionesJugadorActual.get(balaDto.getIdAvion());
+            Bala balaDisparada = avionAutorDisparo.getListaBalas().get(balaDto.getIdBala());
+
+            //se obtienen los aviones del enemigo para chequear si impacto o no
+
+            List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
+            DTOAvion dtoAvion = this.impactoBala(balaDto, jugadorEnemigo);
+
+            if(dtoAvion!= null ) {
+                //si la bala impacto contra avion enemigo
+                if(dtoAvion.getEstado() == EstadoAvion.DESTRUIDO){
+                    this.estallarAvion(dtoAvion.toString());
+                } else {
+                    this.bajarVidaAvion(dtoAvion.toString());
+                }
+                balaDisparada.setVisible(false);
+                balaDto.setVisible(false);
+                this.mensajeriaUpdate.sendPosicionBala(balaDto.toString());
+            } else {
+                //se actualiza la posicion de la bala y se avisa a los clientes
+                balaDisparada.setPosicion(new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo()));
+                //chequeamos que si la visibilidad de la bala cambio, si cambio notificamos y actualizamos la bala
+                if(balaDisparada.isVisible() != balaDto.isVisible()) {
+                    this.mensajeriaUpdate.sendPosicionBala(balaDto.toString());
+                }
+            }
+        }
     }
 
     private void bajarVidaAvion(String data) {
@@ -258,8 +262,6 @@ public class ServicioPartida {
                 System.out.println("se crea notificacion");
 
                 //se crea la notificacion para dibujar el avion enemigo
-//                int idAvion = avionDTO.getIdAvion();
-//                avionDTO.setIdAvion(idAvion);
                 notificacion = new DTOAvion(avionDTO);
 
                 //actualizar avion, en usuario de partida
@@ -272,8 +274,6 @@ public class ServicioPartida {
                 avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion());
 
                 //se crea la notificacion para dibujar el avion enemigo
-//                int idAvion = avionDTO.getIdAvion();
-//                avionDTO.setIdAvion(idAvion);
                 notificacion = new DTOAvion(avionDTO);
 
                 //actualizar avion, en usuario de partida
@@ -286,4 +286,34 @@ public class ServicioPartida {
         }
         return notificacion.toString();
     }
+
+//    public void runTests() {
+//        //partida en espera
+//        String nombrePartida = "partida de test";
+//        String nombreJugadorUno = "Juan";
+//        DTOPartidaEnEspera dtoPartidaEnEspera = new DTOPartidaEnEspera(nombrePartida, nombreJugadorUno);
+//        //unirse a partida
+//        String nombreJugadorDos = "Lara";
+//        DTOUsuario jugadorAUnirse = new DTOUsuario(nombreJugadorDos);
+//        this.unirseAPartida(jugadorAUnirse);
+//
+//        //mover avion jugador 1 a una posicion particular
+//        DTOAvion avion = new DTOAvion();
+//        avion.setNombrePartida("partida de test");
+//        avion.setIdJugador(1);
+//        avion.setIdAvion(1);
+//        avion.setEstado(EstadoAvion.ALTURA_ALTA);
+//        avion.setAngulo(30);
+//        avion.setVida(40);
+//        avion.setCombustible(30);
+//        avion.setTieneBomba(false);
+//        this.moverAvion(avion);
+//
+//        //mover avion jugador 1 a una posicion particular
+//
+//
+//        //disparar bala
+//        DTOBala dtoBala = new DTOBala();
+//        dispararBala();
+//    }
 }

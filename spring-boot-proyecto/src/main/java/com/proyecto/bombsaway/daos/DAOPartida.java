@@ -12,8 +12,6 @@ public class DAOPartida implements IDAOPartida{
 
     @Override
     public int insertPartida(String nombrePartida, Partida partida) {
-        System.out.println("la Partida que se guarda: ");
-        System.out.println(partida.toString());
         DB.add(new Partida(partida.getJugadorUno(), partida.getJugadorDos(), partida.getNombre()));
         return 1;
     }

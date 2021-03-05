@@ -16,7 +16,7 @@ public class Avion {
     private int vida;
     private int combustible;
     private boolean tieneBomba;
-    private List<Bala> listaBalas;
+    private List<Bala> listBalas;
 
     public Avion(){};
 
@@ -33,15 +33,23 @@ public class Avion {
         return avion;
     }
 
+    public void updateAvion(DTOAvion dtoAvion) {
+        this.setId(dtoAvion.getIdAvion());
+        this.setPosicion(new Posicion(dtoAvion.getEjeX(), dtoAvion.getEjeY(), dtoAvion.getAngulo()));
+        this.setVida(dtoAvion.getVida());
+        this.setCombustible(dtoAvion.getCombustible());
+        this.setEstado(dtoAvion.getEstado());
+        this.setTieneBomba(dtoAvion.isTieneBomba());
+    }
+
     public void inicializarBalas() {
-        List<Bala> listaBalasAvion = new ArrayList<>();
+        this.listBalas = new ArrayList<Bala>();
         for (int i = 0; i < 30; i++){
             Bala balaAvion = new Bala();
             balaAvion.setId(i);
             balaAvion.setVisible(false);
-            listaBalasAvion.add(balaAvion);
+            listBalas.add(balaAvion);
         }
-        this.setListaBalas(listaBalasAvion);
     }
 
     public int getId() {
@@ -75,7 +83,7 @@ public class Avion {
     }
 
     public void updateBala(Bala bala) {
-        Bala actual = this.listaBalas.get(bala.getId());
+        Bala actual = this.listBalas.get(bala.getId());
         actual.setVisible(bala.isVisible());
         actual.setPosicion(bala.getPosicion());
     }
@@ -112,11 +120,11 @@ public class Avion {
         return tieneBomba;
     }
 
-    public List<Bala> getListaBalas() {
-        return listaBalas;
+    public List<Bala> getListBalas() {
+        return listBalas;
     }
 
     public void setListaBalas(List<Bala> listaBalas) {
-        this.listaBalas = listaBalas;
+        this.listBalas = listBalas;
     }
 }

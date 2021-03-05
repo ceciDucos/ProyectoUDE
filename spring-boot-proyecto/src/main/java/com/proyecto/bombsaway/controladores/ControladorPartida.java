@@ -21,7 +21,6 @@ public class ControladorPartida {
     @MessageMapping("/nueva-partida")
     @SendTo("/topic/user")
     public UserResponse getUser(DTOPartidaEnEspera nuevaPartida) {
-        System.out.println("usuario que llega: " + nuevaPartida.getNombreJugador());
         this.servicioPartida.crearPartidaEnEspera(nuevaPartida);
         return new UserResponse("partida en espera, usuario:  " +
                 nuevaPartida.getNombreJugador() + ",  partida: " + nuevaPartida.getNombrePartida()

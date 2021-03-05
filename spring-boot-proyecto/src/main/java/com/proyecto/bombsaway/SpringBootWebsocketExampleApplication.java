@@ -12,8 +12,5 @@ public class SpringBootWebsocketExampleApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootWebsocketExampleApplication.class, args);
-//		ServicioPartida servicioPartida = new ServicioPartida(new ManejadorPartida(), new DAOPartida(),
-//				new SchedulerConfig());
-//		servicioPartida.runTests();
 	}
 }

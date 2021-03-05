@@ -34,7 +34,7 @@ public class Jugador {
         avionActual.setVida(nuevoAvion.getVida());
         avionActual.setCombustible(nuevoAvion.getCombustible());
         avionActual.setPosicion(nuevoAvion.getPosicion());
-        avionActual.setListaBalas(nuevoAvion.getListaBalas());
+        avionActual.setListaBalas(nuevoAvion.getListBalas());
     }
 
     public int getId() {

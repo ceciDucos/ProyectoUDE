@@ -113,7 +113,7 @@ public class ServicioPartida {
         } catch (Exception error) {
             String mensajeError = this.getMensajeError(error.getMessage());
             System.out.println("error: " + error.getMessage());
-            this.mensajeriaUpdate.sendPosicionBala(mensajeError);
+            this.mensajeriaUpdate.sendErrores(mensajeError);
         }
     }
 
@@ -185,7 +185,7 @@ public class ServicioPartida {
         } catch (Exception error) {
             String mensajeError = this.getMensajeError(error.getMessage());
             System.out.println("error: " + error.getMessage());
-            this.mensajeriaUpdate.sendPosicionBala(mensajeError);
+            this.mensajeriaUpdate.sendErrores(mensajeError);
         }
         return dtoAvion;
     }
@@ -240,7 +240,7 @@ public class ServicioPartida {
         } catch (Exception error) {
             String mensajeError = this.getMensajeError(error.getMessage());
             System.out.println("error: " + error.getMessage());
-            this.mensajeriaUpdate.sendPosicionBala(mensajeError);
+            this.mensajeriaUpdate.sendErrores(mensajeError);
         }
     }
 

@@ -219,9 +219,9 @@ public class ServicioPartida {
                 //se actualiza la posicion de la bala y se avisa a los clientes
                 balaDisparada.setPosicion(new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo()));
                 //chequeamos que si la visibilidad de la bala cambio, si cambio notificamos y actualizamos la bala
-//                if(balaDisparada.isVisible() != balaDto.isVisible()) {
+                if(balaDisparada.isVisible() != balaDto.isVisible()) {
                     this.mensajeriaUpdate.sendPosicionBala(balaDto.toString());
-//                }
+                }
             }
         }
     }

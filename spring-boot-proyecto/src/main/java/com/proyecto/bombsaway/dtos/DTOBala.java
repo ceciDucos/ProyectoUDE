@@ -91,7 +91,7 @@ public class DTOBala {
     public String toString() {
         String res = "{\"nombrePartida\":\"" + this.nombrePartida + "\",\"idJugador\":" + this.idJugador +
                 ",\"idAvion\":" + this.idAvion + ",\"ejeX\":" + this.ejeX + ",\"ejeY\":" + this.ejeY +
-                ",\"angulo\":" + this.angulo + ",\"altitud\":" + EstadoAvion.valueOf(this.altitud.toString()).ordinal() +
+                ",\"angulo\":" + this.angulo + ",\"altitud\":" + String.valueOf(this.altitud.ordinal()) +
                 ",\"visible\":" + this.visible + ",\"idBala\":" + this.idBala + "}";
         return res;
     }

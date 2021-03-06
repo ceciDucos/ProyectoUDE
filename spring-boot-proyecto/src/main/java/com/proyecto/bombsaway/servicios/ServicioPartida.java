@@ -4,6 +4,7 @@ import com.proyecto.bombsaway.clases.*;
 import com.proyecto.bombsaway.config.SchedulerConfig;
 import com.proyecto.bombsaway.daos.IDAOPartida;
 import com.proyecto.bombsaway.dtos.*;
+import com.proyecto.bombsaway.excepciones.ConcurrenciaException;
 import com.proyecto.bombsaway.manejadores.ManejadorPartida;
 import com.proyecto.bombsaway.enumerados.EstadoAvion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,26 @@ public class ServicioPartida {
     private final SchedulerConfig mensajeriaUpdate;
     private final IDAOPartida DAOPartida;
 
+
     @Autowired
     public ServicioPartida(ManejadorPartida manejadorPartida, IDAOPartida DAOPartida, SchedulerConfig mensajeriaUpdate) {
         this.DAOPartida = DAOPartida;
-        this.manejadorPartida = manejadorPartida;
+        this.manejadorPartida = ManejadorPartida.getManejadorPartida();
         this.mensajeriaUpdate = mensajeriaUpdate;
     }
 
     public int crearPartidaEnEspera(DTOPartidaEnEspera partidaEnEspera) {
-        PartidaEnEspera nuevaPartida = new PartidaEnEspera(partidaEnEspera.getNombrePartida(), partidaEnEspera.getNombreJugador());
-        this.manejadorPartida.addPartidaEnEspera(nuevaPartida);
+        try {
+            PartidaEnEspera nuevaPartida = new PartidaEnEspera(partidaEnEspera.getNombrePartida(), partidaEnEspera.getNombreJugador());
+            this.manejadorPartida.addPartidaEnEspera(nuevaPartida);
+            return 1;
+        } catch (ConcurrenciaException error) {
+            String mensajeError = this.getMensajeError(error.getMensaje());
+            this.mensajeriaUpdate.sendErrores(mensajeError);
+            System.out.println("Error: " + error.getMensaje());
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
         return 1;
     }
 
@@ -72,16 +83,26 @@ public class ServicioPartida {
     }
 
     public DTOMensaje unirseAPartida(DTOUsuario usuario) {
-        List<PartidaEnEspera> partidasEnEpera = this.manejadorPartida.getPartidasEnEspera();
-        if(partidasEnEpera != null && !partidasEnEpera.isEmpty()) {
-            PartidaEnEspera partidaEnEspera = partidasEnEpera.get(0);
-            Partida partidaEnJuego = this.crearPartida(partidaEnEspera.getNombrePartida(),
-                    partidaEnEspera.getNombreJugador(),
-                    usuario.getNombreJugador());
-            this.manejadorPartida.addPartidaEnJuego(partidaEnJuego);
-            return new DTOMensaje("Bootloader");
+        try {
+            List<PartidaEnEspera> partidasEnEpera = this.manejadorPartida.getPartidasEnEspera();
+            if(partidasEnEpera != null && !partidasEnEpera.isEmpty()) {
+                PartidaEnEspera partidaEnEspera = partidasEnEpera.get(0);
+                Partida partidaEnJuego = this.crearPartida(partidaEnEspera.getNombrePartida(),
+                        partidaEnEspera.getNombreJugador(),
+                        usuario.getNombreJugador());
+                this.manejadorPartida.addPartidaEnJuego(partidaEnJuego);
+                return new DTOMensaje("Bootloader");
+            } else {
+                return new DTOMensaje("No se encuentran partidas creadas");
+            }
+        } catch (ConcurrenciaException error) {
+            String mensajeError = this.getMensajeError(error.getMensaje());
+            this.mensajeriaUpdate.sendErrores(mensajeError);
+            System.out.println("Error: " + error.getMensaje());
+        } catch (Exception error) {
+            error.printStackTrace();
         }
-        return new DTOMensaje("No se encuentran partidas creadas");
+        return new DTOMensaje("sucedio un error en unirse a partida error");
     }
 
     public List<DTOPartidaCompleto> getListPartidas() {
@@ -100,7 +121,7 @@ public class ServicioPartida {
             //si el avion se fue de los limites, estalla
             boolean estallarAvion = this.checkAvionFueraLimites(avionDTO);
             Partida partida = recuperarPartida(avionDTO.getNombrePartida());
-            if(estallarAvion) {
+            if (estallarAvion) {
                 avionDTO.setEstado(EstadoAvion.DESTRUIDO);
                 //se actualiza la partida y se envia el avion a estallar
                 notificacion = this.updateAvionEnPartida(avionDTO, partida);
@@ -110,10 +131,15 @@ public class ServicioPartida {
                 notificacion = this.updateAvionEnPartida(avionDTO, partida);
                 this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
             }
-        } catch (Exception error) {
-            String mensajeError = this.getMensajeError(error.getMessage());
-            System.out.println("error: " + error.getMessage());
+        } catch (ConcurrenciaException error) {
+            String mensajeError = this.getMensajeError(error.getMensaje());
             this.mensajeriaUpdate.sendErrores(mensajeError);
+            System.out.println("Error: " + error.getMensaje());
+        } catch (Exception error) {
+                error.printStackTrace();
+    //            String mensajeError = this.getMensajeError(error.getMessage());
+    //            System.out.println("error: " + error.getMessage());
+    //            this.mensajeriaUpdate.sendErrores(mensajeError);
         }
     }
 
@@ -161,38 +187,31 @@ public class ServicioPartida {
         return dtoAvion;
     }
 
-    public DTOAvion impactoBala(DTOBala balaDto, Jugador jugadorEnemigo) {
+    public DTOAvion impactoBalaEnAvion(DTOBala balaDto, Jugador jugadorEnemigo) {
         boolean impacto = false;
         DTOAvion dtoAvion = null;
-        try{
-            List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
-            int i = 0;
-            while(!impacto && i< listAvionesEnemigos.size()) {
-                Avion avion = listAvionesEnemigos.get(i);
-                if(avion.getEstado() == balaDto.getAltitud()) {
-                    Posicion posicionBala = new Posicion(balaDto.getEjeX(),
-                            balaDto.getEjeY(),balaDto.getAngulo());
-                    //chequeamos que la bala pertenezca al radio del avion
-                    impacto = this.validarImpactoRadioAvion(posicionBala, avion);
-                    if(impacto) {
-                        dtoAvion = impactarAvion(avion);
-                        dtoAvion.setNombrePartida(balaDto.getNombrePartida());
-                        dtoAvion.setIdJugador(jugadorEnemigo.getId());
-                    }
+        List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
+        int i = 0;
+        while(!impacto && i< listAvionesEnemigos.size()) {
+            Avion avion = listAvionesEnemigos.get(i);
+            if(avion.getEstado() == balaDto.getAltitud()) {
+                Posicion posicionBala = new Posicion(balaDto.getEjeX(),
+                        balaDto.getEjeY(),balaDto.getAngulo());
+                //chequeamos que la bala pertenezca al radio del avion
+                impacto = this.validarImpactoRadioAvion(posicionBala, avion);
+                if(impacto) {
+                    dtoAvion = impactarAvion(avion);
+                    dtoAvion.setNombrePartida(balaDto.getNombrePartida());
+                    dtoAvion.setIdJugador(jugadorEnemigo.getId());
                 }
-                i++;
             }
-        } catch (Exception error) {
-            String mensajeError = this.getMensajeError(error.getMessage());
-            System.out.println("error: " + error.getMessage());
-            this.mensajeriaUpdate.sendErrores(mensajeError);
+            i++;
         }
         return dtoAvion;
     }
 
     public void dispararBala(DTOBala balaDto) {
         try {
-            System.out.println("el dto que llega: " + balaDto.toString());
             Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
             if(partida != null) {
                 Jugador jugadorEnemigo = null;
@@ -211,9 +230,8 @@ public class ServicioPartida {
                 Bala balaDisparada = avionAutorDisparo.getListBalas().get(balaDto.getIdBala());
 
                 //se obtienen los aviones del enemigo para chequear si impacto o no
-
                 List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
-                DTOAvion dtoAvion = this.impactoBala(balaDto, jugadorEnemigo);
+                DTOAvion dtoAvion = this.impactoBalaEnAvion(balaDto, jugadorEnemigo);
 
                 if(dtoAvion!= null ) {
                     System.out.println("bala impacto en avion de id: " + dtoAvion.getIdAvion());
@@ -237,10 +255,12 @@ public class ServicioPartida {
                     }
                 }
             }
-        } catch (Exception error) {
-            String mensajeError = this.getMensajeError(error.getMessage());
-            System.out.println("error: " + error.getMessage());
+        } catch (ConcurrenciaException error) {
+            String mensajeError = this.getMensajeError(error.getMensaje());
             this.mensajeriaUpdate.sendErrores(mensajeError);
+            System.out.println("Error: " + error.getMensaje());
+        } catch (Exception error) {
+            error.printStackTrace();
         }
     }
 
@@ -253,7 +273,7 @@ public class ServicioPartida {
         this.mensajeriaUpdate.sendBajarVidaAvion(data);
     }
 
-    private Partida recuperarPartida(String nombrePartida) {
+    private Partida recuperarPartida(String nombrePartida) throws ConcurrenciaException {
         return this.manejadorPartida.getPartidaEnJuego(nombrePartida);
     }
 
@@ -265,7 +285,7 @@ public class ServicioPartida {
         return res;
     }
 
-    private String updateAvionEnPartida(DTOAvion avionDTO, Partida partida) {
+    private String updateAvionEnPartida(DTOAvion avionDTO, Partida partida) throws ConcurrenciaException {
         DTOAvion notificacion = null;
         if (partida != null) {
             Jugador jugador = null;

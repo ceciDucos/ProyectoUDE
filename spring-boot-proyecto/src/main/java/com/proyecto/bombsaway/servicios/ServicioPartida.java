@@ -279,7 +279,7 @@ public class ServicioPartida {
 
     private boolean checkAvionFueraLimites(DTOAvion dtoAvion) {
         boolean res = false;
-        if(dtoAvion.getEjeX() <= 0 || dtoAvion.getEjeX() >= 1080 || dtoAvion.getEjeY() <= 0 || dtoAvion.getEjeY() > 720) {
+        if(dtoAvion.getEjeX() <= 10 || dtoAvion.getEjeX() >= 1070 || dtoAvion.getEjeY() <= 10 || dtoAvion.getEjeY() > 710) {
             res = true;
         }
         return res;

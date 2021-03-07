@@ -14,15 +14,15 @@ public class ControladorPartida {
 
 	@MessageMapping("/user")
 	@SendTo("/topic/user")
-	public UserResponse getUser(User user) {
-		return new UserResponse("Hi " + user.getName());
+	public DTOMensaje getUser(User user) {
+		return new DTOMensaje("Hi " + user.getName());
 	}
 
 	@MessageMapping("/nueva-partida")
 	@SendTo("/topic/user")
-	public UserResponse getUser(DTOPartidaEnEspera nuevaPartida) {
+	public DTOMensaje getUser(DTOPartidaEnEspera nuevaPartida) {
 		this.servicioPartida.crearPartidaEnEspera(nuevaPartida);
-		return new UserResponse("partida en espera, usuario:  " + nuevaPartida.getNombreJugador() + ",  partida: "
+		return new DTOMensaje("partida en espera, usuario:  " + nuevaPartida.getNombreJugador() + ",  partida: "
 				+ nuevaPartida.getNombrePartida());
 	}
 

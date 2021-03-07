@@ -13,11 +13,13 @@ public class Jugador {
     private String nombre;
     private List<Avion> listAviones;
     private Base base;
+    private List<Artilleria> listArtilleria;
 
 	public Jugador(String nomUsuario) {
         this.nombre = nomUsuario;
         this.listAviones = new ArrayList<Avion>();
         this.base = null;
+        this.listArtilleria = new ArrayList<Artilleria>();
     }
 
     public DTOUsuario getDTO() {
@@ -72,8 +74,16 @@ public class Jugador {
   	public void setBase(Base base) {
   		this.base = base;
   	}
+  	
+    public List<Artilleria> getListArtilleria() {
+		return listArtilleria;
+	}
 
-    public JsonObject toJSON() {
+	public void setListArtilleria(List<Artilleria> listArtilleria) {
+		this.listArtilleria = listArtilleria;
+	}
+
+	public JsonObject toJSON() {
         JsonArrayBuilder arrAvionesBld = Json.createArrayBuilder();
         int i = 0;
         for (Avion avion: this.listAviones) {

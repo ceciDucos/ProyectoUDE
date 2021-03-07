@@ -232,6 +232,69 @@ public class ServicioPartida {
 		}
 	}
 
+	public void colocarArtilleria(DTOArtilleria artilleriaDto) {
+		try {
+			Partida partida = this.recuperarPartida(artilleriaDto.getNombrePartida());
+			if (partida != null) {
+				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
+						: partida.getJugadorDos();
+				if (jugadorActual.getListArtilleria().size() < 11) {
+					Artilleria artilleria = new Artilleria(
+							new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(), artilleriaDto.getAngulo()),
+							false);
+					List<Artilleria> listArtilleria = jugadorActual.getListArtilleria();
+					listArtilleria.add(artilleria);
+					jugadorActual.setListArtilleria(listArtilleria);
+					if (artilleriaDto.getIdJugador() == 1) {
+						partida.setJugadorUno(jugadorActual);
+					} else {
+						partida.setJugadorDos(jugadorActual);
+					}
+					this.manejadorPartida.updatePartidaEnJuego(partida);
+				}
+			}
+			if (partida.getJugadorUno().getListArtilleria().size() == 11
+					&& partida.getJugadorDos().getListArtilleria().size() == 11) {
+				this.actualizarArtilleria(partida);
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void actualizarArtilleria(Partida partida) {
+		String artilleriaJugadorUno = "[";
+		int i = 0;
+		for (Artilleria artilleria1 : partida.getJugadorUno().getListArtilleria()) {
+			Posicion posicion = artilleria1.getPosicion();
+			DTOArtilleria artilleriaDtoJ1 = new DTOArtilleria(partida.getNombre(), partida.getJugadorUno().getId(), i,
+					posicion.getEjeX(), posicion.getEjeY(), posicion.getAngulo(), artilleria1.isDestruida());
+
+			artilleriaJugadorUno = (i == 0) ? artilleriaJugadorUno + artilleriaDtoJ1.toString()
+					: artilleriaJugadorUno + ", " + artilleriaDtoJ1.toString();
+			i++;
+		}
+		artilleriaJugadorUno += "]";
+		i = 0;
+		String artilleriaJugadorDos = "[";
+		for (Artilleria artilleria2 : partida.getJugadorDos().getListArtilleria()) {
+			Posicion posicion = artilleria2.getPosicion();
+			DTOArtilleria artilleriaDtoJ2 = new DTOArtilleria(partida.getNombre(), partida.getJugadorDos().getId(), i,
+					posicion.getEjeX(), posicion.getEjeY(), posicion.getAngulo(), artilleria2.isDestruida());
+
+			artilleriaJugadorDos = (i == 0) ? artilleriaJugadorDos + artilleriaDtoJ2.toString()
+					: artilleriaJugadorDos + ", " + artilleriaDtoJ2.toString();
+			i++;
+		}
+		artilleriaJugadorDos += "]";
+		String notificacion = "[" + artilleriaJugadorUno + ", " + artilleriaJugadorDos + "]";
+		this.mensajeriaUpdate.sendActualizarArtilleria(notificacion);
+	}
+
 	private boolean validarImpactoBombaRadioElementoBase(DTOBomba bombaDto, Posicion posicion, double radioElemento) {
 		boolean res = false;
 		double distancia = 0;
@@ -431,7 +494,6 @@ public class ServicioPartida {
 		}
 	}
 
-
 	private String getMensajeError(String mensajeError) {
 		String res = "{\"error\":\"" + mensajeError + "}";
 		return res;
@@ -444,7 +506,6 @@ public class ServicioPartida {
 	private Partida recuperarPartida(String nombrePartida) throws ConcurrenciaException {
 		return this.manejadorPartida.getPartidaEnJuego(nombrePartida);
 	}
-
 
 	private DTOAvion checkChoqueEntreAviones(DTOAvion avionDTO) throws ConcurrenciaException {
 		DTOAvion avionImpactado = null;
@@ -474,36 +535,36 @@ public class ServicioPartida {
 	}
 
 	private String updateAvionEnPartida(DTOAvion avionDTO, Partida partida) throws ConcurrenciaException {
-        DTOAvion notificacion = null;
-        if (partida != null) {
-            Jugador jugador = null;
-            Avion avion = null;
-            if (avionDTO.getIdJugador() == 1) {
-                jugador = partida.getJugadorUno();
-                avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion());
+		DTOAvion notificacion = null;
+		if (partida != null) {
+			Jugador jugador = null;
+			Avion avion = null;
+			if (avionDTO.getIdJugador() == 1) {
+				jugador = partida.getJugadorUno();
+				avion = partida.getJugadorUno().getListAviones().get(avionDTO.getIdAvion());
 
-                //se crea la notificacion para dibujar el avion enemigo
-                notificacion = new DTOAvion(avionDTO);
+				// se crea la notificacion para dibujar el avion enemigo
+				notificacion = new DTOAvion(avionDTO);
 
-                //actualizar avion, en usuario de partida
-                avion.updateAvion(avionDTO);
-                jugador.getListAviones().add(avion);
-                partida.setJugadorUno(jugador);
-            } else {
-                jugador = partida.getJugadorDos();
-                avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion());
+				// actualizar avion, en usuario de partida
+				avion.updateAvion(avionDTO);
+				jugador.getListAviones().add(avion);
+				partida.setJugadorUno(jugador);
+			} else {
+				jugador = partida.getJugadorDos();
+				avion = partida.getJugadorDos().getListAviones().get(avionDTO.getIdAvion());
 
-                //se crea la notificacion para dibujar el avion enemigo
-                notificacion = new DTOAvion(avionDTO);
+				// se crea la notificacion para dibujar el avion enemigo
+				notificacion = new DTOAvion(avionDTO);
 
-                //actualizar avion, en usuario de partida
-                avion.updateAvion(avionDTO);
-                jugador.getListAviones().add(avion);
-                partida.setJugadorDos(jugador);
-            }
-            this.manejadorPartida.updatePartidaEnJuego(partida);
-        }
-        return notificacion.toString();
-    }
+				// actualizar avion, en usuario de partida
+				avion.updateAvion(avionDTO);
+				jugador.getListAviones().add(avion);
+				partida.setJugadorDos(jugador);
+			}
+			this.manejadorPartida.updatePartidaEnJuego(partida);
+		}
+		return notificacion.toString();
+	}
 
 }

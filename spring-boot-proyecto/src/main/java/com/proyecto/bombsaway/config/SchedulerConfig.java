@@ -37,6 +37,14 @@ public class SchedulerConfig {
     public void sendPosicionBala(String data) {
         template.convertAndSend("/topic/posicion-bala", data);
     }
+    
+    public void sendColocarBases(String data) {
+    	template.convertAndSend("/topic/actualizar-bases", data);
+    }
+    
+    public void sendEstadoElementosBase(String data) {
+    	template.convertAndSend("/topic/estado-elementos-base", data);
+    }
 
     public void sendErrores(String data) {
         template.convertAndSend("/topic/errores", data);

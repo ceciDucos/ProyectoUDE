@@ -42,5 +42,16 @@ public class ControladorPartida {
     public void dispararBala(DTOBala balaDto) {
         this.servicioPartida.dispararBala(balaDto);
     }
+    
+    @MessageMapping("/colocar-base")
+    public void colocarBase(DTOBase baseDto) {
+    	this.servicioPartida.colocarBase(baseDto);
+    }
+    
+    @MessageMapping("/tirar-bomba")
+    public void tirarBomba(DTOBomba bombaDto) {
+    	this.servicioPartida.tirarBomba(bombaDto);
+    }
+    
 }
 

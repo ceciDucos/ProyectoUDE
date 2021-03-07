@@ -42,5 +42,10 @@ public class ControladorPartida {
     public void dispararBala(DTOBala balaDto) {
         this.servicioPartida.dispararBala(balaDto);
     }
+
+    @MessageMapping("/disparo-bala2")
+    public void dispararBala2(DTOBala balaDto) {
+        this.servicioPartida.dispararBala2(balaDto);
+    }
 }
 

@@ -36,7 +36,7 @@ public class Avion {
     public void updateAvion(DTOAvion dtoAvion) {
         this.setId(dtoAvion.getIdAvion());
         this.setPosicion(new Posicion(dtoAvion.getEjeX(), dtoAvion.getEjeY(), dtoAvion.getAngulo()));
-        this.setVida(dtoAvion.getVida());
+        //this.setVida(dtoAvion.getVida());
         this.setCombustible(dtoAvion.getCombustible());
         this.setEstado(dtoAvion.getEstado());
         this.setTieneBomba(dtoAvion.isTieneBomba());

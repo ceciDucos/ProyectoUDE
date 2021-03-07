@@ -20,8 +20,8 @@ public class ServicioPartida {
 
 	private final int MAX_VIDA = 100;
 	private final int DANIO_DISPARO_BALA = 10;
-	private final int RADIO_AVION_ALTURA_ALTA = 25;
-	private final int RADIO_AVION_ALTURA_BAJA = 19;
+	private final int RADIO_AVION_ALTURA_ALTA = 20;
+	private final int RADIO_AVION_ALTURA_BAJA = 14;
 	private final int RADIO_BALA = 5;
 	private final double RADIO_BOMBA = 3.5;
 	private final int RADIO_HANGAR = 15;
@@ -401,11 +401,14 @@ public class ServicioPartida {
 			if (avion.getEstado() == balaDto.getAltitud()) {
 				Posicion posicionBala = new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo());
 				// chequeamos que la bala pertenezca al radio del avion
-				impacto = this.validarImpactoRadioAvion(posicionBala, avion);
-				if (impacto) {
-					dtoAvion = impactarAvion(avion);
-					dtoAvion.setNombrePartida(balaDto.getNombrePartida());
-					dtoAvion.setIdJugador(jugadorEnemigo.getId());
+				if (avion.getEstado() != EstadoAvion.DESTRUIDO)
+				{
+					impacto = this.validarImpactoRadioAvion(posicionBala, avion);
+					if (impacto) {
+						dtoAvion = impactarAvion(avion);
+						dtoAvion.setNombrePartida(balaDto.getNombrePartida());
+						dtoAvion.setIdJugador(jugadorEnemigo.getId());
+					}
 				}
 			}
 			i++;
@@ -472,11 +475,9 @@ public class ServicioPartida {
 				Jugador jugadorEnemigo = null;
 				Jugador jugadorActual = null;
 				if (balaDto.getIdJugador() == 1) {
-					System.out.println("entro como jugador 1");
 					jugadorEnemigo = partida.getJugadorDos();
 					jugadorActual = partida.getJugadorUno();
 				} else {
-					System.out.println("entro como jugador 2");
 					jugadorEnemigo = partida.getJugadorUno();
 					jugadorActual = partida.getJugadorDos();
 				}
@@ -515,13 +516,9 @@ public class ServicioPartida {
 		int coordY1 = posicionAvionActual.getEjeY();
 		int coordX2 = posicionAvionEnemigo.getEjeX();
 		int coordY2 = posicionAvionEnemigo.getEjeY();
-		System.out.println("coordenadas, coordX1: " + coordX1 + ", coordY1: " + coordY1 + ", coordX2: " + coordX2 + ", coordY2: " + coordY2);
-
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		double distancia = Math.sqrt(ecuacion);
-		System.out.println("La distancia entre los aviones es: " + distancia);
 		if (distancia < 2 * radioAvion) {
-			System.out.println("Aviones impactaron!");
 			res = true;
 		}
 		return res;

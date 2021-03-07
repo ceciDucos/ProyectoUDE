@@ -151,7 +151,7 @@ public class ServicioPartida {
 				DTOBase baseJugadorDos = partida.getJugadorDos().getBase().getDTO();
 				baseJugadorDos.setIdJugador(partida.getJugadorDos().getId());
 				baseJugadorDos.setNombrePartida(partida.getNombre());
-				String notificacion = "[" + baseJugadorUno.toString() + "," + baseJugadorDos.toString() + "]";
+				String notificacion = "[" + baseJugadorUno.toString() + ", " + baseJugadorDos.toString() + "]";
 				this.mensajeriaUpdate.sendColocarBases(notificacion);
 			}
 		} catch (ConcurrenciaException error) {

@@ -172,55 +172,62 @@ public class ServicioPartida {
 						: partida.getJugadorDos();
 				List<Avion> aviones = jugadorActual.getListAviones();
 				Avion avion = aviones.get(bombaDto.getAvionId());
-				if (avion.isTieneBomba()) {
-					avion.setTieneBomba(false);
-					aviones.set(avion.getId(), avion);
-					jugadorActual.setListAviones(aviones);
-					if (bombaDto.getIdJugador() == 1) {
-						partida.setJugadorUno(jugadorActual);
-					} else {
-						partida.setJugadorDos(jugadorActual);
-					}
-					Jugador jugadorEnemigo = (bombaDto.getIdJugador() == 1) ? partida.getJugadorDos()
-							: partida.getJugadorUno();
-					Base base = jugadorEnemigo.getBase();
-					List<ElementoBase> elementosBase = new ArrayList<ElementoBase>();
-					DTOEstadoBase estadoBase = new DTOEstadoBase(partida.getNombre(), jugadorEnemigo.getId(), false,
-							false, false);
-					for (ElementoBase elementoBase : base.getElementosBase()) {
-						if (elementoBase.getNombre() == "torreta") {
-							if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
-									this.RADIO_TORRETA)) {
-								estadoBase.setTorretaDestruida(true);
-								elementoBase.setDestruido(true);
-							}
-							elementosBase.add(elementoBase);
-						} else if (elementoBase.getNombre() == "hangar") {
-							if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
-									this.RADIO_HANGAR)) {
-								estadoBase.setHangarDestruido(true);
-								elementoBase.setDestruido(true);
-							}
-							elementosBase.add(elementoBase);
-						} else if (elementoBase.getNombre() == "tanque_combustible") {
-							if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
-									this.RADIO_TANQUE_COMBUSTIBLE)) {
-								estadoBase.setTanqueCombustibleDestruido(true);
-								elementoBase.setDestruido(true);
-							}
-							elementosBase.add(elementoBase);
-						}
-					}
-					base.setElementosBase(elementosBase);
-					jugadorEnemigo.setBase(base);
-					if (bombaDto.getIdJugador() == 1) {
-						partida.setJugadorDos(jugadorEnemigo);
-					} else {
-						partida.setJugadorUno(jugadorEnemigo);
-					}
-					this.manejadorPartida.updatePartidaEnJuego(partida);
-					this.mensajeriaUpdate.sendEstadoElementosBase(estadoBase.toString());
+				avion.setTieneBomba(false);
+				aviones.set(avion.getId(), avion);
+				jugadorActual.setListAviones(aviones);
+				if (bombaDto.getIdJugador() == 1) {
+					partida.setJugadorUno(jugadorActual);
+				} else {
+					partida.setJugadorDos(jugadorActual);
 				}
+				Jugador jugadorEnemigo = (bombaDto.getIdJugador() == 1) ? partida.getJugadorDos()
+						: partida.getJugadorUno();
+				Base base = jugadorEnemigo.getBase();
+				List<ElementoBase> elementosBase = new ArrayList<ElementoBase>();
+				DTOEstadoBase estadoBase = new DTOEstadoBase(partida.getNombre(), jugadorEnemigo.getId(), false, false,
+						false);
+				for (ElementoBase elementoBase : base.getElementosBase()) {
+					if (elementoBase.getNombre() == "torreta") {
+						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
+								this.RADIO_TORRETA)) {
+							estadoBase.setTorretaDestruida(true);
+							elementoBase.setDestruido(true);
+						}
+						elementosBase.add(elementoBase);
+					} else if (elementoBase.getNombre() == "hangar") {
+						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
+								this.RADIO_HANGAR)) {
+							estadoBase.setHangarDestruido(true);
+							elementoBase.setDestruido(true);
+							List<Avion> avionesEnemigos = jugadorEnemigo.getListAviones();
+							for (Avion avionEnemigo : jugadorEnemigo.getListAviones()) {
+								if (avionEnemigo.getEstado() == EstadoAvion.QUIETO) {
+									avionEnemigo.setEstado(EstadoAvion.DESTRUIDO);
+									avionesEnemigos.add(avionEnemigo.getId(), avionEnemigo);
+									this.estallarAvion(avionEnemigo.getDTO().toString());
+								}
+							}
+							jugadorEnemigo.setListAviones(avionesEnemigos);
+						}
+						elementosBase.add(elementoBase);
+					} else if (elementoBase.getNombre() == "tanque_combustible") {
+						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
+								this.RADIO_TANQUE_COMBUSTIBLE)) {
+							estadoBase.setTanqueCombustibleDestruido(true);
+							elementoBase.setDestruido(true);
+						}
+						elementosBase.add(elementoBase);
+					}
+				}
+				base.setElementosBase(elementosBase);
+				jugadorEnemigo.setBase(base);
+				if (bombaDto.getIdJugador() == 1) {
+					partida.setJugadorDos(jugadorEnemigo);
+				} else {
+					partida.setJugadorUno(jugadorEnemigo);
+				}
+				this.manejadorPartida.updatePartidaEnJuego(partida);
+				this.mensajeriaUpdate.sendEstadoElementosBase(estadoBase.toString());
 			}
 
 		} catch (ConcurrenciaException error) {
@@ -318,18 +325,18 @@ public class ServicioPartida {
 			String notificacion = null;
 			// si el avion se fue de los limites, estalla
 			boolean avionFueraLimites = this.checkAvionFueraLimites(avionDTO);
-            DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
+			DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
 			Partida partida = recuperarPartida(avionDTO.getNombrePartida());
 			if (avionFueraLimites) {
 				avionDTO.setEstado(EstadoAvion.DESTRUIDO);
 				// se actualiza la partida y se envia el avion a estallar
 				notificacion = this.updateAvionEnPartida(avionDTO, partida);
 				this.estallarAvion(notificacion.toString());
-            } else if(avionChoqueDto != null) {
-                avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+			} else if (avionChoqueDto != null) {
+				avionDTO.setEstado(EstadoAvion.DESTRUIDO);
 				avionChoqueDto.setEstado(EstadoAvion.DESTRUIDO);
-                this.estallarAvion(avionDTO.toString());
-                this.estallarAvion(avionChoqueDto.toString());
+				this.estallarAvion(avionDTO.toString());
+				this.estallarAvion(avionChoqueDto.toString());
 				this.updateAvionEnPartida(avionDTO, partida);
 				this.updateAvionEnPartida(avionChoqueDto, partida);
 			} else {
@@ -401,8 +408,7 @@ public class ServicioPartida {
 			if (avion.getEstado() == balaDto.getAltitud()) {
 				Posicion posicionBala = new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo());
 				// chequeamos que la bala pertenezca al radio del avion
-				if (avion.getEstado() != EstadoAvion.DESTRUIDO)
-				{
+				if (avion.getEstado() != EstadoAvion.DESTRUIDO) {
 					impacto = this.validarImpactoRadioAvion(posicionBala, avion);
 					if (impacto) {
 						dtoAvion = impactarAvion(avion);
@@ -510,7 +516,8 @@ public class ServicioPartida {
 		return this.manejadorPartida.getPartidaEnJuego(nombrePartida);
 	}
 
-	private boolean validarImpactoRadioAviones(Posicion posicionAvionActual, Posicion posicionAvionEnemigo, int radioAvion) {
+	private boolean validarImpactoRadioAviones(Posicion posicionAvionActual, Posicion posicionAvionEnemigo,
+			int radioAvion) {
 		boolean res = false;
 		int coordX1 = posicionAvionActual.getEjeX();
 		int coordY1 = posicionAvionActual.getEjeY();
@@ -528,26 +535,25 @@ public class ServicioPartida {
 		DTOAvion avionImpactado = null;
 		Partida partida = this.recuperarPartida(avionDto.getNombrePartida());
 		if (partida != null) {
-			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() :
-					partida.getJugadorUno();
-			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() :
-					partida.getJugadorDos();
+			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
+			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 
 			List<Avion> listaAvionesEnemigos = jugadorEnemigo.getListAviones();
 			int i = 0;
 			boolean impacto = false;
-			while(i < listaAvionesEnemigos.size() && !impacto) {
+			while (i < listaAvionesEnemigos.size() && !impacto) {
 				Avion avionEnemigo = listaAvionesEnemigos.get(i);
-				if(avionEnemigo.getEstado() == avionDto.getEstado()) {
+				if (avionEnemigo.getEstado() == avionDto.getEstado()) {
 					int radioAvion = avionDto.getEstado() == EstadoAvion.ALTURA_BAJA ? this.RADIO_AVION_ALTURA_BAJA
 							: this.RADIO_AVION_ALTURA_ALTA;
-					impacto = this.validarImpactoRadioAviones(new Posicion(avionDto.getEjeX(), avionDto.getEjeY(),
-							avionDto.getAngulo()), avionEnemigo.getPosicion(), radioAvion);
-					if(impacto) {
+					impacto = this.validarImpactoRadioAviones(
+							new Posicion(avionDto.getEjeX(), avionDto.getEjeY(), avionDto.getAngulo()),
+							avionEnemigo.getPosicion(), radioAvion);
+					if (impacto) {
 						Avion avionActual = jugadorActual.getListAviones().get(avionDto.getIdAvion());
 						avionActual.setEstado(EstadoAvion.DESTRUIDO);
 						avionEnemigo.setEstado(EstadoAvion.DESTRUIDO);
-						//se crea el DTOAvion del avion enemigo dstruido.
+						// se crea el DTOAvion del avion enemigo dstruido.
 						avionImpactado = avionEnemigo.getDTO();
 						avionImpactado.setNombrePartida(avionDto.getNombrePartida());
 						avionImpactado.setIdJugador(jugadorEnemigo.getId());

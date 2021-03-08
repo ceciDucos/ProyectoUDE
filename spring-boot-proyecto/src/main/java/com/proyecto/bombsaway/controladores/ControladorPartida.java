@@ -53,7 +53,7 @@ public class ControladorPartida {
 	}
 	
 	@MessageMapping("/colocar-artilleria")
-	public void tirarBomba(DTOArtilleria artilleriaDto) {
+	public void colocarArtilleria(DTOArtilleria artilleriaDto) {
 		this.servicioPartida.colocarArtilleria(artilleriaDto);
 	}
 

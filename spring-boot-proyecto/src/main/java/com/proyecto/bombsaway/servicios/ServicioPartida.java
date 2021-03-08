@@ -68,6 +68,7 @@ public class ServicioPartida {
 			Avion avionJugadorUno = new Avion();
 			avionJugadorUno.setId(i);
 			avionJugadorUno.setVida(this.MAX_VIDA);
+			avionJugadorUno.setEstado(EstadoAvion.QUIETO);
 			avionJugadorUno.setPosicion(new Posicion(540, 50, 90));
 			avionJugadorUno.inicializarBalas();
 			listAvionesUno.add(avionJugadorUno);
@@ -75,6 +76,7 @@ public class ServicioPartida {
 			Avion avionJugadorDos = new Avion();
 			avionJugadorDos.setId(i);
 			avionJugadorDos.setVida(this.MAX_VIDA);
+			avionJugadorUno.setEstado(EstadoAvion.QUIETO);
 			avionJugadorDos.setPosicion(new Posicion(540, 670, -90));
 			avionJugadorDos.inicializarBalas();
 			listAvionesDos.add(avionJugadorDos);
@@ -203,7 +205,7 @@ public class ServicioPartida {
 							for (Avion avionEnemigo : jugadorEnemigo.getListAviones()) {
 								if (avionEnemigo.getEstado() == EstadoAvion.QUIETO) {
 									avionEnemigo.setEstado(EstadoAvion.DESTRUIDO);
-									avionesEnemigos.add(avionEnemigo.getId(), avionEnemigo);
+									avionesEnemigos.set(avionEnemigo.getId(), avionEnemigo);
 									this.estallarAvion(avionEnemigo.getDTO().toString());
 								}
 							}
@@ -589,7 +591,7 @@ public class ServicioPartida {
 
 				// actualizar avion, en usuario de partida
 				avion.updateAvion(avionDTO);
-				jugador.getListAviones().add(avion);
+				jugador.getListAviones().set(avion.getId(), avion);
 				partida.setJugadorUno(jugador);
 			} else {
 				jugador = partida.getJugadorDos();
@@ -600,7 +602,7 @@ public class ServicioPartida {
 
 				// actualizar avion, en usuario de partida
 				avion.updateAvion(avionDTO);
-				jugador.getListAviones().add(avion);
+				jugador.getListAviones().set(avion.getId(), avion);
 				partida.setJugadorDos(jugador);
 			}
 			this.manejadorPartida.updatePartidaEnJuego(partida);

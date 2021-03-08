@@ -27,6 +27,8 @@ public class ServicioPartida {
 	private final int RADIO_HANGAR = 15;
 	private final double RADIO_TORRETA = 17.5;
 	private final int RADIO_TANQUE_COMBUSTIBLE = 15;
+	private final int CANTIDAD_ARTILLERIA = 11;
+	private final int RADIO_ARTILLERIA = 8;
 	private final ManejadorPartida manejadorPartida;
 	private final SchedulerConfig mensajeriaUpdate;
 	private final IDAOPartida DAOPartida;
@@ -202,15 +204,13 @@ public class ServicioPartida {
 						destruidoHangar, destruidoTanqueCombustible, destruidoTorreta);
 				for (ElementoBase elementoBase : base.getElementosBase()) {
 					if (elementoBase.getNombre() == "torreta") {
-						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
-								this.RADIO_TORRETA)) {
+						if (this.validarImpactoBombaRadio(bombaDto, elementoBase.getPosicion(), this.RADIO_TORRETA)) {
 							estadoBase.setTorretaDestruida(true);
 							elementoBase.setDestruido(true);
 						}
 						elementosBase.add(elementoBase);
 					} else if (elementoBase.getNombre() == "hangar") {
-						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
-								this.RADIO_HANGAR)) {
+						if (this.validarImpactoBombaRadio(bombaDto, elementoBase.getPosicion(), this.RADIO_HANGAR)) {
 							estadoBase.setHangarDestruido(true);
 							elementoBase.setDestruido(true);
 							List<Avion> avionesEnemigos = jugadorEnemigo.getListAviones();
@@ -228,7 +228,7 @@ public class ServicioPartida {
 						}
 						elementosBase.add(elementoBase);
 					} else if (elementoBase.getNombre() == "tanque_combustible") {
-						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),
+						if (this.validarImpactoBombaRadio(bombaDto, elementoBase.getPosicion(),
 								this.RADIO_TANQUE_COMBUSTIBLE)) {
 							estadoBase.setTanqueCombustibleDestruido(true);
 							elementoBase.setDestruido(true);
@@ -245,6 +245,7 @@ public class ServicioPartida {
 				}
 				this.manejadorPartida.updatePartidaEnJuego(partida);
 				this.mensajeriaUpdate.sendEstadoElementosBase(estadoBase.toString());
+				this.comprobarImpactoArtilleria(partida, jugadorEnemigo, bombaDto);
 			}
 
 		} catch (ConcurrenciaException error) {
@@ -262,7 +263,7 @@ public class ServicioPartida {
 			if (partida != null) {
 				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
-				if (jugadorActual.getListArtilleria().size() < 11) {
+				if (jugadorActual.getListArtilleria().size() < this.CANTIDAD_ARTILLERIA) {
 					Artilleria artilleria = new Artilleria(
 							new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(), artilleriaDto.getAngulo()),
 							false);
@@ -277,8 +278,8 @@ public class ServicioPartida {
 					this.manejadorPartida.updatePartidaEnJuego(partida);
 				}
 			}
-			if (partida.getJugadorUno().getListArtilleria().size() == 11
-					&& partida.getJugadorDos().getListArtilleria().size() == 11) {
+			if (partida.getJugadorUno().getListArtilleria().size() == this.CANTIDAD_ARTILLERIA
+					&& partida.getJugadorDos().getListArtilleria().size() == this.CANTIDAD_ARTILLERIA) {
 				this.actualizarArtilleria(partida);
 			}
 		} catch (ConcurrenciaException error) {
@@ -319,7 +320,7 @@ public class ServicioPartida {
 		this.mensajeriaUpdate.sendActualizarArtilleria(notificacion);
 	}
 
-	private boolean validarImpactoBombaRadioElementoBase(DTOBomba bombaDto, Posicion posicion, double radioElemento) {
+	private boolean validarImpactoBombaRadio(DTOBomba bombaDto, Posicion posicion, double radioElemento) {
 		boolean res = false;
 		double distancia = 0;
 
@@ -335,6 +336,43 @@ public class ServicioPartida {
 			res = true;
 		}
 		return res;
+	}
+
+	public void comprobarImpactoArtilleria(Partida partida, Jugador jugador, DTOBomba bombaDto) {
+		try {
+			List<Artilleria> artillerias = jugador.getListArtilleria();
+			int i = 0;
+			boolean huboCambio = false;
+			for (Artilleria artilleria : artillerias) {
+				if (this.validarImpactoBombaRadio(bombaDto, artilleria.getPosicion(), this.RADIO_ARTILLERIA)) {
+					huboCambio = true;
+					artilleria.setDestruida(true);
+					artillerias.set(i, artilleria);
+					DTOArtilleria artilleriaDto = new DTOArtilleria(partida.getNombre(), jugador.getId(), i,
+							artilleria.getPosicion().getEjeX(), artilleria.getPosicion().getEjeY(), true);
+					this.mensajeriaUpdate.sendDestruirArtilleria(artilleriaDto.toString());
+				}
+			}
+			if (huboCambio) {
+				jugador.setListArtilleria(artillerias);
+				if (jugador.getId() == 1) {
+					partida.setJugadorUno(jugador);
+				} else {
+					partida.setJugadorDos(jugador);
+				}
+				this.manejadorPartida.updatePartidaEnJuego(partida);
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void destruirArtilleria(String data) {
+		this.mensajeriaUpdate.sendDestruirArtilleria(data);
 	}
 
 	public void moverAvion(DTOAvion avionDTO) {

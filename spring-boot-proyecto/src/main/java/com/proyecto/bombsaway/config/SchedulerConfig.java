@@ -46,6 +46,10 @@ public class SchedulerConfig {
     	template.convertAndSend("/topic/actualizar-artilleria", data);
     }
     
+    public void sendDestruirArtilleria(String data) {
+    	template.convertAndSend("/topic/destruir-artilleria", data);
+    }
+    
     public void sendEstadoElementosBase(String data) {
     	template.convertAndSend("/topic/estado-elementos-base", data);
     }

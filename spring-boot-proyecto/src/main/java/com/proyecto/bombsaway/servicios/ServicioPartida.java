@@ -218,7 +218,10 @@ public class ServicioPartida {
 								if (avionEnemigo.getEstado() == EstadoAvion.QUIETO) {
 									avionEnemigo.setEstado(EstadoAvion.DESTRUIDO);
 									avionesEnemigos.set(avionEnemigo.getId(), avionEnemigo);
-									this.estallarAvion(avionEnemigo.getDTO().toString());
+									DTOAvion avionDto = avionEnemigo.getDTO();
+									avionDto.setNombrePartida(partida.getNombre());
+									avionDto.setIdJugador(jugadorEnemigo.getId());
+									this.estallarAvion(avionDto.toString());
 								}
 							}
 							jugadorEnemigo.setListAviones(avionesEnemigos);

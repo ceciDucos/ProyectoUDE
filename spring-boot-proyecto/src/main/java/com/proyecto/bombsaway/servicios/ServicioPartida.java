@@ -76,7 +76,7 @@ public class ServicioPartida {
 			Avion avionJugadorDos = new Avion();
 			avionJugadorDos.setId(i);
 			avionJugadorDos.setVida(this.MAX_VIDA);
-			avionJugadorUno.setEstado(EstadoAvion.QUIETO);
+			avionJugadorDos.setEstado(EstadoAvion.QUIETO);
 			avionJugadorDos.setPosicion(new Posicion(540, 670, -90));
 			avionJugadorDos.inicializarBalas();
 			listAvionesDos.add(avionJugadorDos);

@@ -186,8 +186,20 @@ public class ServicioPartida {
 						: partida.getJugadorUno();
 				Base base = jugadorEnemigo.getBase();
 				List<ElementoBase> elementosBase = new ArrayList<ElementoBase>();
-				DTOEstadoBase estadoBase = new DTOEstadoBase(partida.getNombre(), jugadorEnemigo.getId(), false, false,
-						false);
+				boolean destruidoHangar = false;
+				boolean destruidoTorreta = false;
+				boolean destruidoTanqueCombustible = false;
+				for (ElementoBase elemento : jugadorEnemigo.getBase().getElementosBase()) {
+					if (elemento.getNombre() == "torreta") {
+						destruidoTorreta = elemento.isDestruido();
+					} else if (elemento.getNombre() == "hangar") {
+						destruidoHangar = elemento.isDestruido();
+					} else if (elemento.getNombre() == "tanque_combustible") {
+						destruidoTanqueCombustible = elemento.isDestruido();
+					}
+				}
+				DTOEstadoBase estadoBase = new DTOEstadoBase(partida.getNombre(), jugadorEnemigo.getId(),
+						destruidoHangar, destruidoTanqueCombustible, destruidoTorreta);
 				for (ElementoBase elementoBase : base.getElementosBase()) {
 					if (elementoBase.getNombre() == "torreta") {
 						if (this.validarImpactoBombaRadioElementoBase(bombaDto, elementoBase.getPosicion(),

@@ -264,7 +264,7 @@ public class ServicioPartida {
 				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
 				if (jugadorActual.getListArtilleria().size() < this.CANTIDAD_ARTILLERIA) {
-					Artilleria artilleria = new Artilleria(
+					Artilleria artilleria = new Artilleria(artilleriaDto.getIdArtilleria(),
 							new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(), artilleriaDto.getAngulo()),
 							false);
 					List<Artilleria> listArtilleria = jugadorActual.getListArtilleria();
@@ -341,18 +341,16 @@ public class ServicioPartida {
 	public void comprobarImpactoArtilleria(Partida partida, Jugador jugador, DTOBomba bombaDto) {
 		try {
 			List<Artilleria> artillerias = jugador.getListArtilleria();
-			int i = 0;
 			boolean huboCambio = false;
 			for (Artilleria artilleria : artillerias) {
 				if (this.validarImpactoBombaRadio(bombaDto, artilleria.getPosicion(), this.RADIO_ARTILLERIA)) {
 					huboCambio = true;
 					artilleria.setDestruida(true);
-					artillerias.set(i, artilleria);
-					DTOArtilleria artilleriaDto = new DTOArtilleria(partida.getNombre(), jugador.getId(), i,
-							artilleria.getPosicion().getEjeX(), artilleria.getPosicion().getEjeY(), true);
+					DTOArtilleria artilleriaDto = new DTOArtilleria(partida.getNombre(), jugador.getId(),
+							artilleria.getIdArtilleria(), artilleria.getPosicion().getEjeX(),
+							artilleria.getPosicion().getEjeY(), true);
 					this.mensajeriaUpdate.sendDestruirArtilleria(artilleriaDto.toString());
 				}
-				i++;
 			}
 			if (huboCambio) {
 				jugador.setListArtilleria(artillerias);

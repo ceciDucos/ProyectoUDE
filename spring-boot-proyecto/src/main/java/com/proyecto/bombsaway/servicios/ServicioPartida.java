@@ -382,7 +382,7 @@ public class ServicioPartida {
 			boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
 			DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
 			Partida partida = recuperarPartida(avionDTO.getNombrePartida());
-			//Se actualiza la visibilidad de los elementos enemigos
+			// Se actualiza la visibilidad de los elementos enemigos
 			this.updateVisibilidad(avionDTO);
 			if (avionFueraLimites || avionSinCombustible) {
 				avionDTO.setEstado(EstadoAvion.DESTRUIDO);
@@ -563,7 +563,7 @@ public class ServicioPartida {
 	private void comprobarResultadoPartida(Partida partida) {
 		try {
 			if (partida != null) {
-				if(!partida.isFinalizada()) {
+				if (!partida.isFinalizada()) {
 					boolean avionesConVidaJ1 = false;
 					boolean avionesConVidaJ2 = false;
 					List<Avion> avionesJ1 = partida.getJugadorUno().getListAviones();
@@ -710,8 +710,8 @@ public class ServicioPartida {
 				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
 				Artilleria artilleria = jugadorActual.getListArtilleria().get(artilleriaDto.getIdArtilleria());
-				artilleria.setPosicion( new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(),
-						artilleriaDto.getAngulo()));
+				artilleria.setPosicion(
+						new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(), artilleriaDto.getAngulo()));
 				this.mensajeriaUpdate.sendArtilleriaMovida(artilleriaDto.toString());
 			}
 		} catch (ConcurrenciaException error) {
@@ -722,7 +722,6 @@ public class ServicioPartida {
 			e.printStackTrace();
 		}
 	}
-
 
 	private boolean checkVisibilidadBase(DTOAvion avionDto) {
 		return true;

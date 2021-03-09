@@ -12,7 +12,7 @@ public class DAOPartida implements IDAOPartida{
 
     @Override
     public int insertPartida(String nombrePartida, Partida partida) {
-        DB.add(new Partida(partida.getJugadorUno(), partida.getJugadorDos(), partida.getNombre()));
+        DB.add(new Partida(partida.getJugadorUno(), partida.getJugadorDos(), partida.getNombre(), false));
         return 1;
     }
 

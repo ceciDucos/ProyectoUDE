@@ -61,4 +61,9 @@ public class ControladorPartida {
 	public void dispararBala2(DTOBala balaDto) {
 		this.servicioPartida.dispararBala2(balaDto);
 	}
+
+	@MessageMapping("/mover-artilleria")
+	public void moverArtilleria(DTOArtilleria artilleriaDto) {
+		this.servicioPartida.moverArtilleria(artilleriaDto);
+	}
 }

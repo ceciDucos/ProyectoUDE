@@ -370,14 +370,21 @@ public class ServicioPartida {
 		}
 	}
 
+	public boolean checkCombustibleAvion(DTOAvion avionDTO) {
+		return avionDTO.getCombustible() < 1;
+	}
+
 	public void moverAvion(DTOAvion avionDTO) {
 		try {
 			String notificacion = null;
 			// si el avion se fue de los limites, estalla
 			boolean avionFueraLimites = this.checkAvionFueraLimites(avionDTO);
+			boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
 			DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
 			Partida partida = recuperarPartida(avionDTO.getNombrePartida());
-			if (avionFueraLimites) {
+			//Se actualiza la visibilidad de los elementos enemigos
+			this.updateVisibilidad(avionDTO);
+			if (avionFueraLimites || avionSinCombustible) {
 				avionDTO.setEstado(EstadoAvion.DESTRUIDO);
 				// se actualiza la partida y se envia el avion a estallar
 				notificacion = this.updateAvionEnPartida(avionDTO, partida);
@@ -656,6 +663,71 @@ public class ServicioPartida {
 			this.manejadorPartida.updatePartidaEnJuego(partida);
 		}
 		return notificacion.toString();
+	}
+
+	public void moverArtilleria(DTOArtilleria artilleriaDto) {
+		try {
+			Partida partida = this.recuperarPartida(artilleriaDto.getNombrePartida());
+			if (partida != null) {
+				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
+						: partida.getJugadorDos();
+				Artilleria artilleria = jugadorActual.getListArtilleria().get(artilleriaDto.getIdArtilleria());
+				artilleria.setPosicion( new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(),
+						artilleriaDto.getAngulo()));
+				this.mensajeriaUpdate.sendArtilleriaMovida(artilleriaDto.toString());
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private boolean checkVisibilidadBase(DTOAvion avionDto) {
+		return true;
+	}
+
+	private boolean checkVisibilidad(DTOAvion avionDto, String elemento, Posicion posicion) {
+		return true;
+	}
+
+	private void updateVisibilidad(DTOAvion avionDto) throws ConcurrenciaException {
+//		DTOAvion avionImpactado = null;
+//		DTOVisibilidad res = new DTOVisibilidad();
+//		boolean huboCambios = false;
+//		Partida partida = this.recuperarPartida(avionDto.getNombrePartida());
+//		if (partida != null) {
+//			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
+//			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
+//			//se obtienen los objetos que pueden llegar a ser visibles
+//			List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
+//			List<Artilleria> listArtilleriaEnemigos = jugadorEnemigo.getListArtilleria();
+//			Base baseEnemiga = jugadorEnemigo.getBase();
+//			List<Artilleria> listArtilleria = jugadorEnemigo.getListArtilleria();
+//			boolean esVisibleBase = this.checkVisibilidadBase(avionDto);
+//			res.setVisibilidadBase(esVisibleBase);
+//
+//			//se chequean las visibilidades de los aviones
+//			List<Boolean> listVisibilidadAviones = new ArrayList<>();
+//			for (Avion avion: listAvionesEnemigos) {
+//				Boolean visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
+//				visibilidadAvion != avion.
+//				listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
+//			}
+//			res.setVisibilidadAviones(listVisibilidadAviones);
+//
+//			//se chequean las visibilidades de la artilleria
+//			List<Boolean> listVisibilidadArtilleria = new ArrayList<>();
+//			for (Artilleria artilleria: listArtilleriaEnemigos) {
+//				Boolean visibilidadArtilleria = this.checkVisibilidad(avionDto, "artilleria", artilleria.getPosicion());
+//				listVisibilidadArtilleria.add(artilleria.getIdArtilleria(), visibilidadArtilleria);
+//			}
+//			res.setVisibilidadArtilleria(listVisibilidadArtilleria);
+//
+//		}
 	}
 
 }

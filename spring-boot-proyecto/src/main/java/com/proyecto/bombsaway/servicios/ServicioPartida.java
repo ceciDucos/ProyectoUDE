@@ -371,10 +371,6 @@ public class ServicioPartida {
 		}
 	}
 
-	public void destruirArtilleria(String data) {
-		this.mensajeriaUpdate.sendDestruirArtilleria(data);
-	}
-
 	public void moverAvion(DTOAvion avionDTO) {
 		try {
 			String notificacion = null;

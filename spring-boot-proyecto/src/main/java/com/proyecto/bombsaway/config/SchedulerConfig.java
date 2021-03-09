@@ -53,6 +53,10 @@ public class SchedulerConfig {
     public void sendEstadoElementosBase(String data) {
     	template.convertAndSend("/topic/estado-elementos-base", data);
     }
+    
+    public void sendResultadoPartida(String data) {
+    	template.convertAndSend("/topic/resultado-partida", data);
+    }
 
     public void sendErrores(String data) {
         template.convertAndSend("/topic/errores", data);

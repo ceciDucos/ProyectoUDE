@@ -87,7 +87,7 @@ public class ServicioPartida {
 		jugadorDos.setListAviones(listAvionesDos);
 
 		// creacion nueva partida
-		return new Partida(jugadorUno, jugadorDos, nombrePartida);
+		return new Partida(jugadorUno, jugadorDos, nombrePartida, false);
 	}
 
 	public DTOMensaje unirseAPartida(DTOUsuario usuario) {
@@ -548,6 +548,44 @@ public class ServicioPartida {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
 			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
+
+	private void comprobarResultadoPartida(Partida partida) {
+		try {
+			if (partida != null) {
+				if(!partida.isFinalizada()) {
+					boolean avionesConVidaJ1 = false;
+					boolean avionesConVidaJ2 = false;
+					List<Avion> avionesJ1 = partida.getJugadorUno().getListAviones();
+					List<Avion> avionesJ2 = partida.getJugadorUno().getListAviones();
+					int i = 0;
+					while (i < avionesJ1.size() && !avionesConVidaJ1) {
+						Avion avionJ1 = avionesJ1.get(i);
+						if (avionJ1.getEstado() != EstadoAvion.DESTRUIDO) {
+							avionesConVidaJ1 = true;
+						}
+						i++;
+					}
+					i = 0;
+					while (i < avionesJ2.size() && !avionesConVidaJ2) {
+						Avion avionJ2 = avionesJ2.get(i);
+						if (avionJ2.getEstado() != EstadoAvion.DESTRUIDO) {
+							avionesConVidaJ2 = true;
+						}
+						i++;
+					}
+					if (!avionesConVidaJ1 || !avionesConVidaJ2) {
+						DTOResultadoPartida resultadoPartidaDto = new DTOResultadoPartida(partida.getNombre(),
+								avionesConVidaJ1, avionesConVidaJ2);
+						partida.setFinalizada(true);
+						this.manejadorPartida.updatePartidaEnJuego(partida);
+						this.mensajeriaUpdate.sendResultadoPartida(resultadoPartidaDto.toString());
+					}
+				}
+			}
 		} catch (Exception error) {
 			error.printStackTrace();
 		}

@@ -352,6 +352,7 @@ public class ServicioPartida {
 							artilleria.getPosicion().getEjeX(), artilleria.getPosicion().getEjeY(), true);
 					this.mensajeriaUpdate.sendDestruirArtilleria(artilleriaDto.toString());
 				}
+				i++;
 			}
 			if (huboCambio) {
 				jugador.setListArtilleria(artillerias);

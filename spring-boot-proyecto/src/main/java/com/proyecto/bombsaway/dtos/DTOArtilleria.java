@@ -19,16 +19,6 @@ public class DTOArtilleria {
 	public DTOArtilleria() {
 	}
 
-	public DTOArtilleria(String nombrePartida, int idJugador, int ejeX, int ejeY, int angulo,
-			boolean destruida) {
-		this.nombrePartida = nombrePartida;
-		this.idJugador = idJugador;
-		this.ejeX = ejeX;
-		this.ejeY = ejeY;
-		this.angulo = angulo;
-		this.destruida = destruida;
-	}
-
 	public DTOArtilleria(String nombrePartida, int idJugador, int idArtilleria, int ejeX, int ejeY, int angulo,
 			boolean destruida) {
 		super();

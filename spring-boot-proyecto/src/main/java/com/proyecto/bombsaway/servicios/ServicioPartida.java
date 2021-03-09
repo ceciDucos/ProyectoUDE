@@ -348,7 +348,7 @@ public class ServicioPartida {
 					artilleria.setDestruida(true);
 					DTOArtilleria artilleriaDto = new DTOArtilleria(partida.getNombre(), jugador.getId(),
 							artilleria.getIdArtilleria(), artilleria.getPosicion().getEjeX(),
-							artilleria.getPosicion().getEjeY(), true);
+							artilleria.getPosicion().getEjeY(), artilleria.getPosicion().getAngulo(), true);
 					this.mensajeriaUpdate.sendDestruirArtilleria(artilleriaDto.toString());
 				}
 			}

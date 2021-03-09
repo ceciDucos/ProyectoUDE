@@ -58,6 +58,15 @@ public class SchedulerConfig {
     	template.convertAndSend("/topic/resultado-partida", data);
     }
 
+    public void sendArtilleriaMovida(String data) {
+        template.convertAndSend("/topic/artilleria-movida", data);
+    }
+
+
+    public void sendElementosVisibles(String data) {
+        template.convertAndSend("/topic/elementos-visibles", data);
+    }
+
     public void sendErrores(String data) {
         template.convertAndSend("/topic/errores", data);
     }

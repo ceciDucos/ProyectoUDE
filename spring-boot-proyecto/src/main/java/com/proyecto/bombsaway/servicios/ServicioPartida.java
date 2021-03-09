@@ -247,7 +247,7 @@ public class ServicioPartida {
 				this.mensajeriaUpdate.sendEstadoElementosBase(estadoBase.toString());
 				this.comprobarImpactoArtilleria(partida, jugadorEnemigo, bombaDto);
 			}
-
+			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -401,6 +401,7 @@ public class ServicioPartida {
 				notificacion = this.updateAvionEnPartida(avionDTO, partida);
 				this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
 			}
+			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -522,6 +523,7 @@ public class ServicioPartida {
 					}
 				}
 			}
+			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);

@@ -83,21 +83,6 @@ public class Jugador {
 		this.listArtilleria = listArtilleria;
 	}
 
-	public JsonObject toJSON() {
-        JsonArrayBuilder arrAvionesBld = Json.createArrayBuilder();
-        int i = 0;
-        for (Avion avion: this.listAviones) {
-            arrAvionesBld.add(this.listAviones.get(i).toJSON());
-            i++;
-        }
-        JsonObject res = Json.createObjectBuilder()
-                .add("jugador:", Json.createObjectBuilder()
-                        .add("nombre", this.nombre)
-                        .add("listAviones:", arrAvionesBld.build())
-                ).build();
-        return res;
-    }
-
     public void setId(int id) {
         this.id = id;
     }

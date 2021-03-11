@@ -1,19 +1,12 @@
 package com.proyecto.bombsaway.dtos;
 
 public class DTOArtilleria {
-
 	private String nombrePartida;
-
 	private int idJugador;
-
 	private int idArtilleria;
-
 	private int ejeX;
-
 	private int ejeY;
-
 	private int angulo;
-
 	private boolean destruida;
 
 	public DTOArtilleria() {

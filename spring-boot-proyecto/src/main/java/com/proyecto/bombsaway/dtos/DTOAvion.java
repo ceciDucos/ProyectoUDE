@@ -144,21 +144,4 @@ public class DTOAvion {
                 this.visible + "}";
         return res;
     }
-
-    public JsonObject toJSON() {
-        return Json.createObjectBuilder()
-                .add("avion:", Json.createObjectBuilder()
-                        .add("nombrePartida", this.nombrePartida)
-                        .add("idAvion", String.valueOf(this.idAvion))
-                        .add("idJugador", String.valueOf(this.idJugador))
-                        .add("ejeX", String.valueOf(this.ejeX))
-                        .add("ejeY", String.valueOf(this.ejeX))
-                        .add("angulo", String.valueOf(this.angulo))
-                        .add("estado", String.valueOf(this.estado))
-                        .add("vida", String.valueOf(this.vida))
-                        .add("combustible", String.valueOf(this.combustible))
-                        .add("tieneBomba", this.tieneBomba)
-                        .add("visible", this.visible)
-                ).build();
-    }
 }

@@ -5,17 +5,23 @@ import java.util.List;
 import com.proyecto.bombsaway.dtos.DTOBase;
 
 public class Base {
-
 	private Posicion posicion;
-
 	private List<ElementoBase> elementosBase;
+	private boolean visible;
 
-	public Base() {
-	}
+	public Base() { }
 
 	public Base(Posicion posicion, List<ElementoBase> elementosBase) {
 		this.posicion = posicion;
 		this.elementosBase = elementosBase;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public Posicion getPosicion() {

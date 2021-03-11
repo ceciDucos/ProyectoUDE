@@ -737,13 +737,17 @@ public class ServicioPartida {
 			List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
 			List<Boolean> listVisibilidadAviones = new ArrayList<>();
 			for (Avion avion: listAvionesEnemigos) {
-				Boolean visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
-				if(visibilidadAvion != avion.isVisible()) {
-					avion.setVisible(visibilidadAvion);
-					this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
-					huboCambios = true;
-				}
-				listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
+					Boolean visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
+					if(visibilidadAvion != avion.isVisible()) {
+						avion.setVisible(visibilidadAvion);
+						if(avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
+								avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+							this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+							huboCambios = true;
+							System.out.println("Hubo interseccion con avion");
+						}
+					}
+					listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
 			}
 			res.setVisibilidadAviones(listVisibilidadAviones);
 
@@ -770,11 +774,13 @@ public class ServicioPartida {
 				Avion avion = jugadorActual.getListAviones().get(avionDto.getIdAvion());
 				if(visibilidadAvionArtilleria != avion.isVisible()) {
 					avion.setVisible(visibilidadAvionArtilleria);
+					System.out.println("Artilleria ve a avion");
 					this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
 				}
 
 				if(visibilidadArtilleria != artilleria.isVisible()) {
 					artilleria.setVisible(visibilidadArtilleria);
+					System.out.println("Hubo interseccion con artilleria");
 					huboCambios = true;
 				}
 				listVisibilidadArtilleria.add(artilleria.getIdArtilleria(), visibilidadArtilleria);

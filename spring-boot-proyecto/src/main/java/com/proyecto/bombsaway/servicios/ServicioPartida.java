@@ -680,9 +680,9 @@ public class ServicioPartida {
 		}
 	}
 
-	private boolean checkVisibilidadBase(DTOAvion avionDto) {
-		return true;
-	}
+//	private boolean checkVisibilidadBase(DTOAvion avionDto) {
+//		return true;
+//	}
 
 	private boolean checkVisibilidad(DTOAvion avionDto, String elemento, Posicion posicion) {
 		boolean res = false;
@@ -722,9 +722,10 @@ public class ServicioPartida {
 			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
 			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 
+			Avion avionActual = jugadorActual.getListAviones().get(avionDto.getIdAvion());
 			//se obtiene la base y se chequea si es visible
 			Base baseEnemiga = jugadorEnemigo.getBase();
-			boolean esVisibleBase = this.checkVisibilidadBase(avionDto);
+			boolean esVisibleBase = this.checkVisibilidad(avionDto, "base", baseEnemiga.getPosicion());
 			if(esVisibleBase != baseEnemiga.isVisible()) {
 				huboCambios = true;
 				this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());

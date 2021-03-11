@@ -1,9 +1,5 @@
 package com.proyecto.bombsaway;
 
-import com.proyecto.bombsaway.config.SchedulerConfig;
-import com.proyecto.bombsaway.daos.DAOPartida;
-import com.proyecto.bombsaway.manejadores.ManejadorPartida;
-import com.proyecto.bombsaway.servicios.ServicioPartida;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

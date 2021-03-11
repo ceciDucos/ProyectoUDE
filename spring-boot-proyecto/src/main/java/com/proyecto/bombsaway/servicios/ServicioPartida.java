@@ -787,6 +787,6 @@ public class ServicioPartida {
 	}
 
 	public void updateCombustibleAviones() {
-//		List<Partida> partidasEnJuego = this.
+//		List<Partida> partidasEnJuego = this.manejadorPartida.
 	}
 }

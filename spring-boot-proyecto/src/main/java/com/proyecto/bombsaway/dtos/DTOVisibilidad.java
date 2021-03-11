@@ -57,19 +57,19 @@ public class DTOVisibilidad {
                 ",\"visibilidadAviones\": [ ";
         int i = 0;
         while (i < this.visibilidadAviones.size() ) {
-            res += "{ " + this.visibilidadAviones.get(i) + "} ";
+            res += this.visibilidadAviones.get(i);
             i++;
-            if(i < this.visibilidadAviones.size() -1) {
+            if(i < this.visibilidadAviones.size()) {
                 res += ",";
             }
         }
         res+= "], ";
-        res+= "\"visibilidadArtillerias\": [ ";
+        res+= "\"visibilidadArtilleria\": [ ";
         i = 0;
         while (i < this.visibilidadArtilleria.size() ) {
-            res += "{ " + this.visibilidadArtilleria.get(i) + "} ";
+            res += this.visibilidadArtilleria.get(i);
             i++;
-            if(i < this.visibilidadArtilleria.size() -1) {
+            if(i < this.visibilidadArtilleria.size()) {
                 res += ",";
             }
         }

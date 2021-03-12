@@ -27,6 +27,10 @@ public class ControladorMensajes {
     public void sendPosicionBala(String data) {
         template.convertAndSend("/topic/posicion-bala", data);
     }
+
+    public void sendPosicionBalaArtilleria(String data) {
+        template.convertAndSend("/topic/posicion-bala-artilleria", data);
+    }
     
     public void sendColocarBases(String data) {
     	template.convertAndSend("/topic/actualizar-bases", data);

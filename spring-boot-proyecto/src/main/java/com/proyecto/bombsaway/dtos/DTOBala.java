@@ -5,7 +5,7 @@ import com.proyecto.bombsaway.enumerados.EstadoAvion;
 public class DTOBala {
     private String nombrePartida;
     private int idJugador ;
-    private int idAvion;
+    private int idElemento;
     private int idBala;
     private EstadoAvion altitud;
     private int ejeX;
@@ -23,8 +23,8 @@ public class DTOBala {
         return idJugador;
     }
 
-    public int getIdAvion() {
-        return idAvion;
+    public int getIdElemento() {
+        return idElemento;
     }
 
     public int getIdBala() {
@@ -51,8 +51,8 @@ public class DTOBala {
         this.idJugador = idJugador;
     }
 
-    public void setIdAvion(int idAvion) {
-        this.idAvion = idAvion;
+    public void setIdElemento(int idElemento) {
+        this.idElemento = idElemento;
     }
 
     public void setIdBala(int idBala) {
@@ -90,7 +90,7 @@ public class DTOBala {
     @Override
     public String toString() {
         String res = "{\"nombrePartida\":\"" + this.nombrePartida + "\",\"idJugador\":" + this.idJugador +
-                ",\"idAvion\":" + this.idAvion + ",\"ejeX\":" + this.ejeX + ",\"ejeY\":" + this.ejeY +
+                ",\"idElemento\":" + this.idElemento + ",\"ejeX\":" + this.ejeX + ",\"ejeY\":" + this.ejeY +
                 ",\"angulo\":" + this.angulo + ",\"altitud\":" + this.altitud.getValueString() +
                 ",\"visible\":" + this.visible + ",\"idBala\":" + this.idBala + "}";
         return res;

@@ -29,7 +29,7 @@ public class ServicioPartida {
 	private final int RADIO_ARTILLERIA = 12;
 	private final int RADIO_VISION_AVION = 87;
 	private final int RADIO_VISION_BASE = 40;
-	private final int RADIO_VISION_ARTILLERIA = 40;
+	private final int RADIO_VISION_ARTILLERIA = 100;
 	private final ManejadorPartida manejadorPartida;
 	private final ControladorMensajes mensajeriaUpdate;
 	private final IDAOPartida DAOPartida;
@@ -850,28 +850,30 @@ public class ServicioPartida {
 					int i = 0;
 					while (i < avionesActuales.size()) {
 						Avion avion = avionesActuales.get(i);
-						boolean esVisibleBase = this.checkVisibilidad(avion, "base", baseEnemigo.getPosicion());
-						if(esVisibleBase) {
-							res.setVisibilidadBase(true);
-						}
+						if (avion.getEstado() == EstadoAvion.ALTURA_BAJA || avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+							boolean esVisibleBase = this.checkVisibilidad(avion, "base", baseEnemigo.getPosicion());
+							if(esVisibleBase) {
+								res.setVisibilidadBase(true);
+							}
 
-						for (Avion avionEnemigo: listAvionesEnemigo) {
-							if(avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA ||
-									avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
-								Boolean visibilidadAvion = this.checkVisibilidad(avion, "avion", avionEnemigo.getPosicion());
-								if(visibilidadAvion) {
-									res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
+							for (Avion avionEnemigo: listAvionesEnemigo) {
+								if(avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA ||
+										avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
+									Boolean visibilidadAvion = this.checkVisibilidad(avion, "avion", avionEnemigo.getPosicion());
+									if(visibilidadAvion) {
+										res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
+									}
 								}
 							}
-						}
 
-						for (Artilleria artilleriaEnemigo: listArtilleriaEnemigo) {
-							Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria", artilleriaEnemigo.getPosicion());
-							if(visibilidadAvionArtilleria) {
-								res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
+							for (Artilleria artilleriaEnemigo: listArtilleriaEnemigo) {
+								Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria", artilleriaEnemigo.getPosicion());
+								if(visibilidadAvionArtilleria) {
+									res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
+								}
 							}
+							i++;
 						}
-						i++;
 					}
 
 					int j = 0;

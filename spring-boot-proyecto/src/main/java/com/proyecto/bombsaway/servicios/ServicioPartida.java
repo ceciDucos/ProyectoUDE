@@ -566,7 +566,7 @@ public class ServicioPartida {
 					boolean avionesConVidaJ1 = false;
 					boolean avionesConVidaJ2 = false;
 					List<Avion> avionesJ1 = partida.getJugadorUno().getListAviones();
-					List<Avion> avionesJ2 = partida.getJugadorUno().getListAviones();
+					List<Avion> avionesJ2 = partida.getJugadorDos().getListAviones();
 					int i = 0;
 					while (i < avionesJ1.size() && !avionesConVidaJ1) {
 						Avion avionJ1 = avionesJ1.get(i);

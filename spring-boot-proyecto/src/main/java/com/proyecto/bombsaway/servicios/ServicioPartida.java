@@ -820,6 +820,7 @@ public class ServicioPartida {
 				}
 
 				if(cambiosEnBase || cambiosEnAviones || cambiosEnArtilleriaAvion || cambiosEnArtilleria) {
+					avionActual.setVisible(esVisibleAvion);
 					avionDto.setVisible(esVisibleAvion);
 					this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
 

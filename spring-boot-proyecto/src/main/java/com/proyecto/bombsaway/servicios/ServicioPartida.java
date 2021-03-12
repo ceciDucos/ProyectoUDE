@@ -811,7 +811,7 @@ public class ServicioPartida {
 		return res;
 	}
 
-	public String updateVisibilidad3(int idJugador) {
+	public void updateVisibilidad3(int idJugador) {
 		DTOVisibilidad res = null;
 		try {
 			List<Partida> partidas = this.manejadorPartida.getPartidasEnJuego();
@@ -883,8 +883,8 @@ public class ServicioPartida {
 						}
 						j++;
 					}
+					this.updateVisibilidadPartida(res);
 				}
-				this.updateVisibilidadPartida(res);
 			}
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
@@ -894,11 +894,9 @@ public class ServicioPartida {
 			e.printStackTrace();
 		}
 
-		if(res == null) {
-			DTOMensaje mensaje = new DTOMensaje("aun no hay actualizaciones");
-			return mensaje.toString();
+		if(res != null) {
+			this.mensajeriaUpdate.sendActualizacionElementosVisibles(res.toString());
 		}
-		return res.toString();
 	}
 
 	public void updateVisibilidadPartida(DTOVisibilidad visibilidad) throws ConcurrenciaException {

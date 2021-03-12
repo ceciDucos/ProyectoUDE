@@ -67,5 +67,9 @@ public class ControladorMensajes {
     public void sendErrores(String data) {
         template.convertAndSend("/topic/errores", data);
     }
+
+    public void sendActualizacionElementosVisibles(String data) {
+        template.convertAndSend("/topic/elementos-visibles", data);
+    }
 }
 

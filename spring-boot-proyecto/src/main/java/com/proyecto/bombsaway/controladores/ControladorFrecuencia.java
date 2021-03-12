@@ -17,17 +17,15 @@ public class ControladorFrecuencia {
     @Autowired
     ServicioPartida servicioPartida;
 
-    @Scheduled(fixedDelay = 60)
+    @Scheduled(fixedDelay = 250)
     public void sendActualizarCombistible() {
         this.servicioPartida.updateCombustibleAviones();
     }
 
-    @Scheduled(fixedDelay = 60)
+    @Scheduled(fixedDelay = 250)
     public void sendActualizarVisibilidad() {
-        String datajugadorUno = this.servicioPartida.updateVisibilidad3(1);
-        template.convertAndSend("/topic/elementos-visibles", datajugadorUno);
-        String datajugadorDos = this.servicioPartida.updateVisibilidad3(2);
-        template.convertAndSend("/topic/elementos-visibles", datajugadorDos);
+        this.servicioPartida.updateVisibilidad3(1);
+        this.servicioPartida.updateVisibilidad3(2);
     }
 
 }

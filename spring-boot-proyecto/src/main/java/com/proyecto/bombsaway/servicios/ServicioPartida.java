@@ -741,16 +741,19 @@ public class ServicioPartida {
 				Boolean visibilidadAvion = avion.isVisible();
 				if(avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
 						avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
-					visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
-					if(visibilidadAvion != avion.isVisible()) {
-						avion.setVisible(visibilidadAvion);
+					if(!huboCambios) {
+						visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
+						if(visibilidadAvion != avion.isVisible()) {
+							avion.setVisible(visibilidadAvion);
 
-						avionActual.setVisible(visibilidadAvion);
-						avionDto.setVisible(visibilidadAvion);
-						this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
-						huboCambios = true;
+							avionActual.setVisible(visibilidadAvion);
+							avionDto.setVisible(visibilidadAvion);
+							this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+							huboCambios = true;
 
+						}
 					}
+
 				}
 				listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
 			}
@@ -778,9 +781,11 @@ public class ServicioPartida {
 				}
 
 				if(visibilidadAvionArtilleria != avionActual.isVisible()) {
-					avionActual.setVisible(visibilidadAvionArtilleria);
-					avionDto.setVisible(visibilidadAvionArtilleria);
-					this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+					if(!huboCambios) {
+						avionActual.setVisible(visibilidadAvionArtilleria);
+						avionDto.setVisible(visibilidadAvionArtilleria);
+						this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+					}
 				}
 
 				if(visibilidadArtilleria != artilleria.isVisible()) {

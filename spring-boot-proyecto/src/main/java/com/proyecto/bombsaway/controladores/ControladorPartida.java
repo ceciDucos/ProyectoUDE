@@ -12,15 +12,9 @@ public class ControladorPartida {
 	@Autowired
 	private ServicioPartida servicioPartida;
 
-	@MessageMapping("/user")
-	@SendTo("/topic/user")
-	public DTOMensaje getUser(User user) {
-		return new DTOMensaje("Hi " + user.getName());
-	}
-
 	@MessageMapping("/nueva-partida")
 	@SendTo("/topic/user")
-	public DTOMensaje getUser(DTOPartidaEnEspera nuevaPartida) {
+	public DTOMensaje nuevaPartidaEnEspera(DTOPartidaEnEspera nuevaPartida) {
 		this.servicioPartida.crearPartidaEnEspera(nuevaPartida);
 		return new DTOMensaje("partida en espera, usuario:  " + nuevaPartida.getNombreJugador() + ",  partida: "
 				+ nuevaPartida.getNombrePartida());
@@ -28,7 +22,7 @@ public class ControladorPartida {
 
 	@MessageMapping("/unirse-a-partida")
 	@SendTo("/topic/user")
-	public DTOMensaje getUser(DTOUsuario nuevoJugador) {
+	public DTOMensaje unirseAPartida(DTOUsuario nuevoJugador) {
 		return this.servicioPartida.unirseAPartida(nuevoJugador);
 	}
 
@@ -57,9 +51,9 @@ public class ControladorPartida {
 		this.servicioPartida.colocarArtilleria(artilleriaDto);
 	}
 
-	@MessageMapping("/disparo-bala2")
-	public void dispararBala2(DTOBala balaDto) {
-		this.servicioPartida.dispararBala2(balaDto);
+	@MessageMapping("/primer-disparo")
+	public void primerDisparo(DTOBala balaDto) {
+		this.servicioPartida.primerDisparoBala(balaDto);
 	}
 
 	@MessageMapping("/mover-artilleria")

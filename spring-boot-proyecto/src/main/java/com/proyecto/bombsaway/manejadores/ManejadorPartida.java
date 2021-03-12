@@ -22,7 +22,7 @@ public class ManejadorPartida {
     }
 
     @Autowired
-    public ManejadorPartida() { }
+    private ManejadorPartida() { }
 
     public ManejadorPartida(List<PartidaEnEspera> partidasEnEspera, List<Partida> partidasEnJuego) {
         this.partidasEnEspera = partidasEnEspera;
@@ -57,36 +57,23 @@ public class ManejadorPartida {
     //un jugador se ha unido a una partida iniciada
     public synchronized void addPartidaEnJuego(Partida partidaEnJuego) throws ConcurrenciaException {
         try {
-            System.out.println("test 0");
             while(this.jugadoresConectados > 0) {
                 wait();
             }
-            System.out.println("test 1");
             this.jugadoresConectados++;
-            System.out.println("test 2");
             //se elimina la partida de la espera y se agrega a partidas en juego
             PartidaEnEspera partidaParaRemover = null;
-            System.out.println("test 3");
             for (PartidaEnEspera partidaEnEspera: partidasEnEspera) {
-                System.out.println("test partida: " + partidaEnEspera);
                 if (partidaEnEspera.getNombrePartida().equalsIgnoreCase(partidaEnJuego.getNombre())) {
-                    System.out.println("test 4");
                     partidaParaRemover = partidaEnEspera;
                 }
             }
-            System.out.println("test 5");
             if(partidaParaRemover != null) {
-                System.out.println("test 6");
                 this.partidasEnEspera.remove(partidaParaRemover);
-                System.out.println("test 7");
                 this.partidasEnJuego.add(partidaEnJuego);
-                System.out.println("test 8");
             }
-            System.out.println("test 9");
             this.jugadoresConectados--;
-            System.out.println("test 10");
             notify();
-            System.out.println("test 11");
         } catch (InterruptedException error) {
             throw new ConcurrenciaException("Error de concurrencia al pasar partida de espera a en juego");
         } catch (Exception error) {

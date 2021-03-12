@@ -1,26 +1,16 @@
-package com.proyecto.bombsaway.config;
-
-
-import javax.json.Json;
-import javax.json.JsonObject;
+package com.proyecto.bombsaway.controladores;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @EnableScheduling
 @Configuration
-public class SchedulerConfig {
+public class ControladorMensajes {
 
     @Autowired
     SimpMessagingTemplate template;
-
-//    @Scheduled(fixedDelay = 3000)
-//    public void sendAdhocMessages() {
-//        template.convertAndSend("/topic/user", value);
-//    }
 
     public void sendAvionesEnemigos(String data) {
         template.convertAndSend("/topic/aviones-enemigos", data);
@@ -62,9 +52,12 @@ public class SchedulerConfig {
         template.convertAndSend("/topic/artilleria-movida", data);
     }
 
-
     public void sendElementosVisibles(String data) {
         template.convertAndSend("/topic/elementos-visibles", data);
+    }
+
+    public void sendAvionEnemigoVisible(String data) {
+        template.convertAndSend("/topic/avion-enemigo-visible", data);
     }
 
     public void sendErrores(String data) {

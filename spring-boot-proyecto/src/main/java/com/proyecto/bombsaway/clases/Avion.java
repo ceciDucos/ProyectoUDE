@@ -17,12 +17,17 @@ public class Avion {
     private int combustible;
     private boolean tieneBomba;
     private List<Bala> listBalas;
+    private boolean visible;
 
     public Avion(){};
 
     public Avion(int id, Posicion posicion) {
         this.id = id;
         this.posicion = posicion;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public DTOAvion getDTO() {
@@ -66,20 +71,6 @@ public class Avion {
 
     public void setPosicion(Posicion posicion) {
         this.posicion = posicion;
-    }
-
-    public JsonObject toJSON() {
-        return Json.createObjectBuilder()
-                .add("avion:", Json.createObjectBuilder()
-                        .add("id", this.id)
-                        .add("ejeX", this.getPosicion().getEjeX())
-                        .add("ejeY", this.getPosicion().getEjeY())
-                        .add("angulo", this.getPosicion().getAngulo())
-                        .add("estado", String.valueOf(this.estado))
-                        .add("vida", this.vida)
-                        .add("combustible", this.combustible)
-                        .add("tieneBomba", this.tieneBomba)
-                ).build();
     }
 
     public void updateBala(Bala bala) {
@@ -126,5 +117,9 @@ public class Avion {
 
     public void setListaBalas(List<Bala> listaBalas) {
         this.listBalas = listBalas;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 }

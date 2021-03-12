@@ -1,12 +1,10 @@
 package com.proyecto.bombsaway.clases;
 
 public class Artilleria {
-
 	private int idArtilleria;
-	
 	private Posicion posicion;
-	
 	private boolean destruida;
+	private boolean visible;
 	
 	public Artilleria() {}
 
@@ -14,6 +12,14 @@ public class Artilleria {
 		this.idArtilleria = idArtilleria;
 		this.posicion = posicion;
 		this.destruida = destruida;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public int getIdArtilleria() {

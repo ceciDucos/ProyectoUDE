@@ -712,94 +712,94 @@ public class ServicioPartida {
 	}
 
 	public void updateVisibilidad(DTOAvion avionDto) throws ConcurrenciaException {
-		DTOVisibilidad res = new DTOVisibilidad();
-		res.setIdJugador(avionDto.getIdJugador());
-		res.setNombrePartida(avionDto.getNombrePartida());
-		boolean huboCambios = false;
-		Partida partida = this.recuperarPartida(avionDto.getNombrePartida());
-		if (partida != null) {
-			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
-			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
-
-			Avion avionActual = jugadorActual.getListAviones().get(avionDto.getIdAvion());
-			//se obtiene la base y se chequea si es visible
-			Base baseEnemiga = jugadorEnemigo.getBase();
-			boolean esVisibleBase = this.checkVisibilidad(avionDto, "base", baseEnemiga.getPosicion());
-			if(esVisibleBase != baseEnemiga.isVisible()) {
-				huboCambios = true;
-				avionActual.setVisible(esVisibleBase);
-				avionDto.setVisible(esVisibleBase);
-				this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
-				baseEnemiga.setVisible(esVisibleBase);
-			}
-			res.setVisibilidadBase(esVisibleBase);
-
-			//se obtienen los los aviones y se qchequean si son visibles
-			List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
-			List<Boolean> listVisibilidadAviones = new ArrayList<>();
-			for (Avion avion: listAvionesEnemigos) {
-				Boolean visibilidadAvion = avion.isVisible();
-				if(avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
-						avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
-					if(!huboCambios) {
-						visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
-						if(visibilidadAvion != avion.isVisible()) {
-							avion.setVisible(visibilidadAvion);
-
-							avionActual.setVisible(visibilidadAvion);
-							avionDto.setVisible(visibilidadAvion);
-							this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
-							huboCambios = true;
-
-						}
-					}
-
-				}
-				listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
-			}
-
-			res.setVisibilidadAviones(listVisibilidadAviones);
-
-			//se obtiene la artilleria y se chequean las visibilidades
-			List<Artilleria> listArtilleriaEnemigos = jugadorEnemigo.getListArtilleria();
-			List<Boolean> listVisibilidadArtilleria = new ArrayList<>();
-			for (Artilleria artilleria: listArtilleriaEnemigos) {
-				boolean visibilidadArtilleria = false;
-				boolean visibilidadAvionArtilleria = false;
-				int coordX1 = avionDto.getEjeX();
-				int coordY1 = avionDto.getEjeY();
-				int coordX2 = artilleria.getPosicion().getEjeX();
-				int coordY2 = artilleria.getPosicion().getEjeY();
-				double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
-				double distancia = Math.sqrt(ecuacion);
-
-				if (distancia < this.RADIO_VISION_ARTILLERIA) {
-					visibilidadArtilleria = true;
-				}
-				if (distancia < this.RADIO_VISION_AVION) {
-					visibilidadAvionArtilleria = true;
-				}
-
-				if(visibilidadAvionArtilleria != avionActual.isVisible()) {
-					if(!huboCambios) {
-						avionActual.setVisible(visibilidadAvionArtilleria);
-						avionDto.setVisible(visibilidadAvionArtilleria);
-						this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
-					}
-				}
-
-				if(visibilidadArtilleria != artilleria.isVisible()) {
-					artilleria.setVisible(visibilidadArtilleria);
-					huboCambios = true;
-				}
-				listVisibilidadArtilleria.add(artilleria.getIdArtilleria(), visibilidadArtilleria);
-			}
-			res.setVisibilidadArtilleria(listVisibilidadArtilleria);
-
-			if(huboCambios) {
-				this.mensajeriaUpdate.sendElementosVisibles(res.toString());
-			}
-		}
+//		DTOVisibilidad res = new DTOVisibilidad();
+//		res.setIdJugador(avionDto.getIdJugador());
+//		res.setNombrePartida(avionDto.getNombrePartida());
+//		boolean huboCambios = false;
+//		Partida partida = this.recuperarPartida(avionDto.getNombrePartida());
+//		if (partida != null) {
+//			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
+//			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
+//
+//			Avion avionActual = jugadorActual.getListAviones().get(avionDto.getIdAvion());
+//			//se obtiene la base y se chequea si es visible
+//			Base baseEnemiga = jugadorEnemigo.getBase();
+//			boolean esVisibleBase = this.checkVisibilidad(avionDto, "base", baseEnemiga.getPosicion());
+//			if(esVisibleBase != baseEnemiga.isVisible()) {
+//				huboCambios = true;
+//				avionActual.setVisible(esVisibleBase);
+//				avionDto.setVisible(esVisibleBase);
+//				this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+//				baseEnemiga.setVisible(esVisibleBase);
+//			}
+//			res.setVisibilidadBase(esVisibleBase);
+//
+//			//se obtienen los los aviones y se qchequean si son visibles
+//			List<Avion> listAvionesEnemigos = jugadorEnemigo.getListAviones();
+//			List<Boolean> listVisibilidadAviones = new ArrayList<>();
+//			for (Avion avion: listAvionesEnemigos) {
+//				Boolean visibilidadAvion = avion.isVisible();
+//				if(avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
+//						avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+//					if(!huboCambios) {
+//						visibilidadAvion = this.checkVisibilidad(avionDto, "avion", avion.getPosicion());
+//						if(visibilidadAvion != avion.isVisible()) {
+//							avion.setVisible(visibilidadAvion);
+//
+//							avionActual.setVisible(visibilidadAvion);
+//							avionDto.setVisible(visibilidadAvion);
+//							this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+//							huboCambios = true;
+//
+//						}
+//					}
+//
+//				}
+//				listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
+//			}
+//
+//			res.setVisibilidadAviones(listVisibilidadAviones);
+//
+//			//se obtiene la artilleria y se chequean las visibilidades
+//			List<Artilleria> listArtilleriaEnemigos = jugadorEnemigo.getListArtilleria();
+//			List<Boolean> listVisibilidadArtilleria = new ArrayList<>();
+//			for (Artilleria artilleria: listArtilleriaEnemigos) {
+//				boolean visibilidadArtilleria = false;
+//				boolean visibilidadAvionArtilleria = false;
+//				int coordX1 = avionDto.getEjeX();
+//				int coordY1 = avionDto.getEjeY();
+//				int coordX2 = artilleria.getPosicion().getEjeX();
+//				int coordY2 = artilleria.getPosicion().getEjeY();
+//				double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
+//				double distancia = Math.sqrt(ecuacion);
+//
+//				if (distancia < this.RADIO_VISION_ARTILLERIA) {
+//					visibilidadArtilleria = true;
+//				}
+//				if (distancia < this.RADIO_VISION_AVION) {
+//					visibilidadAvionArtilleria = true;
+//				}
+//
+//				if(visibilidadAvionArtilleria != avionActual.isVisible()) {
+//					if(!huboCambios) {
+//						avionActual.setVisible(visibilidadAvionArtilleria);
+//						avionDto.setVisible(visibilidadAvionArtilleria);
+//						this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
+//					}
+//				}
+//
+//				if(visibilidadArtilleria != artilleria.isVisible()) {
+//					artilleria.setVisible(visibilidadArtilleria);
+//					huboCambios = true;
+//				}
+//				listVisibilidadArtilleria.add(artilleria.getIdArtilleria(), visibilidadArtilleria);
+//			}
+//			res.setVisibilidadArtilleria(listVisibilidadArtilleria);
+//
+//			if(huboCambios) {
+//				this.mensajeriaUpdate.sendElementosVisibles(res.toString());
+//			}
+//		}
 	}
 
 	public void updateCombustibleAviones() {

@@ -825,6 +825,15 @@ public class ServicioPartida {
 				Jugador jugadorEnemigo = idJugador == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
 				boolean jugadorActualPronto = false;
 				boolean jugadorEnemigoPronto = false;
+
+				if(jugadorActual.getListArtilleria() != null) {
+					System.out.println(jugadorActual.getListArtilleria().size());
+				}
+
+				if(jugadorEnemigo.getListArtilleria() != null) {
+					System.out.println(jugadorEnemigo.getListArtilleria().size());
+				}
+
 				if(jugadorActual.getListArtilleria() != null && jugadorActual.getListArtilleria().size() ==
 						this.CANTIDAD_ARTILLERIA) {
 					jugadorActualPronto = true;
@@ -891,6 +900,9 @@ public class ServicioPartida {
 						j++;
 					}
 					this.updateVisibilidadPartida(res);
+					if(res != null) {
+						this.mensajeriaUpdate.sendActualizacionElementosVisibles(res.toString());
+					}
 				}
 			}
 		} catch (ConcurrenciaException error) {
@@ -899,10 +911,6 @@ public class ServicioPartida {
 			System.out.println("Error: " + error.getMensaje());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		if(res != null) {
-			this.mensajeriaUpdate.sendActualizacionElementosVisibles(res.toString());
 		}
 	}
 

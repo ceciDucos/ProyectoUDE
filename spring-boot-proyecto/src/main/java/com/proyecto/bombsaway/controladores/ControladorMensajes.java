@@ -48,6 +48,10 @@ public class ControladorMensajes {
         template.convertAndSend("/topic/artilleria-movida", data);
     }
 
+    public void sendCombustibleAvion(String data) {
+        template.convertAndSend("/topic/combustible-avion", data);
+    }
+
     public void sendElementosVisibles(String data) {
         template.convertAndSend("/topic/elementos-visibles", data);
     }

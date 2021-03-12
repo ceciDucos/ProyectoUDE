@@ -831,7 +831,7 @@ public class ServicioPartida {
 				}
 
 				if(jugadorEnemigoPronto && jugadorActualPronto) {
-					res = initDTOVisibilidad(partida.getNombre(), jugadorEnemigo.getId());
+					res = initDTOVisibilidad(partida.getNombre(), jugadorActual.getId());
 
 					//elementos de jugador actual que pueden cambiar la visibilidad
 					List<Avion> avionesActuales = jugadorActual.getListAviones();

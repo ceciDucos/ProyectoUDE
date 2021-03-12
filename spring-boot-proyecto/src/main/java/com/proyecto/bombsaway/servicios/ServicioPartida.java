@@ -728,8 +728,10 @@ public class ServicioPartida {
 			boolean esVisibleBase = this.checkVisibilidad(avionDto, "base", baseEnemiga.getPosicion());
 			if(esVisibleBase != baseEnemiga.isVisible()) {
 				huboCambios = true;
+				avionActual.setVisible(esVisibleBase);
+				avionDto.setVisible(esVisibleBase);
 				this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
-				baseEnemiga.setVisible(baseEnemiga.isVisible());
+				baseEnemiga.setVisible(esVisibleBase);
 			}
 			res.setVisibilidadBase(esVisibleBase);
 
@@ -742,9 +744,10 @@ public class ServicioPartida {
 						avion.setVisible(visibilidadAvion);
 						if(avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
 								avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+							avionActual.setVisible(visibilidadAvion);
+							avionDto.setVisible(visibilidadAvion);
 							this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
 							huboCambios = true;
-							System.out.println("Hubo interseccion con avion");
 						}
 					}
 					listVisibilidadAviones.add(avion.getId(), visibilidadAvion);
@@ -771,16 +774,14 @@ public class ServicioPartida {
 					visibilidadAvionArtilleria = true;
 				}
 
-				Avion avion = jugadorActual.getListAviones().get(avionDto.getIdAvion());
-				if(visibilidadAvionArtilleria != avion.isVisible()) {
-					avion.setVisible(visibilidadAvionArtilleria);
-					System.out.println("Artilleria ve a avion");
+				if(visibilidadAvionArtilleria != avionActual.isVisible()) {
+					avionActual.setVisible(visibilidadAvionArtilleria);
+					avionDto.setVisible(visibilidadAvionArtilleria);
 					this.mensajeriaUpdate.sendAvionEnemigoVisible(avionDto.toString());
 				}
 
 				if(visibilidadArtilleria != artilleria.isVisible()) {
 					artilleria.setVisible(visibilidadArtilleria);
-					System.out.println("Hubo interseccion con artilleria");
 					huboCambios = true;
 				}
 				listVisibilidadArtilleria.add(artilleria.getIdArtilleria(), visibilidadArtilleria);

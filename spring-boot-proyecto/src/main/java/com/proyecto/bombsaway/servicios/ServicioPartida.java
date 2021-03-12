@@ -799,33 +799,39 @@ public class ServicioPartida {
 			e.printStackTrace();
 		}
 
+		if(res == null) {
+			DTOMensaje mensaje = new DTOMensaje("aun no hay actualizaciones");
+			return mensaje.toString();
+		}
 		return res.toString();
 	}
 
 	public void updateVisibilidadPartida(DTOVisibilidad visibilidad) throws ConcurrenciaException {
-		Partida partida = this.recuperarPartida(visibilidad.getNombrePartida());
-		if (partida != null) {
-			Jugador jugadorEnemigo = visibilidad.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
+		if(visibilidad != null) {
+			Partida partida = this.recuperarPartida(visibilidad.getNombrePartida());
+			if (partida != null) {
+				Jugador jugadorEnemigo = visibilidad.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
 
-			//actualizo visibilidad base
-			jugadorEnemigo.getBase().setVisible(visibilidad.isVisibilidadBase());
+				//actualizo visibilidad base
+				jugadorEnemigo.getBase().setVisible(visibilidad.isVisibilidadBase());
 
-			//actualizo visibilidad aviones
-			List<Avion> listAvionesJugadorEnemigo = jugadorEnemigo.getListAviones();
-			int i = 0;
-			while(i< listAvionesJugadorEnemigo.size()) {
-				jugadorEnemigo.getListAviones().get(i).setVisible(
-						visibilidad.getVisibilidadAviones().get(i));
-				i++;
-			}
+				//actualizo visibilidad aviones
+				List<Avion> listAvionesJugadorEnemigo = jugadorEnemigo.getListAviones();
+				int i = 0;
+				while(i< listAvionesJugadorEnemigo.size()) {
+					jugadorEnemigo.getListAviones().get(i).setVisible(
+							visibilidad.getVisibilidadAviones().get(i));
+					i++;
+				}
 
-			//actualizo visibilidad artilleria
-			List<Artilleria> listArtillriaJugadorEnemigo = jugadorEnemigo.getListArtilleria();
-			int j = 0;
-			while(j< listArtillriaJugadorEnemigo.size()) {
-				jugadorEnemigo.getListArtilleria().get(i).setVisible(
-						visibilidad.getVisibilidadArtilleria().get(i));
-				j++;
+				//actualizo visibilidad artilleria
+				List<Artilleria> listArtillriaJugadorEnemigo = jugadorEnemigo.getListArtilleria();
+				int j = 0;
+				while(j< listArtillriaJugadorEnemigo.size()) {
+					jugadorEnemigo.getListArtilleria().get(i).setVisible(
+							visibilidad.getVisibilidadArtilleria().get(i));
+					j++;
+				}
 			}
 		}
 	}

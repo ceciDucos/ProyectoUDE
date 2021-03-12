@@ -770,7 +770,7 @@ public class ServicioPartida {
 		int coordY1 = avionDto.getPosicion().getEjeY();
 		int coordX2 = posicion.getEjeX();
 		int coordY2 = posicion.getEjeY();
-		int radioElemento;
+		int radioElemento = 0;
 		switch (elemento) {
 			case "avion": {
 				radioElemento = this.RADIO_VISION_AVION;
@@ -780,9 +780,14 @@ public class ServicioPartida {
 				radioElemento = this.RADIO_VISION_BASE;
 				break;
 			}
+			case "artilleria": {
+				radioElemento = this.RADIO_VISION_AVION;
+				break;
+			}
+			default: break;
 		}
-		radioElemento = elemento.equalsIgnoreCase("avion") ? this.RADIO_VISION_AVION:
-				this.RADIO_ARTILLERIA;
+//		radioElemento = elemento.equalsIgnoreCase("avion") ? this.RADIO_VISION_AVION:
+//				this.RADIO_ARTILLERIA;
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		double distancia = Math.sqrt(ecuacion);
 		if (distancia < radioElemento + this.RADIO_VISION_AVION) {

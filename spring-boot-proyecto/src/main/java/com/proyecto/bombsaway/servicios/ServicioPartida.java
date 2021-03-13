@@ -835,6 +835,7 @@ public class ServicioPartida {
 					//elementos de jugador actual que pueden cambiar la visibilidad
 					List<Avion> avionesActuales = jugadorActual.getListAviones();
 					List<Artilleria> artilleriasActual = jugadorActual.getListArtilleria();
+					Base baseActual = jugadorActual.getBase();
 
 					//elementos del enemigo a chequear
 					Base baseEnemigo = jugadorEnemigo.getBase();
@@ -865,12 +866,13 @@ public class ServicioPartida {
 
 							}
 
-							for (Artilleria artilleriaEnemigo: listArtilleriaEnemigo) {
-								Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria", artilleriaEnemigo.getPosicion());
-								if(visibilidadAvionArtilleria) {
-									res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
-								} else {
-                                    res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), false);
+							for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
+							    if(!artilleriaEnemigo.isDestruida()){
+                                    Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
+                                            artilleriaEnemigo.getPosicion());
+                                    if (visibilidadAvionArtilleria) {
+                                        res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
+                                    }
                                 }
 							}
 							i++;
@@ -891,6 +893,17 @@ public class ServicioPartida {
 						}
 						j++;
 					}
+
+                    for (Avion avionEnemigo : listAvionesEnemigo) {
+                        if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
+                                || avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
+                            Boolean visibilidadAvion = this.checkVisibilidad(avionEnemigo, "base", baseActual.getPosicion());
+                            if (visibilidadAvion) {
+                                res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
+                            }
+                        }
+                    }
+
 					this.updateVisibilidadPartida(res);
 					if(res != null) {
 						this.mensajeriaUpdate.sendActualizacionElementosVisibles(res.toString());

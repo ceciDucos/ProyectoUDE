@@ -27,7 +27,7 @@ public class ServicioPartida {
 	private final int RADIO_TANQUE_COMBUSTIBLE = 15;
 	private final int CANTIDAD_ARTILLERIA = 11;
 	private final int RADIO_ARTILLERIA = 12;
-	private final int RADIO_VISION_AVION = 40;
+	private final int RADIO_VISION_AVION = 87;
 	private final int RADIO_VISION_BASE = 40;
 	private final int RADIO_VISION_ARTILLERIA = 40;
 	private final ManejadorPartida manejadorPartida;

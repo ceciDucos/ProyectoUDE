@@ -27,6 +27,10 @@ public class ControladorMensajes {
     public void sendPosicionBala(String data) {
         template.convertAndSend("/topic/posicion-bala", data);
     }
+
+    public void sendPosicionBalaArtilleria(String data) {
+        template.convertAndSend("/topic/posicion-bala-artilleria", data);
+    }
     
     public void sendColocarBases(String data) {
     	template.convertAndSend("/topic/actualizar-bases", data);
@@ -52,6 +56,10 @@ public class ControladorMensajes {
         template.convertAndSend("/topic/artilleria-movida", data);
     }
 
+    public void sendCombustibleAvion(String data) {
+        template.convertAndSend("/topic/combustible-avion", data);
+    }
+
     public void sendElementosVisibles(String data) {
         template.convertAndSend("/topic/elementos-visibles", data);
     }
@@ -62,6 +70,10 @@ public class ControladorMensajes {
 
     public void sendErrores(String data) {
         template.convertAndSend("/topic/errores", data);
+    }
+
+    public void sendActualizacionElementosVisibles(String data) {
+        template.convertAndSend("/topic/elementos-visibles", data);
     }
 }
 

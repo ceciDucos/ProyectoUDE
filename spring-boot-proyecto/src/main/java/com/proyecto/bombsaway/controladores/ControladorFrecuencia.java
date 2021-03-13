@@ -12,11 +12,20 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class ControladorFrecuencia {
 
     @Autowired
+    SimpMessagingTemplate template;
+
+    @Autowired
     ServicioPartida servicioPartida;
 
-    @Scheduled(fixedDelay = 60)
+    @Scheduled(fixedDelay = 100)
     public void sendActualizarCombistible() {
         this.servicioPartida.updateCombustibleAviones();
+    }
+
+    @Scheduled(fixedDelay = 100)
+    public void sendActualizarVisibilidad() {
+        this.servicioPartida.updateVisibilidad3(1);
+        this.servicioPartida.updateVisibilidad3(2);
     }
 
 }

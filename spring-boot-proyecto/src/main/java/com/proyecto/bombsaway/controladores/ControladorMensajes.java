@@ -47,10 +47,6 @@ public class ControladorMensajes {
     public void sendEstadoElementosBase(String data) {
     	template.convertAndSend("/topic/estado-elementos-base", data);
     }
-    
-    public void sendResultadoPartida(String data) {
-    	template.convertAndSend("/topic/resultado-partida", data);
-    }
 
     public void sendArtilleriaMovida(String data) {
         template.convertAndSend("/topic/artilleria-movida", data);

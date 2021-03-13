@@ -8,14 +8,24 @@ public class Partida {
     private String nombre;
     private Jugador jugadorUno;
     private Jugador jugadorDos;
-    private boolean finalizada;
+    private boolean enJuego = false;
+
 
     @Autowired
-    public Partida(Jugador jugadorUno, Jugador jugadorDos, String nombrePartida, boolean finalizada) {
+    public Partida(Jugador jugadorUno, Jugador jugadorDos, String nombrePartida) {
         this.nombre = nombrePartida;
         this.jugadorUno = jugadorUno;
         this.jugadorDos = jugadorDos;
-        this.finalizada = finalizada;
+    }
+
+
+    public void setEnJuego(boolean enJuego) {
+        this.enJuego = enJuego;
+    }
+
+
+    public boolean isEnJuego() {
+        return enJuego;
     }
 
     public String getNombre() {
@@ -42,7 +52,7 @@ public class Partida {
     @Override
     public String toString() {
         String res = "Partida: [" + this.getNombre() + ", " + this.jugadorUno.toString() + ", " +
-                this.jugadorDos.toString() + ", " + this.finalizada + " ]";
+                this.jugadorDos.toString() + " ]";
         return res;
     }
 
@@ -57,12 +67,4 @@ public class Partida {
     public void setJugadorDos(Jugador jugadorDos) {
         this.jugadorDos = jugadorDos;
     }
-
-	public boolean isFinalizada() {
-		return finalizada;
-	}
-
-	public void setFinalizada(boolean finalizada) {
-		this.finalizada = finalizada;
-	}
 }

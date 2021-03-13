@@ -54,7 +54,7 @@ public class DTOVisibilidad {
     @Override
     public String toString() {
         String res = "{\"nombrePartida\":\"" + this.nombrePartida + "\",\"idJugador\":" + this.idJugador +
-                ",\"visibilidadBase\":" + this.visibilidadBase +
+                "\",\"visibilidadBase\":" + this.visibilidadBase +
                 ",\"visibilidadAviones\": [ ";
         int i = 0;
         while (i < this.visibilidadAviones.size() ) {

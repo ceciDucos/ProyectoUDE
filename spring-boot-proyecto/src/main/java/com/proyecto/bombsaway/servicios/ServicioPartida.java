@@ -29,7 +29,7 @@ public class ServicioPartida {
 	private final int RADIO_ARTILLERIA = 12;
 	private final int RADIO_VISION_AVION = 87;
 	private final int RADIO_VISION_BASE = 40;
-	private final int RADIO_VISION_ARTILLERIA = 100;
+	private final int RADIO_VISION_ARTILLERIA = 40;
 	private final ManejadorPartida manejadorPartida;
 	private final ControladorMensajes mensajeriaUpdate;
 	private final IDAOPartida DAOPartida;
@@ -781,7 +781,7 @@ public class ServicioPartida {
 				break;
 			}
 			case "artilleria": {
-				radioElemento = this.RADIO_VISION_AVION;
+				radioElemento = this.RADIO_ARTILLERIA;
 				break;
 			}
 			default: break;
@@ -825,14 +825,6 @@ public class ServicioPartida {
 				Jugador jugadorEnemigo = idJugador == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
 				boolean jugadorActualPronto = false;
 				boolean jugadorEnemigoPronto = false;
-
-				if(jugadorActual.getListArtilleria() != null) {
-					System.out.println(jugadorActual.getListArtilleria().size());
-				}
-
-				if(jugadorEnemigo.getListArtilleria() != null) {
-					System.out.println(jugadorEnemigo.getListArtilleria().size());
-				}
 
 				if(jugadorActual.getListArtilleria() != null && jugadorActual.getListArtilleria().size() ==
 						this.CANTIDAD_ARTILLERIA) {
@@ -881,8 +873,8 @@ public class ServicioPartida {
 									res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
 								}
 							}
-							i++;
 						}
+						i++;
 					}
 
 					int j = 0;
@@ -953,7 +945,7 @@ public class ServicioPartida {
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		double distancia = Math.sqrt(ecuacion);
 
-		if (distancia < this.RADIO_VISION_ARTILLERIA) {
+		if (distancia < this.RADIO_VISION_ARTILLERIA + this.RADIO_VISION_AVION) {
 			res = true;
 		}
 		return res;

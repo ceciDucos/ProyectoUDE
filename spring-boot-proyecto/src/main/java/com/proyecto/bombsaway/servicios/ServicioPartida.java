@@ -902,8 +902,10 @@ public class ServicioPartida {
 							}
 
 							for (Avion avionEnemigo : listAvionesEnemigo) {
-								if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
-										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
+								if ((avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
+										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) &&
+										avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
+										avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
 									Boolean visibilidadAvion = this.checkVisibilidad(avion, "avion",
 											avionEnemigo.getPosicion());
 									if (visibilidadAvion) {
@@ -913,7 +915,8 @@ public class ServicioPartida {
 							}
 
 							for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
-								if(!artilleriaEnemigo.isDestruida()) {
+								if(!artilleriaEnemigo.isDestruida() && ( avion.getEstado() == EstadoAvion.ALTURA_ALTA ||
+										avion.getEstado() == EstadoAvion.ALTURA_BAJA)) {
 									Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
 											artilleriaEnemigo.getPosicion());
 									if (visibilidadAvionArtilleria) {
@@ -928,13 +931,15 @@ public class ServicioPartida {
 					int j = 0;
 					while (j < artilleriasActual.size()) {
 						Artilleria artilleria = artilleriasActual.get(j);
-						for (Avion avionEnemigo : listAvionesEnemigo) {
-							if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
-									|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
-								boolean avionBajoArtilleria = this.avionBajoRadioArtilleria(avionEnemigo,
-										artilleria.getPosicion());
-								if (avionBajoArtilleria) {
-									res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
+						if(!artilleria.isDestruida()) {
+							for (Avion avionEnemigo : listAvionesEnemigo) {
+								if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
+										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
+									boolean avionBajoArtilleria = this.avionBajoRadioArtilleria(avionEnemigo,
+											artilleria.getPosicion());
+									if (avionBajoArtilleria) {
+										res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
+									}
 								}
 							}
 						}

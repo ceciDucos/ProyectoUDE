@@ -913,10 +913,12 @@ public class ServicioPartida {
 							}
 
 							for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
-								Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
-										artilleriaEnemigo.getPosicion());
-								if (visibilidadAvionArtilleria) {
-									res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
+								if(!artilleriaEnemigo.isDestruida()) {
+									Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
+											artilleriaEnemigo.getPosicion());
+									if (visibilidadAvionArtilleria) {
+										res.getVisibilidadArtilleria().add(artilleriaEnemigo.getIdArtilleria(), true);
+									}
 								}
 							}
 						}

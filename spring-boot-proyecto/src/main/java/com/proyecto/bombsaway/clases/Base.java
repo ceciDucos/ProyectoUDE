@@ -64,5 +64,4 @@ public class Base {
 		return new DTOBase(baseEjeX, baseEjeY, hangarEjeX, hangarEjeY, torretaEjeX, torretaEjeY, tanqueCombustibleX,
 				tanqueCombustibleY);
 	}
-
 }

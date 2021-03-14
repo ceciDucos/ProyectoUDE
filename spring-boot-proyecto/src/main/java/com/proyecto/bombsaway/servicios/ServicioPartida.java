@@ -20,6 +20,7 @@ public class ServicioPartida {
 	private final int MAX_VIDA = 100;
 	private final int MAX_COMBUSTIBLE = 100;
 	private final int DANIO_DISPARO_BALA = 10;
+	private final int DANIO_DISPARO_BALA_TORRETA = 5;
 	private final int RADIO_AVION_ALTURA_ALTA = 20;
 	private final int RADIO_AVION_ALTURA_BAJA = 14;
 	private final int RADIO_BALA = 5;
@@ -443,14 +444,16 @@ public class ServicioPartida {
 		return res;
 	}
 
-	private DTOAvion impactarAvion(Avion avion) {
+	private DTOAvion impactarAvion(Avion avion, String elemento) {
 		DTOAvion dtoAvion = null;
 
 		if (avion.getEstado() != EstadoAvion.DESTRUIDO) {
 			if (avion.getVida() > this.DANIO_DISPARO_BALA) {
 				// el avion tiene suficiente vida para recibir disparo, la vida desciende
 				int vidaActual = avion.getVida();
-				avion.setVida(vidaActual - this.DANIO_DISPARO_BALA);
+				int danio = elemento == "artilleria" ? this.DANIO_DISPARO_BALA_TORRETA
+						: this.DANIO_DISPARO_BALA;
+				avion.setVida(vidaActual - danio);
 				dtoAvion = avion.getDTO();
 			} else {
 				// el avion tiene poca vida y el disparo lo hace estallar
@@ -474,7 +477,7 @@ public class ServicioPartida {
 			if (avion.getEstado() == EstadoAvion.ALTURA_BAJA) {
 				impacto = this.validarImpactoRadioAvion(posicionBala, avion);
 				if (impacto) {
-					dtoAvion = impactarAvion(avion);
+					dtoAvion = impactarAvion(avion, "artilleria");
 					dtoAvion.setNombrePartida(balaDto.getNombrePartida());
 					dtoAvion.setIdJugador(jugadorEnemigo.getId());
 				}
@@ -497,7 +500,7 @@ public class ServicioPartida {
 				if (avion.getEstado() != EstadoAvion.DESTRUIDO) {
 					impacto = this.validarImpactoRadioAvion(posicionBala, avion);
 					if (impacto) {
-						dtoAvion = impactarAvion(avion);
+						dtoAvion = impactarAvion(avion, "avion");
 						dtoAvion.setNombrePartida(balaDto.getNombrePartida());
 						dtoAvion.setIdJugador(jugadorEnemigo.getId());
 					}

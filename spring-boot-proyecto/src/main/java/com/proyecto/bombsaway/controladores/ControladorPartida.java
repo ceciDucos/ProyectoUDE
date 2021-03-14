@@ -60,4 +60,10 @@ public class ControladorPartida {
 	public void moverArtilleria(DTOArtilleria artilleriaDto) {
 		this.servicioPartida.moverArtilleria(artilleriaDto);
 	}
+
+	@MessageMapping("/recargar-combustible")
+	public void recargarCombustibleAvion(DTOAvion avionDto) {
+		this.servicioPartida.recargarCombustibleAvion(avionDto);
+	}
+
 }

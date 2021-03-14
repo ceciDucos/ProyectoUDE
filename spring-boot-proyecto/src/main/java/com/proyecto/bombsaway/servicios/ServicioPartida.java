@@ -17,6 +17,7 @@ import java.util.List;
 public class ServicioPartida {
 
 	private final int MAX_VIDA = 100;
+	private final int MAX_COMBUSTIBLE = 100;
 	private final int DANIO_DISPARO_BALA = 10;
 	private final int RADIO_AVION_ALTURA_ALTA = 20;
 	private final int RADIO_AVION_ALTURA_BAJA = 14;
@@ -74,7 +75,7 @@ public class ServicioPartida {
 			avionJugadorUno.setEstado(EstadoAvion.QUIETO);
 			avionJugadorUno.setVisible(false);
 			avionJugadorUno.setPosicion(new Posicion(540, 50, 90));
-
+			avionJugadorUno.setCombustible(this.MAX_COMBUSTIBLE);
 			avionJugadorUno.inicializarBalas();
 			listAvionesUno.add(avionJugadorUno);
 
@@ -84,6 +85,7 @@ public class ServicioPartida {
 			avionJugadorDos.setEstado(EstadoAvion.QUIETO);
 			avionJugadorDos.setVisible(false);
 			avionJugadorDos.setPosicion(new Posicion(540, 670, -90));
+			avionJugadorDos.setCombustible(this.MAX_COMBUSTIBLE);
 			avionJugadorDos.inicializarBalas();
 			listAvionesDos.add(avionJugadorDos);
 		}
@@ -896,20 +898,16 @@ public class ServicioPartida {
 					int i = 0;
 					while (i < avionesActuales.size()) {
 						Avion avion = avionesActuales.get(i);
-						System.out.println("Estado avion: " +  avion.getEstado());
 						if (avion.getEstado() == EstadoAvion.ALTURA_BAJA
 								|| avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
-							System.out.println("1 entre al if");
 							boolean esVisibleBase = this.checkVisibilidad(avion, "base", baseEnemigo.getPosicion());
 							if (esVisibleBase) {
 								res.setVisibilidadBase(true);
 							}
 
 							for (Avion avionEnemigo : listAvionesEnemigo) {
-								System.out.println("Estado avion: " +  avionEnemigo.getEstado());
 								if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
 										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
-									System.out.println("2 entre al if");
 									Boolean visibilidadAvion = this.checkVisibilidad(avion, "avion",
 											avionEnemigo.getPosicion());
 									if (visibilidadAvion) {
@@ -922,10 +920,8 @@ public class ServicioPartida {
 							}
 
 							for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
-								System.out.println("Estado avion: " +  avion.getEstado());
 								if(!artilleriaEnemigo.isDestruida() && ( avion.getEstado() == EstadoAvion.ALTURA_ALTA ||
 										avion.getEstado() == EstadoAvion.ALTURA_BAJA)) {
-									System.out.println("3 entre al if");
 									Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
 											artilleriaEnemigo.getPosicion());
 									if (visibilidadAvionArtilleria) {
@@ -943,10 +939,8 @@ public class ServicioPartida {
 
 						if(!artilleria.isDestruida()) {
 							for (Avion avionEnemigo : listAvionesEnemigo) {
-								System.out.println("Estado avion: " +  avionEnemigo.getEstado());
 								if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
 										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
-									System.out.println("4 entre al if");
 									boolean avionBajoArtilleria = this.avionBajoRadioArtilleria(avionEnemigo,
 											artilleria.getPosicion());
 									if (avionBajoArtilleria) {
@@ -962,10 +956,8 @@ public class ServicioPartida {
 					}
 
 					for (Avion avionEnemigo : listAvionesEnemigo) {
-						System.out.println("Estado avion: " +  avionEnemigo.getEstado());
 						if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
 								|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
-							System.out.println("5 entre al if");
 							Boolean visibilidadAvion = this.checkVisibilidad(avionEnemigo, "base", baseActual.getPosicion());
 							if (visibilidadAvion) {
 								if(res.getVisibilidadAviones().get(avionEnemigo.getId()) != null) {
@@ -985,7 +977,6 @@ public class ServicioPartida {
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
-			System.out.println("Error: " + error.getMensaje());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1035,34 +1026,76 @@ public class ServicioPartida {
 		return res;
 	}
 
+	private String getStringCombustible(String nombrePartida, int idJugador, List<Integer> listCombustible) {
+		String data = "{ \"nombrePartida\" : " + nombrePartida + ", \"idJugador\" : " + idJugador +
+				", \"listCombustibles\" : [ ";
+		int i = 0;
+		while (i < listCombustible.size() ) {
+			data += listCombustible.get(i);
+			i++;
+			if(i < listCombustible.size()) {
+				data += ",";
+			}
+		}
+		data+= "] }";
+		return data;
+	}
+
+	public void recargarCombustibleAvion(DTOAvion avionDto) {
+		try{
+			Partida partida = this.manejadorPartida.getPartidaEnJuego(avionDto.getNombrePartida());
+			if(partida != null && !partida.isFinalizada()) {
+				Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() :
+						partida.getJugadorDos();
+				Avion avion = jugadorActual.getListAviones().get(avionDto.getIdAvion());
+				if(avion.getEstado() == EstadoAvion.ALTURA_ALTA ||
+						avion.getEstado() == EstadoAvion.ALTURA_BAJA) {
+					avion.setCombustible(this.MAX_COMBUSTIBLE);
+				}
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public void updateCombustibleAviones() {
 		List<Partida> partidasEnJuego = this.manejadorPartida.getPartidasEnJuego();
 		for (Partida partida : partidasEnJuego) {
-			List<Avion> avionesJugadorUno = partida.getJugadorUno().getListAviones();
-			List<Avion> avionesJugadorDos = partida.getJugadorDos().getListAviones();
+			if(partida != null && !partida.isFinalizada()) {
+				List<Avion> avionesJugadorUno = partida.getJugadorUno().getListAviones();
+				List<Avion> avionesJugadorDos = partida.getJugadorDos().getListAviones();
 
-			for (Avion avionJugadorUno : avionesJugadorUno) {
-				if (avionJugadorUno.getEstado() == EstadoAvion.ALTURA_BAJA
-						|| avionJugadorUno.getEstado() == EstadoAvion.ALTURA_ALTA) {
-					int combustibleActual = avionJugadorUno.getCombustible();
-					avionJugadorUno.setCombustible(combustibleActual - 1);
-					DTOAvion avionDto = avionJugadorUno.getDTO();
-					avionDto.setNombrePartida(partida.getNombre());
-					avionDto.setIdJugador(1);
-					this.mensajeriaUpdate.sendCombustibleAvion(avionDto.toString());
-				}
-			}
+				List<Integer> listCombustibleJugadorUno = new ArrayList<Integer>();
+				List<Integer> listCombustibleJugadorDos = new ArrayList<Integer>();
 
-			for (Avion avionJugadorDos : avionesJugadorDos) {
-				if (avionJugadorDos.getEstado() == EstadoAvion.ALTURA_BAJA
-						|| avionJugadorDos.getEstado() == EstadoAvion.ALTURA_ALTA) {
-					int combustibleActual = avionJugadorDos.getCombustible();
-					avionJugadorDos.setCombustible(combustibleActual - 1);
-					DTOAvion avionDto = avionJugadorDos.getDTO();
-					avionDto.setNombrePartida(partida.getNombre());
-					avionDto.setIdJugador(2);
-					this.mensajeriaUpdate.sendCombustibleAvion(avionDto.toString());
+				for (Avion avionJugadorUno : avionesJugadorUno) {
+					if (avionJugadorUno.getEstado() == EstadoAvion.ALTURA_BAJA
+							|| avionJugadorUno.getEstado() == EstadoAvion.ALTURA_ALTA) {
+						int combustibleActual = avionJugadorUno.getCombustible();
+						avionJugadorUno.setCombustible(combustibleActual - 1);
+					}
+					listCombustibleJugadorUno.add(avionJugadorUno.getId(), avionJugadorUno.getCombustible());
 				}
+
+				for (Avion avionJugadorDos : avionesJugadorDos) {
+					if (avionJugadorDos.getEstado() == EstadoAvion.ALTURA_BAJA
+							|| avionJugadorDos.getEstado() == EstadoAvion.ALTURA_ALTA) {
+						int combustibleActual = avionJugadorDos.getCombustible();
+						avionJugadorDos.setCombustible(combustibleActual - 1);
+					}
+					listCombustibleJugadorDos.add(avionJugadorDos.getId(), avionJugadorDos.getCombustible());
+				}
+
+				String dataJugadorUno = this.getStringCombustible(partida.getNombre(),
+						1, listCombustibleJugadorUno);
+				this.mensajeriaUpdate.sendCombustibleAvion(dataJugadorUno);
+				String dataJugadorDos = this.getStringCombustible(partida.getNombre(),2,
+						listCombustibleJugadorUno);
+				this.mensajeriaUpdate.sendCombustibleAvion(dataJugadorDos);
 			}
 		}
 	}

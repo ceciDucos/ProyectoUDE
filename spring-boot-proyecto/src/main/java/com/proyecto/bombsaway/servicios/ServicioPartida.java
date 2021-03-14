@@ -1027,8 +1027,8 @@ public class ServicioPartida {
 	}
 
 	private String getStringCombustible(String nombrePartida, int idJugador, List<Integer> listCombustible) {
-		String data = "{ \"nombrePartida\" : " + nombrePartida + ", \"idJugador\" : " + idJugador +
-				", \"listCombustibles\" : [ ";
+		String data = "{\"nombrePartida\":\"" + nombrePartida + "\",\"idJugador\":" + idJugador +
+				",\"listCombustibles\": [";
 		int i = 0;
 		while (i < listCombustible.size() ) {
 			data += listCombustible.get(i);
@@ -1037,7 +1037,7 @@ public class ServicioPartida {
 				data += ",";
 			}
 		}
-		data+= "] }";
+		data+= "]}";
 		return data;
 	}
 
@@ -1094,7 +1094,7 @@ public class ServicioPartida {
 						1, listCombustibleJugadorUno);
 				this.mensajeriaUpdate.sendCombustibleAvion(dataJugadorUno);
 				String dataJugadorDos = this.getStringCombustible(partida.getNombre(),2,
-						listCombustibleJugadorUno);
+						listCombustibleJugadorDos);
 				this.mensajeriaUpdate.sendCombustibleAvion(dataJugadorDos);
 			}
 		}

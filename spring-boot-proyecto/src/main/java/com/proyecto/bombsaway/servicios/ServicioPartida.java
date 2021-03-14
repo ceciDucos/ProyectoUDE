@@ -266,6 +266,7 @@ public class ServicioPartida {
 							new Posicion(artilleriaDto.getEjeX(), artilleriaDto.getEjeY(), artilleriaDto.getAngulo()),
 							false);
 					artilleria.setVisible(false);
+					artilleria.inicializarBalas();
 					List<Artilleria> listArtilleria = jugadorActual.getListArtilleria();
 					listArtilleria.add(artilleria);
 					jugadorActual.setListArtilleria(listArtilleria);

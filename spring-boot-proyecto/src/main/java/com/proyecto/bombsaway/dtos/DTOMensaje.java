@@ -28,7 +28,7 @@ public class DTOMensaje {
 
     @Override
     public String toString() {
-        String res = "{\"accion\":\"" + this.accion + "\",\"nombrePartida\":" + this.nombrePartida + "}";
+        String res = "{\"accion\":\"" + this.accion + "\",\"nombrePartida\":\"" + this.nombrePartida + "\"}";
         return res;
     }
 }

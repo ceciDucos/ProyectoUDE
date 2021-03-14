@@ -1,16 +1,9 @@
 package com.proyecto.bombsaway.daos;
 
-import com.proyecto.bombsaway.clases.Partida;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.proyecto.bombsaway.entidades.EntidadPartida;
 
-public interface IDAOPartida {
+public interface IDAOPartida extends JpaRepository<EntidadPartida, Integer> {
 
-    int insertPartida(String nombrePartida, Partida partida);
-
-    default int insertPartida(Partida partida){
-        return insertPartida(partida.getNombre(), partida);
-    }
-
-    List<Partida> getListPartidas();
 }

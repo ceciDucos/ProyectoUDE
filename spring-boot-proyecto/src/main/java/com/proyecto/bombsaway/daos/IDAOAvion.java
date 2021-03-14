@@ -1,17 +1,9 @@
 package com.proyecto.bombsaway.daos;
 
-import com.proyecto.bombsaway.clases.Avion;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.proyecto.bombsaway.entidades.EntidadAvion;
 
-public interface IDAOAvion {
+public interface IDAOAvion extends JpaRepository<EntidadAvion, Integer> {
 
-    int insertAvion(int id, Avion avion);
-
-    default int insertAvion(Avion avion){
-//        return insertAvion(avion.getId(), avion);
-        return 1; //borrar este
-    }
-
-    List<Avion> getListAviones();
 }

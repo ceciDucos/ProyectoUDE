@@ -32,12 +32,9 @@ public class ServicioPartida {
 	private final int RADIO_VISION_ARTILLERIA = 40;
 	private final ManejadorPartida manejadorPartida;
 	private final ControladorMensajes mensajeriaUpdate;
-	private final IDAOPartida DAOPartida;
 
 	@Autowired
-	public ServicioPartida(ManejadorPartida manejadorPartida, IDAOPartida DAOPartida,
-			ControladorMensajes mensajeriaUpdate) {
-		this.DAOPartida = DAOPartida;
+	public ServicioPartida(ManejadorPartida manejadorPartida, ControladorMensajes mensajeriaUpdate) {
 		this.manejadorPartida = ManejadorPartida.getManejadorPartida();
 		this.mensajeriaUpdate = mensajeriaUpdate;
 	}
@@ -1027,4 +1024,5 @@ public class ServicioPartida {
 			}
 		}
 	}
+
 }

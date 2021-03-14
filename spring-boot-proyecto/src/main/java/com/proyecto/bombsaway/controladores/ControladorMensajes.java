@@ -60,14 +60,6 @@ public class ControladorMensajes {
         template.convertAndSend("/topic/combustible-avion", data);
     }
 
-    public void sendElementosVisibles(String data) {
-        template.convertAndSend("/topic/elementos-visibles", data);
-    }
-
-    public void sendAvionEnemigoVisible(String data) {
-        template.convertAndSend("/topic/avion-enemigo-visible", data);
-    }
-
     public void sendErrores(String data) {
         template.convertAndSend("/topic/errores", data);
     }

@@ -909,6 +909,9 @@ public class ServicioPartida {
 									Boolean visibilidadAvion = this.checkVisibilidad(avion, "avion",
 											avionEnemigo.getPosicion());
 									if (visibilidadAvion) {
+										if(res.getVisibilidadAviones().get(avionEnemigo.getId()) != null) {
+											res.getVisibilidadAviones().remove(avionEnemigo.getId());
+										}
 										res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
 									}
 								}
@@ -938,6 +941,9 @@ public class ServicioPartida {
 									boolean avionBajoArtilleria = this.avionBajoRadioArtilleria(avionEnemigo,
 											artilleria.getPosicion());
 									if (avionBajoArtilleria) {
+										if(res.getVisibilidadAviones().get(avionEnemigo.getId()) != null) {
+											res.getVisibilidadAviones().remove(avionEnemigo.getId());
+										}
 										res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
 									}
 								}
@@ -951,6 +957,9 @@ public class ServicioPartida {
 								|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
 							Boolean visibilidadAvion = this.checkVisibilidad(avionEnemigo, "base", baseActual.getPosicion());
 							if (visibilidadAvion) {
+								if(res.getVisibilidadAviones().get(avionEnemigo.getId()) != null) {
+									res.getVisibilidadAviones().remove(avionEnemigo.getId());
+								}
 								res.getVisibilidadAviones().add(avionEnemigo.getId(), true);
 							}
 						}

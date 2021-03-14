@@ -4,15 +4,15 @@ public class DTOArtilleria {
 	private String nombrePartida;
 	private int idJugador;
 	private int idArtilleria;
-	private int ejeX;
-	private int ejeY;
-	private int angulo;
+	private double ejeX;
+	private double ejeY;
+	private double angulo;
 	private boolean destruida;
 
 	public DTOArtilleria() {
 	}
 
-	public DTOArtilleria(String nombrePartida, int idJugador, int idArtilleria, int ejeX, int ejeY, int angulo,
+	public DTOArtilleria(String nombrePartida, int idJugador, int idArtilleria, double ejeX, double ejeY, double angulo,
 			boolean destruida) {
 		super();
 		this.nombrePartida = nombrePartida;
@@ -48,27 +48,27 @@ public class DTOArtilleria {
 		this.idArtilleria = idArtilleria;
 	}
 
-	public int getEjeX() {
+	public double getEjeX() {
 		return ejeX;
 	}
 
-	public void setEjeX(int ejeX) {
+	public void setEjeX(double ejeX) {
 		this.ejeX = ejeX;
 	}
 
-	public int getEjeY() {
+	public double getEjeY() {
 		return ejeY;
 	}
 
-	public void setEjeY(int ejeY) {
+	public void setEjeY(double ejeY) {
 		this.ejeY = ejeY;
 	}
 
-	public int getAngulo() {
+	public double getAngulo() {
 		return angulo;
 	}
 
-	public void setAngulo(int angulo) {
+	public void setAngulo(double angulo) {
 		this.angulo = angulo;
 	}
 

@@ -1,20 +1,15 @@
 package com.proyecto.bombsaway.dtos;
 
 public class DTOBomba {
-
 	private String nombrePartida;
-
 	private int idJugador;
-
-	private int ejeX;
-	
-	private int ejeY;
-	
+	private double ejeX;
+	private double ejeY;
 	private int avionId;
 	
 	public DTOBomba() {}
 
-	public DTOBomba(String nombrePartida, int idJugador, int ejeX, int ejeY, int avionId) {
+	public DTOBomba(String nombrePartida, int idJugador, double ejeX, double ejeY, int avionId) {
 		this.nombrePartida = nombrePartida;
 		this.idJugador = idJugador;
 		this.ejeX = ejeX;
@@ -38,19 +33,19 @@ public class DTOBomba {
 		this.idJugador = idJugador;
 	}
 
-	public int getEjeX() {
+	public double getEjeX() {
 		return ejeX;
 	}
 
-	public void setEjeX(int ejeX) {
+	public void setEjeX(double ejeX) {
 		this.ejeX = ejeX;
 	}
 
-	public int getEjeY() {
+	public double getEjeY() {
 		return ejeY;
 	}
 
-	public void setEjeY(int ejeY) {
+	public void setEjeY(double ejeY) {
 		this.ejeY = ejeY;
 	}
 

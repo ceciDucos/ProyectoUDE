@@ -1,15 +1,10 @@
 package com.proyecto.bombsaway.dtos;
 
 public class DTOEstadoBase {
-
 	private String nombrePartida;
-
 	private int idJugador;
-
 	private boolean hangarDestruido;
-
 	private boolean tanqueCombustibleDestruido;
-
 	private boolean torretaDestruida;
 
 	public DTOEstadoBase() {

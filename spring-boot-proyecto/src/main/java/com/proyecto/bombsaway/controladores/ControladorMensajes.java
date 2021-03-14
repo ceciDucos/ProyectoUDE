@@ -31,7 +31,11 @@ public class ControladorMensajes {
     public void sendPosicionBalaArtilleria(String data) {
         template.convertAndSend("/topic/posicion-bala-artilleria", data);
     }
-    
+
+    public void sendPosicionBalaTorre(String data) {
+        template.convertAndSend("/topic/posicion-bala-torre", data);
+    }
+
     public void sendColocarBases(String data) {
     	template.convertAndSend("/topic/actualizar-bases", data);
     }

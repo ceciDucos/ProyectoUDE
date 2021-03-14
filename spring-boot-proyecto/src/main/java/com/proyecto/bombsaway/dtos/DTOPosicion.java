@@ -1,25 +1,25 @@
 package com.proyecto.bombsaway.dtos;
 
 public class DTOPosicion {
-    private int ejeX;
-    private int ejeY;
-    private int angulo;
+    private double ejeX;
+    private double ejeY;
+    private double angulo;
 
-    public DTOPosicion(int ejeX, int ejeY, int angulo) {
+    public DTOPosicion(double ejeX, double ejeY, double angulo) {
         this.ejeX = ejeX;
         this.ejeY = ejeY;
         this.angulo = angulo;
     }
 
-    public int getEjeX() {
+    public double getEjeX() {
         return ejeX;
     }
 
-    public int getEjeY() {
+    public double getEjeY() {
         return ejeY;
     }
 
-    public int getAngulo() {
+    public double getAngulo() {
         return angulo;
     }
 }

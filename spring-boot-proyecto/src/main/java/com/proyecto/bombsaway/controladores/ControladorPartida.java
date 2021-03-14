@@ -66,4 +66,14 @@ public class ControladorPartida {
 		this.servicioPartida.recargarCombustibleAvion(avionDto);
 	}
 
+	@MessageMapping("/primer-disparo-artilleria")
+	public void primerDisparoArtilleria(DTOBala balaDto) {
+		this.servicioPartida.primerDisparoBalaArtilleria(balaDto);
+	}
+
+	@MessageMapping("/disparo-bala-artilleria")
+	public void dispararBalaArtilleria(DTOBala balaDto) {
+		this.servicioPartida.dispararBalaArtilleria(balaDto);
+	}
+
 }

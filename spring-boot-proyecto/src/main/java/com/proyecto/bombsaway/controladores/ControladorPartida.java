@@ -22,7 +22,7 @@ public class ControladorPartida {
 
 	@MessageMapping("/unirse-a-partida")
 	@SendTo("/topic/user")
-	public DTOMensaje unirseAPartida(DTOUsuario nuevoJugador) {
+	public String unirseAPartida(DTOUsuario nuevoJugador) {
 		return this.servicioPartida.unirseAPartida(nuevoJugador);
 	}
 

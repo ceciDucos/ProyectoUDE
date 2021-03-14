@@ -17,7 +17,7 @@ import java.util.List;
 public class ServicioPartida {
 
 	private final int MAX_VIDA = 100;
-	private final int MAX_COMBUSTIBLE = 100;
+	private final int MAX_COMBUSTIBLE = 150;
 	private final int DANIO_DISPARO_BALA = 10;
 	private final int RADIO_AVION_ALTURA_ALTA = 20;
 	private final int RADIO_AVION_ALTURA_BAJA = 14;
@@ -96,7 +96,8 @@ public class ServicioPartida {
 		return new Partida(jugadorUno, jugadorDos, nombrePartida, false);
 	}
 
-	public DTOMensaje unirseAPartida(DTOUsuario usuario) {
+	public String unirseAPartida(DTOUsuario usuario) {
+		DTOMensaje mensaje = new DTOMensaje();
 		try {
 			List<PartidaEnEspera> partidasEnEpera = this.manejadorPartida.getPartidasEnEspera();
 			if (partidasEnEpera != null && !partidasEnEpera.isEmpty()) {
@@ -104,10 +105,12 @@ public class ServicioPartida {
 				Partida partidaEnJuego = this.crearPartida(partidaEnEspera.getNombrePartida(),
 						partidaEnEspera.getNombreJugador(), usuario.getNombreJugador());
 				this.manejadorPartida.addPartidaEnJuego(partidaEnJuego);
-				return new DTOMensaje("Bootloader");
+				mensaje = new DTOMensaje("Bootloader");
+				mensaje.setNombrePartida(partidaEnJuego.getNombre());
 			} else {
-				return new DTOMensaje("No se encuentran partidas creadas");
+				mensaje = new DTOMensaje("No se encuentran partidas creadas");
 			}
+			return mensaje.toString();
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -115,7 +118,7 @@ public class ServicioPartida {
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
-		return new DTOMensaje("sucedio un error en unirse a partida error");
+		return mensaje.toString();
 	}
 
 	public void colocarBase(DTOBase baseDto) {

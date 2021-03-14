@@ -896,18 +896,22 @@ public class ServicioPartida {
 					int i = 0;
 					while (i < avionesActuales.size()) {
 						Avion avion = avionesActuales.get(i);
+						System.out.println("Estado avion: " +  avion.getEstado());
 						if (avion.getEstado() == EstadoAvion.ALTURA_BAJA
 								|| avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+							System.out.println("entre al if");
 							boolean esVisibleBase = this.checkVisibilidad(avion, "base", baseEnemigo.getPosicion());
 							if (esVisibleBase) {
 								res.setVisibilidadBase(true);
 							}
 
 							for (Avion avionEnemigo : listAvionesEnemigo) {
+								System.out.println("Estado avion: " +  avionEnemigo.getEstado());
 								if ((avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
 										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) &&
 										avion.getEstado() == EstadoAvion.ALTURA_BAJA ||
 										avion.getEstado() == EstadoAvion.ALTURA_ALTA) {
+									System.out.println("entre al if");
 									Boolean visibilidadAvion = this.checkVisibilidad(avion, "avion",
 											avionEnemigo.getPosicion());
 									if (visibilidadAvion) {
@@ -920,8 +924,10 @@ public class ServicioPartida {
 							}
 
 							for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
+								System.out.println("Estado avion: " +  avion.getEstado());
 								if(!artilleriaEnemigo.isDestruida() && ( avion.getEstado() == EstadoAvion.ALTURA_ALTA ||
 										avion.getEstado() == EstadoAvion.ALTURA_BAJA)) {
+									System.out.println("entre al if");
 									Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
 											artilleriaEnemigo.getPosicion());
 									if (visibilidadAvionArtilleria) {
@@ -936,10 +942,13 @@ public class ServicioPartida {
 					int j = 0;
 					while (j < artilleriasActual.size()) {
 						Artilleria artilleria = artilleriasActual.get(j);
+
 						if(!artilleria.isDestruida()) {
 							for (Avion avionEnemigo : listAvionesEnemigo) {
+								System.out.println("Estado avion: " +  avionEnemigo.getEstado());
 								if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
 										|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
+									System.out.println("entre al if");
 									boolean avionBajoArtilleria = this.avionBajoRadioArtilleria(avionEnemigo,
 											artilleria.getPosicion());
 									if (avionBajoArtilleria) {
@@ -955,8 +964,10 @@ public class ServicioPartida {
 					}
 
 					for (Avion avionEnemigo : listAvionesEnemigo) {
+						System.out.println("Estado avion: " +  avionEnemigo.getEstado());
 						if (avionEnemigo.getEstado() == EstadoAvion.ALTURA_BAJA
 								|| avionEnemigo.getEstado() == EstadoAvion.ALTURA_ALTA) {
+							System.out.println("entre al if");
 							Boolean visibilidadAvion = this.checkVisibilidad(avionEnemigo, "base", baseActual.getPosicion());
 							if (visibilidadAvion) {
 								if(res.getVisibilidadAviones().get(avionEnemigo.getId()) != null) {

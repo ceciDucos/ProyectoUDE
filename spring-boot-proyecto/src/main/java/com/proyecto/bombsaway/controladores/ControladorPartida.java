@@ -76,4 +76,14 @@ public class ControladorPartida {
 		this.servicioPartida.dispararBalaArtilleria(balaDto);
 	}
 
+//	@MessageMapping("/primer-disparo-torre")
+//	public void primerDisparoTorre(DTOBala balaDto) {
+//		this.servicioPartida.primerDisparoBalaTorre(balaDto);
+//	}
+//
+//	@MessageMapping("/disparo-bala-torre")
+//	public void dispararBalaTorre(DTOBala balaDto) {
+//		this.servicioPartida.dispararBalaTorre(balaDto);
+//	}
+
 }

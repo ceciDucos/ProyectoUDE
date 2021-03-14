@@ -14,6 +14,7 @@ public class DTOMensaje {
 
     public DTOMensaje(){}
 
+
     public DTOMensaje(String accion) {
         this.accion = accion;
     }

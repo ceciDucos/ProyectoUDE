@@ -13,7 +13,7 @@ public class ControladorFrecuencia {
     @Autowired
     ServicioPartida servicioPartida;
 
-    @Scheduled(fixedDelay = 600)
+    @Scheduled(fixedDelay = 700)
     public void sendActualizarCombistible() {
         this.servicioPartida.updateCombustibleAviones();
     }

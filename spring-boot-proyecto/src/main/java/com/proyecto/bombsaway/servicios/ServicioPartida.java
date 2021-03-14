@@ -119,7 +119,7 @@ public class ServicioPartida {
 	public void colocarBase(DTOBase baseDto) {
 		try {
 			Partida partida = this.recuperarPartida(baseDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorActual = (baseDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
 				Posicion posicion = new Posicion(baseDto.getBaseEjeX(), baseDto.getBaseEjeY(), baseDto.getBaseEjeY());
@@ -166,7 +166,7 @@ public class ServicioPartida {
 		try {
 
 			Partida partida = this.recuperarPartida(bombaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorActual = (bombaDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
 				List<Avion> aviones = jugadorActual.getListAviones();
@@ -256,7 +256,7 @@ public class ServicioPartida {
 	public void colocarArtilleria(DTOArtilleria artilleriaDto) {
 		try {
 			Partida partida = this.recuperarPartida(artilleriaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
 				if (jugadorActual.getListArtilleria().size() < this.CANTIDAD_ARTILLERIA) {
@@ -500,7 +500,7 @@ public class ServicioPartida {
 	public void dispararBala(DTOBala balaDto) {
 		try {
 			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorEnemigo = null;
 				Jugador jugadorActual = null;
 				if (balaDto.getIdJugador() == 1) {
@@ -553,7 +553,7 @@ public class ServicioPartida {
 	public void primerDisparoBala(DTOBala balaDto) {
 		try {
 			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorActual = null;
 				if (balaDto.getIdJugador() == 1) {
 					jugadorActual = partida.getJugadorUno();
@@ -577,7 +577,7 @@ public class ServicioPartida {
 
 	private void comprobarResultadoPartida(Partida partida) {
 		try {
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				if (!partida.isFinalizada()) {
 					boolean avionesConVidaJ1 = false;
 					boolean avionesConVidaJ2 = false;
@@ -616,7 +616,7 @@ public class ServicioPartida {
 	public void dispararBalaArtilleria(DTOBala balaDto) {
 		try {
 			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorEnemigo = balaDto.getIdJugador() == 1 ? partida.getJugadorDos()
 						: partida.getJugadorUno();
 				Jugador jugadorActual = balaDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
@@ -662,7 +662,7 @@ public class ServicioPartida {
 	public void primerDisparoBalaArtilleria(DTOBala balaDto) {
 		try {
 			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorActual = balaDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 
 				List<Artilleria> listArtilleriaJugadorActual = jugadorActual.getListArtilleria();
@@ -711,7 +711,7 @@ public class ServicioPartida {
 	private DTOAvion checkChoqueEntreAviones(DTOAvion avionDto) throws ConcurrenciaException {
 		DTOAvion avionImpactado = null;
 		Partida partida = this.recuperarPartida(avionDto.getNombrePartida());
-		if (partida != null) {
+		if (partida != null && !partida.isFinalizada()) {
 			Jugador jugadorEnemigo = avionDto.getIdJugador() == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
 			Jugador jugadorActual = avionDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 
@@ -754,7 +754,7 @@ public class ServicioPartida {
 
 	private String updateAvionEnPartida(DTOAvion avionDTO, Partida partida) throws ConcurrenciaException {
 		DTOAvion notificacion = null;
-		if (partida != null) {
+		if (partida != null && !partida.isFinalizada()) {
 			Jugador jugador = null;
 			Avion avion = null;
 			if (avionDTO.getIdJugador() == 1) {
@@ -788,7 +788,7 @@ public class ServicioPartida {
 	public void moverArtilleria(DTOArtilleria artilleriaDto) {
 		try {
 			Partida partida = this.recuperarPartida(artilleriaDto.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorActual = (artilleriaDto.getIdJugador() == 1) ? partida.getJugadorUno()
 						: partida.getJugadorDos();
 				Artilleria artilleria = jugadorActual.getListArtilleria().get(artilleriaDto.getIdArtilleria());
@@ -828,8 +828,7 @@ public class ServicioPartida {
 		default:
 			break;
 		}
-//		radioElemento = elemento.equalsIgnoreCase("avion") ? this.RADIO_VISION_AVION:
-//				this.RADIO_ARTILLERIA;
+
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		double distancia = Math.sqrt(ecuacion);
 		if (distancia < radioElemento + this.RADIO_VISION_AVION) {
@@ -983,7 +982,7 @@ public class ServicioPartida {
 	public void updateVisibilidadPartida(DTOVisibilidad visibilidad) throws ConcurrenciaException {
 		if (visibilidad != null) {
 			Partida partida = this.recuperarPartida(visibilidad.getNombrePartida());
-			if (partida != null) {
+			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorEnemigo = visibilidad.getIdJugador() == 1 ? partida.getJugadorDos()
 						: partida.getJugadorUno();
 

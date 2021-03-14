@@ -19,13 +19,13 @@ public class EntidadElementoBase {
 	private EntidadBase base;
 
 	@Column(name = "eje_x", nullable = false)
-	private int ejeX;
+	private double ejeX;
 
 	@Column(name = "eje_y", nullable = false)
-	private int ejeY;
+	private double ejeY;
 
 	@Column(name = "angulo", nullable = false)
-	private int angulo;
+	private double angulo;
 
 	@Column(name = "destruido", nullable = false)
 	private boolean destruido;
@@ -33,7 +33,8 @@ public class EntidadElementoBase {
 	public EntidadElementoBase() {
 	}
 
-	public EntidadElementoBase(int id, String nombre, EntidadBase base, int ejeX, int ejeY, int angulo, boolean destruido) {
+	public EntidadElementoBase(int id, String nombre, EntidadBase base, double ejeX, double ejeY, double angulo,
+			boolean destruido) {
 		this.id = id;
 		this.nombre = nombre;
 		this.base = base;
@@ -67,27 +68,27 @@ public class EntidadElementoBase {
 		this.base = base;
 	}
 
-	public int getEjeX() {
+	public double getEjeX() {
 		return ejeX;
 	}
 
-	public void setEjeX(int ejeX) {
+	public void setEjeX(double ejeX) {
 		this.ejeX = ejeX;
 	}
 
-	public int getEjeY() {
+	public double getEjeY() {
 		return ejeY;
 	}
 
-	public void setEjeY(int ejeY) {
+	public void setEjeY(double ejeY) {
 		this.ejeY = ejeY;
 	}
 
-	public int getAngulo() {
+	public double getAngulo() {
 		return angulo;
 	}
 
-	public void setAngulo(int angulo) {
+	public void setAngulo(double angulo) {
 		this.angulo = angulo;
 	}
 

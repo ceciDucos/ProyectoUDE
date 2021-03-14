@@ -45,7 +45,7 @@ public class ControladorPartida {
 	public void tirarBomba(DTOBomba bombaDto) {
 		this.servicioPartida.tirarBomba(bombaDto);
 	}
-	
+
 	@MessageMapping("/colocar-artilleria")
 	public void colocarArtilleria(DTOArtilleria artilleriaDto) {
 		this.servicioPartida.colocarArtilleria(artilleriaDto);
@@ -85,4 +85,10 @@ public class ControladorPartida {
 	public void dispararBalaTorre(DTOBala balaDto) {
 		this.servicioPartida.dispararBalaTorre(balaDto);
 	}
+
+	@MessageMapping("/guardar-partida")
+	public void guardarPartida(String nombrePartida) {
+		this.servicioPartida.guardarPartida(nombrePartida);
+	}
+
 }

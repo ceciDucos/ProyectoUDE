@@ -24,13 +24,13 @@ public class EntidadBase {
 	private EntidadJugador jugador;
 
 	@Column(name = "eje_x", nullable = false)
-	private int ejeX;
+	private double ejeX;
 
 	@Column(name = "eje_y", nullable = false)
-	private int ejeY;
+	private double ejeY;
 
 	@Column(name = "angulo", nullable = false)
-	private int angulo;
+	private double angulo;
 
 	@Column(name = "visible", nullable = false)
 	private boolean visible;
@@ -38,7 +38,7 @@ public class EntidadBase {
 	public EntidadBase() {
 	}
 
-	public EntidadBase(int id, EntidadJugador jugador, int ejeX, int ejeY, int angulo, boolean visible) {
+	public EntidadBase(int id, EntidadJugador jugador, double ejeX, double ejeY, double angulo, boolean visible) {
 		this.id = id;
 		this.jugador = jugador;
 		this.ejeX = ejeX;
@@ -63,27 +63,27 @@ public class EntidadBase {
 		this.jugador = jugador;
 	}
 
-	public int getEjeX() {
+	public double getEjeX() {
 		return ejeX;
 	}
 
-	public void setEjeX(int ejeX) {
+	public void setEjeX(double ejeX) {
 		this.ejeX = ejeX;
 	}
 
-	public int getEjeY() {
+	public double getEjeY() {
 		return ejeY;
 	}
 
-	public void setEjeY(int ejeY) {
+	public void setEjeY(double ejeY) {
 		this.ejeY = ejeY;
 	}
 
-	public int getAngulo() {
+	public double getAngulo() {
 		return angulo;
 	}
 
-	public void setAngulo(int angulo) {
+	public void setAngulo(double angulo) {
 		this.angulo = angulo;
 	}
 

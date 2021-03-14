@@ -29,15 +29,6 @@ public class Partida {
         return jugadorDos;
     }
 
-    public DTOPartidaCompleto getDTOCompleto() {
-        DTOPartidaCompleto res = new DTOPartidaCompleto(this.jugadorUno.getNombre(), this.jugadorDos.getNombre(), this.nombre);
-        DTOUsuario usuarioUno =  this.jugadorUno.getDTO();
-        DTOUsuario usuarioDos =  this.jugadorDos.getDTO();
-        res.setUsuarioUno(usuarioUno);
-        res.setUsuarioDos(usuarioDos);
-        return res;
-    }
-
     @Override
     public String toString() {
         String res = "Partida: [" + this.getNombre() + ", " + this.jugadorUno.toString() + ", " +

@@ -1,11 +1,8 @@
 package com.proyecto.bombsaway.dtos;
 
 public class DTOResultadoPartida {
-
 	private String nombrePartida;
-
 	private boolean jugadorUnoGano;
-
 	private boolean jugadorDosGano;
 
 	public DTOResultadoPartida() {

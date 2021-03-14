@@ -1,6 +1,5 @@
 package com.proyecto.bombsaway.clases;
 
-import com.proyecto.bombsaway.dtos.DTOPartidaCompleto;
 import com.proyecto.bombsaway.dtos.DTOUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 

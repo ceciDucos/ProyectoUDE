@@ -9,9 +9,9 @@ public class DTOAvion {
     private String nombrePartida;
     private int idJugador;
     private int idAvion;
-    private int ejeX;
-    private int ejeY;
-    private int angulo;
+    private double ejeX;
+    private double ejeY;
+    private double angulo;
     private EstadoAvion estado;
     private int vida;
     private int combustible;
@@ -20,8 +20,8 @@ public class DTOAvion {
 
     public DTOAvion(){};
 
-    public DTOAvion(int id, int ejeX,
-                    int ejeY, int angulo, EstadoAvion estado, int vida, int combustible,
+    public DTOAvion(int id, double ejeX,
+                    double ejeY, double angulo, EstadoAvion estado, int vida, int combustible,
                     boolean tieneBomba) {
         this.idAvion = id;
         this.ejeX = ejeX;
@@ -50,15 +50,15 @@ public class DTOAvion {
         this.nombrePartida = nombrePartida;
     }
 
-    public void setEjeX(int ejeX) {
+    public void setEjeX(double ejeX) {
         this.ejeX = ejeX;
     }
 
-    public void setEjeY(int ejeY) {
+    public void setEjeY(double ejeY) {
         this.ejeY = ejeY;
     }
 
-    public void setAngulo(int angulo) {
+    public void setAngulo(double angulo) {
         this.angulo = angulo;
     }
 
@@ -78,15 +78,15 @@ public class DTOAvion {
         this.tieneBomba = tieneBomba;
     }
 
-    public int getEjeX() {
+    public double getEjeX() {
         return ejeX;
     }
 
-    public int getEjeY() {
+    public double getEjeY() {
         return ejeY;
     }
 
-    public int getAngulo() {
+    public double getAngulo() {
         return angulo;
     }
 

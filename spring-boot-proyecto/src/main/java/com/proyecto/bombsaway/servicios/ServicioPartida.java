@@ -329,10 +329,10 @@ public class ServicioPartida {
 		boolean res = false;
 		double distancia = 0;
 
-		int coordX1 = bombaDto.getEjeX();
-		int coordY1 = bombaDto.getEjeY();
-		int coordX2 = posicion.getEjeX();
-		int coordY2 = posicion.getEjeY();
+		double coordX1 = bombaDto.getEjeX();
+		double coordY1 = bombaDto.getEjeY();
+		double coordX2 = posicion.getEjeX();
+		double coordY2 = posicion.getEjeY();
 
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		distancia = Math.sqrt(ecuacion);
@@ -430,10 +430,10 @@ public class ServicioPartida {
 		} else {
 			radioAvion = this.RADIO_AVION_ALTURA_BAJA;
 		}
-		int coordX1 = posicion.getEjeX();
-		int coordY1 = posicion.getEjeY();
-		int coordX2 = avion.getPosicion().getEjeX();
-		int coordY2 = avion.getPosicion().getEjeY();
+		double coordX1 = posicion.getEjeX();
+		double coordY1 = posicion.getEjeY();
+		double coordX2 = avion.getPosicion().getEjeX();
+		double coordY2 = avion.getPosicion().getEjeY();
 
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		distancia = Math.sqrt(ecuacion);
@@ -787,10 +787,10 @@ public class ServicioPartida {
 	private boolean validarImpactoRadioAviones(Posicion posicionAvionActual, Posicion posicionAvionEnemigo,
 			int radioAvion) {
 		boolean res = false;
-		int coordX1 = posicionAvionActual.getEjeX();
-		int coordY1 = posicionAvionActual.getEjeY();
-		int coordX2 = posicionAvionEnemigo.getEjeX();
-		int coordY2 = posicionAvionEnemigo.getEjeY();
+		double coordX1 = posicionAvionActual.getEjeX();
+		double coordY1 = posicionAvionActual.getEjeY();
+		double coordX2 = posicionAvionEnemigo.getEjeX();
+		double coordY2 = posicionAvionEnemigo.getEjeY();
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		double distancia = Math.sqrt(ecuacion);
 		if (distancia < 2 * radioAvion) {
@@ -898,10 +898,10 @@ public class ServicioPartida {
 
 	private boolean checkVisibilidad(Avion avionDto, String elemento, Posicion posicion) {
 		boolean res = false;
-		int coordX1 = avionDto.getPosicion().getEjeX();
-		int coordY1 = avionDto.getPosicion().getEjeY();
-		int coordX2 = posicion.getEjeX();
-		int coordY2 = posicion.getEjeY();
+		double coordX1 = avionDto.getPosicion().getEjeX();
+		double coordY1 = avionDto.getPosicion().getEjeY();
+		double coordX2 = posicion.getEjeX();
+		double coordY2 = posicion.getEjeY();
 		int radioElemento = 0;
 		switch (elemento) {
 		case "avion": {
@@ -1099,10 +1099,10 @@ public class ServicioPartida {
 
 	public boolean avionBajoRadioArtilleria(Avion avion, Posicion posicionArtilleria) {
 		boolean res = false;
-		int coordX1 = avion.getPosicion().getEjeX();
-		int coordY1 = avion.getPosicion().getEjeY();
-		int coordX2 = posicionArtilleria.getEjeX();
-		int coordY2 = posicionArtilleria.getEjeY();
+		double coordX1 = avion.getPosicion().getEjeX();
+		double coordY1 = avion.getPosicion().getEjeY();
+		double coordX2 = posicionArtilleria.getEjeX();
+		double coordY2 = posicionArtilleria.getEjeY();
 		double ecuacion = ((coordX1 - coordX2) * (coordX1 - coordX2) + (coordY1 - coordY2) * (coordY1 - coordY2));
 		double distancia = Math.sqrt(ecuacion);
 

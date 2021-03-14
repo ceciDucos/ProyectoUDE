@@ -133,6 +133,7 @@ public class ServicioPartida {
 						new Posicion(baseDto.getHangarEjeX(), baseDto.getHangarEjeY(), 0), false);
 				ElementoBase torreta = new ElementoBase("torreta",
 						new Posicion(baseDto.getTorretaEjeX(), baseDto.getTorretaEjeY(), 0), false);
+				torreta.inicializarBalas();
 				ElementoBase tanqueCombustible = new ElementoBase("tanque_combustible",
 						new Posicion(baseDto.getTanqueCombustibleEjeX(), baseDto.getTanqueCombustibleEjeY(), 0), false);
 				List<ElementoBase> elementosBase = new ArrayList<ElementoBase>();
@@ -690,85 +691,84 @@ public class ServicioPartida {
 		}
 	}
 
-//	public void primerDisparoBalaTorre(DTOBala balaDto) {
-//		try {
-//			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-//			if (partida != null && !partida.isFinalizada()) {
-//				Jugador jugadorActual = balaDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
-//				List<ElementoBase> listElementosBase = jugadorActual.getBase().getElementosBase();
-//				ElementoBase torre = null;
-//				for (ElementoBase elementoBase: listElementosBase) {
-//					if(elementoBase.getNombre().equalsIgnoreCase("torreta")){
-//						torre = elementoBase;
-//					}
-//				}
-//				if(torre != null) {
-//					Bala balaDisparada = torre.getListBalas().get(balaDto.getIdBala());
-//					balaDisparada.setVisible(true);
-//					this.mensajeriaUpdate.sendPosicionBalaArtilleria(balaDto.toString());
-//				}
-//			}
-//		} catch (ConcurrenciaException error) {
-//			String mensajeError = this.getMensajeError(error.getMensaje());
-//			this.mensajeriaUpdate.sendErrores(mensajeError);
-//			System.out.println("Error: " + error.getMensaje());
-//		} catch (Exception error) {
-//			error.printStackTrace();
-//		}
-//	}
+	public void primerDisparoBalaTorre(DTOBala balaDto) {
+		try {
+			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
+			if (partida != null && !partida.isFinalizada()) {
+				Jugador jugadorActual = balaDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
+				List<ElementoBase> listElementosBase = jugadorActual.getBase().getElementosBase();
+				ElementoBase torre = null;
+				for (ElementoBase elementoBase: listElementosBase) {
+					if(elementoBase.getNombre().equalsIgnoreCase("torreta")){
+						torre = elementoBase;
+					}
+				}
+				if(torre != null) {
+					Bala balaDisparada = torre.getListBalas().get(balaDto.getIdBala());
+					balaDisparada.setVisible(true);
+					this.mensajeriaUpdate.sendPosicionBalaArtilleria(balaDto.toString());
+				}
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
-//	public void dispararBalaTorre(DTOBala balaDto) {
-//		try {
-//			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
-//			if (partida != null && !partida.isFinalizada()) {
-//				Jugador jugadorEnemigo = balaDto.getIdJugador() == 1 ? partida.getJugadorDos()
-//						: partida.getJugadorUno();
-//				Jugador jugadorActual = balaDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
-//				List<ElementoBase> listElementosBase = jugadorActual.getBase().getElementosBase();
-//				ElementoBase torre = null;
-//				for (ElementoBase elementoBase: listElementosBase) {
-//					if(elementoBase.getNombre().equalsIgnoreCase("torreta")){
-//						torre = elementoBase;
-//					}
-//				}
-//				Bala balaDisparada = null;
-//				if(torre != null) {
-//					balaDisparada = torre.getListBalas().get(balaDto.getIdBala());
-//				}
-//
-//				if (balaDisparada != null && balaDisparada.isVisible()) {
-//					DTOAvion dtoAvion = this.impactoBalaEnAvion(balaDto, jugadorEnemigo);
-//					if (dtoAvion != null) {
-//						// si la bala impacto contra avion enemigo
-//						if (dtoAvion.getEstado() == EstadoAvion.DESTRUIDO) {
-//							this.estallarAvion(dtoAvion.toString());
-//						} else {
-//							this.bajarVidaAvion(dtoAvion.toString());
-//						}
-//						balaDisparada.setVisible(false);
-//						balaDto.setVisible(false);
-//						this.mensajeriaUpdate.sendPosicionBalaArtilleria(balaDto.toString());
-//					} else {
-//						// se actualiza la posicion de la bala y se avisa a los clientes
-//						balaDisparada
-//								.setPosicion(new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo()));
-//						// chequeamos que si la visibilidad de la bala cambio, si cambio notificamos y
-//						// actualizamos la bala
-//						if (!balaDto.isVisible()) {
-//							balaDisparada.setVisible(balaDto.isVisible());
-//							this.mensajeriaUpdate.sendPosicionBalaArtilleria(balaDto.toString());
-//						}
-//					}
-//				}
-//			}
-//		} catch (ConcurrenciaException error) {
-//			String mensajeError = this.getMensajeError(error.getMensaje());
-//			this.mensajeriaUpdate.sendErrores(mensajeError);
-//			System.out.println("Error: " + error.getMensaje());
-//		} catch (Exception error) {
-//			error.printStackTrace();
-//		}
-//	}
+	public void dispararBalaTorre(DTOBala balaDto) {
+		try {
+			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
+			if (partida != null && !partida.isFinalizada()) {
+				Jugador jugadorEnemigo = balaDto.getIdJugador() == 1 ? partida.getJugadorDos()
+						: partida.getJugadorUno();
+				Jugador jugadorActual = balaDto.getIdJugador() == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
+				List<ElementoBase> listElementosBase = jugadorActual.getBase().getElementosBase();
+				ElementoBase torre = null;
+				for (ElementoBase elementoBase: listElementosBase) {
+					if(elementoBase.getNombre().equalsIgnoreCase("torreta")){
+						torre = elementoBase;
+					}
+				}
+				Bala balaDisparada = null;
+				if(torre != null) {
+					balaDisparada = torre.getListBalas().get(balaDto.getIdBala());
+				}
+
+				if (balaDisparada != null && balaDisparada.isVisible()) {
+					DTOAvion dtoAvion = this.impactoBalaEnAvion(balaDto, jugadorEnemigo);
+					if (dtoAvion != null) {
+						// si la bala impacto contra avion enemigo
+						if (dtoAvion.getEstado() == EstadoAvion.DESTRUIDO) {
+							this.estallarAvion(dtoAvion.toString());
+						} else {
+							this.bajarVidaAvion(dtoAvion.toString());
+						}
+						balaDisparada.setVisible(false);
+						balaDto.setVisible(false);
+						this.mensajeriaUpdate.sendPosicionBalaTorre(balaDto.toString());
+					} else {
+						// se actualiza la posicion de la bala y se avisa a los clientes
+						balaDisparada.setPosicion(new Posicion(balaDto.getEjeX(), balaDto.getEjeY(), balaDto.getAngulo()));
+						// chequeamos que si la visibilidad de la bala cambio, si cambio notificamos y
+						// actualizamos la bala
+						if (!balaDto.isVisible()) {
+							balaDisparada.setVisible(balaDto.isVisible());
+							this.mensajeriaUpdate.sendPosicionBalaTorre(balaDto.toString());
+						}
+					}
+				}
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception error) {
+			error.printStackTrace();
+		}
+	}
 
 
 	private String getMensajeError(String mensajeError) {

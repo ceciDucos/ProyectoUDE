@@ -374,29 +374,32 @@ public class ServicioPartida {
 	public void moverAvion(DTOAvion avionDTO) {
 		try {
 			String notificacion = null;
-			// si el avion se fue de los limites, estalla
-			boolean avionFueraLimites = this.checkAvionFueraLimites(avionDTO);
-			boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
-			DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
 			Partida partida = recuperarPartida(avionDTO.getNombrePartida());
-			if (avionFueraLimites || avionSinCombustible) {
-				avionDTO.setEstado(EstadoAvion.DESTRUIDO);
-				// se actualiza la partida y se envia el avion a estallar
-				notificacion = this.updateAvionEnPartida(avionDTO, partida);
-				this.estallarAvion(notificacion.toString());
-			} else if (avionChoqueDto != null) {
-				avionDTO.setEstado(EstadoAvion.DESTRUIDO);
-				avionChoqueDto.setEstado(EstadoAvion.DESTRUIDO);
-				this.estallarAvion(avionDTO.toString());
-				this.estallarAvion(avionChoqueDto.toString());
-				this.updateAvionEnPartida(avionDTO, partida);
-				this.updateAvionEnPartida(avionChoqueDto, partida);
-			} else {
-				// se actualiza la partida y se envia el status del avion a el canal
-				notificacion = this.updateAvionEnPartida(avionDTO, partida);
-				this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
+			if(partida != null && !partida.isFinalizada()) {
+				// si el avion se fue de los limites, estalla
+				boolean avionFueraLimites = this.checkAvionFueraLimites(avionDTO);
+				boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
+				DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
+
+				if (avionFueraLimites || avionSinCombustible) {
+					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+					// se actualiza la partida y se envia el avion a estallar
+					notificacion = this.updateAvionEnPartida(avionDTO, partida);
+					this.estallarAvion(notificacion.toString());
+				} else if (avionChoqueDto != null) {
+					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+					avionChoqueDto.setEstado(EstadoAvion.DESTRUIDO);
+					this.estallarAvion(avionDTO.toString());
+					this.estallarAvion(avionChoqueDto.toString());
+					this.updateAvionEnPartida(avionDTO, partida);
+					this.updateAvionEnPartida(avionChoqueDto, partida);
+				} else {
+					// se actualiza la partida y se envia el status del avion a el canal
+					notificacion = this.updateAvionEnPartida(avionDTO, partida);
+					this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
+				}
+				this.comprobarResultadoPartida(partida);
 			}
-			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);

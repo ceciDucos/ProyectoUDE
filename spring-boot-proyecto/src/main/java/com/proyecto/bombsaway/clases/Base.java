@@ -41,14 +41,14 @@ public class Base {
 	}
 
 	public DTOBase getDTO() {
-		int baseEjeX = this.posicion.getEjeX();
-		int baseEjeY = this.posicion.getEjeY();
-		int hangarEjeX = 0;
-		int hangarEjeY = 0;
-		int torretaEjeX = 0;
-		int torretaEjeY = 0;
-		int tanqueCombustibleX = 0;
-		int tanqueCombustibleY = 0;
+		double baseEjeX = this.posicion.getEjeX();
+		double baseEjeY = this.posicion.getEjeY();
+		double hangarEjeX = 0;
+		double hangarEjeY = 0;
+		double torretaEjeX = 0;
+		double torretaEjeY = 0;
+		double tanqueCombustibleX = 0;
+		double tanqueCombustibleY = 0;
 		for (ElementoBase elemento : this.elementosBase) {
 			if (elemento.getNombre() == "torreta") {
 				torretaEjeX = elemento.getPosicion().getEjeX();
@@ -64,5 +64,4 @@ public class Base {
 		return new DTOBase(baseEjeX, baseEjeY, hangarEjeX, hangarEjeY, torretaEjeX, torretaEjeY, tanqueCombustibleX,
 				tanqueCombustibleY);
 	}
-
 }

@@ -1,31 +1,21 @@
 package com.proyecto.bombsaway.dtos;
 
 public class DTOBase {
-
 	private String nombrePartida;
-
 	private int idJugador;
-
-	private int baseEjeX;
-	
-	private int baseEjeY;
-	
-	private int hangarEjeX;
-	
-	private int hangarEjeY;
-	
-	private int torretaEjeX;
-	
-	private int torretaEjeY;
-	
-	private int tanqueCombustibleEjeX;
-	
-	private int tanqueCombustibleEjeY;
+	private double baseEjeX;
+	private double baseEjeY;
+	private double hangarEjeX;
+	private double hangarEjeY;
+	private double torretaEjeX;
+	private double torretaEjeY;
+	private double tanqueCombustibleEjeX;
+	private double tanqueCombustibleEjeY;
 
 	public DTOBase() {}
 
-	public DTOBase(String nombrePartida, int idJugador, int baseEjeX, int baseEjeY, int hangarEjeX, int hangarEjeY,
-			int torretaEjeX, int torretaEjeY, int tanqueCombustibleEjeX, int tanqueCombustibleEjeY) {
+	public DTOBase(String nombrePartida, int idJugador, double baseEjeX, double baseEjeY, double hangarEjeX, double hangarEjeY,
+				   double torretaEjeX, double torretaEjeY, double tanqueCombustibleEjeX, double tanqueCombustibleEjeY) {
 		super();
 		this.nombrePartida = nombrePartida;
 		this.idJugador = idJugador;
@@ -39,8 +29,8 @@ public class DTOBase {
 		this.tanqueCombustibleEjeY = tanqueCombustibleEjeY;
 	}
 
-	public DTOBase(int baseEjeX, int baseEjeY, int hangarEjeX, int hangarEjeY, int torretaEjeX, int torretaEjeY,
-			int tanqueCombustibleEjeX, int tanqueCombustibleEjeY) {
+	public DTOBase(double baseEjeX, double baseEjeY, double hangarEjeX, double hangarEjeY, double torretaEjeX, double torretaEjeY,
+				   double tanqueCombustibleEjeX, double tanqueCombustibleEjeY) {
 		super();
 		this.baseEjeX = baseEjeX;
 		this.baseEjeY = baseEjeY;
@@ -68,67 +58,67 @@ public class DTOBase {
 		this.idJugador = idJugador;
 	}
 
-	public int getBaseEjeX() {
+	public double getBaseEjeX() {
 		return baseEjeX;
 	}
 
-	public void setBaseEjeX(int baseEjeX) {
+	public void setBaseEjeX(double baseEjeX) {
 		this.baseEjeX = baseEjeX;
 	}
 
-	public int getBaseEjeY() {
+	public double getBaseEjeY() {
 		return baseEjeY;
 	}
 
-	public void setBaseEjeY(int baseEjeY) {
+	public void setBaseEjeY(double baseEjeY) {
 		this.baseEjeY = baseEjeY;
 	}
 
-	public int getHangarEjeX() {
+	public double getHangarEjeX() {
 		return hangarEjeX;
 	}
 
-	public void setHangarEjeX(int hangarEjeX) {
+	public void setHangarEjeX(double hangarEjeX) {
 		this.hangarEjeX = hangarEjeX;
 	}
 
-	public int getHangarEjeY() {
+	public double getHangarEjeY() {
 		return hangarEjeY;
 	}
 
-	public void setHangarEjeY(int hangarEjeY) {
+	public void setHangarEjeY(double hangarEjeY) {
 		this.hangarEjeY = hangarEjeY;
 	}
 
-	public int getTorretaEjeX() {
+	public double getTorretaEjeX() {
 		return torretaEjeX;
 	}
 
-	public void setTorretaEjeX(int torretaEjeX) {
+	public void setTorretaEjeX(double torretaEjeX) {
 		this.torretaEjeX = torretaEjeX;
 	}
 
-	public int getTorretaEjeY() {
+	public double getTorretaEjeY() {
 		return torretaEjeY;
 	}
 
-	public void setTorretaEjeY(int torretaEjeY) {
+	public void setTorretaEjeY(double torretaEjeY) {
 		this.torretaEjeY = torretaEjeY;
 	}
 
-	public int getTanqueCombustibleEjeX() {
+	public double getTanqueCombustibleEjeX() {
 		return tanqueCombustibleEjeX;
 	}
 
-	public void setTanqueCombustibleEjeX(int tanqueCombustibleEjeX) {
+	public void setTanqueCombustibleEjeX(double tanqueCombustibleEjeX) {
 		this.tanqueCombustibleEjeX = tanqueCombustibleEjeX;
 	}
 
-	public int getTanqueCombustibleEjeY() {
+	public double getTanqueCombustibleEjeY() {
 		return tanqueCombustibleEjeY;
 	}
 
-	public void setTanqueCombustibleEjeY(int tanqueCombustibleEjeY) {
+	public void setTanqueCombustibleEjeY(double tanqueCombustibleEjeY) {
 		this.tanqueCombustibleEjeY = tanqueCombustibleEjeY;
 	}
 

@@ -8,9 +8,9 @@ public class DTOBala {
     private int idElemento;
     private int idBala;
     private EstadoAvion altitud;
-    private int ejeX;
-    private int ejeY;
-    private int angulo;
+    private double ejeX;
+    private double ejeY;
+    private double angulo;
     private boolean visible;
 
     public DTOBala(){}
@@ -31,15 +31,15 @@ public class DTOBala {
         return idBala;
     }
 
-    public int getEjeX() {
+    public double getEjeX() {
         return ejeX;
     }
 
-    public int getEjeY() {
+    public double getEjeY() {
         return ejeY;
     }
 
-    public int getAngulo() {
+    public double getAngulo() {
         return angulo;
     }
 
@@ -59,15 +59,15 @@ public class DTOBala {
         this.idBala = idBala;
     }
 
-    public void setEjeX(int ejeX) {
+    public void setEjeX(double ejeX) {
         this.ejeX = ejeX;
     }
 
-    public void setEjeY(int ejeY) {
+    public void setEjeY(double ejeY) {
         this.ejeY = ejeY;
     }
 
-    public void setAngulo(int angulo) {
+    public void setAngulo(double angulo) {
         this.angulo = angulo;
     }
 

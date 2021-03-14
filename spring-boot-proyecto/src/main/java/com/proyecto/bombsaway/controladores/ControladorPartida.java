@@ -22,7 +22,7 @@ public class ControladorPartida {
 
 	@MessageMapping("/unirse-a-partida")
 	@SendTo("/topic/user")
-	public DTOMensaje unirseAPartida(DTOUsuario nuevoJugador) {
+	public String unirseAPartida(DTOUsuario nuevoJugador) {
 		return this.servicioPartida.unirseAPartida(nuevoJugador);
 	}
 
@@ -59,5 +59,30 @@ public class ControladorPartida {
 	@MessageMapping("/mover-artilleria")
 	public void moverArtilleria(DTOArtilleria artilleriaDto) {
 		this.servicioPartida.moverArtilleria(artilleriaDto);
+	}
+
+	@MessageMapping("/recargar-combustible")
+	public void recargarCombustibleAvion(DTOAvion avionDto) {
+		this.servicioPartida.recargarCombustibleAvion(avionDto);
+	}
+
+	@MessageMapping("/primer-disparo-artilleria")
+	public void primerDisparoArtilleria(DTOBala balaDto) {
+		this.servicioPartida.primerDisparoBalaArtilleria(balaDto);
+	}
+
+	@MessageMapping("/disparo-bala-artilleria")
+	public void dispararBalaArtilleria(DTOBala balaDto) {
+		this.servicioPartida.dispararBalaArtilleria(balaDto);
+	}
+
+	@MessageMapping("/primer-disparo-torre")
+	public void primerDisparoTorre(DTOBala balaDto) {
+		this.servicioPartida.primerDisparoBalaTorre(balaDto);
+	}
+
+	@MessageMapping("/disparo-bala-torre")
+	public void dispararBalaTorre(DTOBala balaDto) {
+		this.servicioPartida.dispararBalaTorre(balaDto);
 	}
 }

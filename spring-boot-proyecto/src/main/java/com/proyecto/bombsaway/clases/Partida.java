@@ -1,6 +1,5 @@
 package com.proyecto.bombsaway.clases;
 
-import com.proyecto.bombsaway.dtos.DTOPartidaCompleto;
 import com.proyecto.bombsaway.dtos.DTOUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,15 +27,6 @@ public class Partida {
 
     public Jugador getJugadorDos() {
         return jugadorDos;
-    }
-
-    public DTOPartidaCompleto getDTOCompleto() {
-        DTOPartidaCompleto res = new DTOPartidaCompleto(this.jugadorUno.getNombre(), this.jugadorDos.getNombre(), this.nombre);
-        DTOUsuario usuarioUno =  this.jugadorUno.getDTO();
-        DTOUsuario usuarioDos =  this.jugadorDos.getDTO();
-        res.setUsuarioUno(usuarioUno);
-        res.setUsuarioDos(usuarioDos);
-        return res;
     }
 
     @Override

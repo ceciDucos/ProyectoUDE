@@ -1,12 +1,13 @@
 package com.proyecto.bombsaway.clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ElementoBase {
-
 	private String nombre;
-	
 	private Posicion posicion;
-
 	private boolean destruido;
+	private List<Bala> listBalas;
 
 	public ElementoBase() {}
 
@@ -15,6 +16,24 @@ public class ElementoBase {
 		this.nombre = nombre;
 		this.posicion = posicion;
 		this.destruido = destruido;
+	}
+
+	public List<Bala> getListBalas() {
+		return listBalas;
+	}
+
+	public void setListBalas(List<Bala> listBalas) {
+		this.listBalas = listBalas;
+	}
+
+	public void inicializarBalas() {
+		this.listBalas = new ArrayList<Bala>();
+		for (int i = 0; i < 30; i++){
+			Bala balaAvion = new Bala();
+			balaAvion.setId(i);
+			balaAvion.setVisible(false);
+			listBalas.add(balaAvion);
+		}
 	}
 
 	public String getNombre() {

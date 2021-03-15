@@ -6,4 +6,6 @@ import com.proyecto.bombsaway.entidades.EntidadJugador;
 
 public interface IDAOJugador extends JpaRepository<EntidadJugador, Integer> {
 
+	public boolean existsByNumeroAndNombre(int numero, String nombre);
+
 }

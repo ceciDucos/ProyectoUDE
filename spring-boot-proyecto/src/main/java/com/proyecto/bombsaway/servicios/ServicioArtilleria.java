@@ -23,8 +23,13 @@ public class ServicioArtilleria {
 
 	public EntidadArtilleria guardar(Artilleria artilleria, EntidadJugador jugador) {
 		Posicion posicion = artilleria.getPosicion();
-		return this.daoArtilleria.save(new EntidadArtilleria(0, jugador, posicion.getEjeX(), posicion.getEjeY(),
-				posicion.getAngulo(), artilleria.isDestruida(), artilleria.isVisible()));
+		return this.daoArtilleria
+				.save(new EntidadArtilleria(0, artilleria.getIdArtilleria(), jugador, posicion.getEjeX(),
+						posicion.getEjeY(), posicion.getAngulo(), artilleria.isDestruida(), artilleria.isVisible()));
+	}
+
+	public EntidadArtilleria actualizar(EntidadArtilleria artilleria) {
+		return this.daoArtilleria.save(artilleria);
 	}
 
 }

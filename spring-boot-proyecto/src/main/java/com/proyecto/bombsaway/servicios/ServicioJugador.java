@@ -13,8 +13,16 @@ public class ServicioJugador {
 	@Autowired
 	private IDAOJugador daoJugador;
 
+	public boolean existeJugadorPorNumeroYNombre(int numeroJugador, String nombreJugador) {
+		return this.daoJugador.existsByNumeroAndNombre(numeroJugador, nombreJugador);
+	}
+
 	public EntidadJugador guardar(Jugador jugador) {
 		return this.daoJugador.save(new EntidadJugador(0, jugador.getId(), jugador.getNombre()));
+	}
+
+	public EntidadJugador actualizar(EntidadJugador jugador) {
+		return this.daoJugador.save(jugador);
 	}
 
 }

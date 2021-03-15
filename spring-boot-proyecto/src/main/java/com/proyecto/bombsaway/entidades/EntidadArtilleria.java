@@ -11,6 +11,9 @@ public class EntidadArtilleria {
 	@Column(name = "id_artilleria")
 	private int id;
 
+	@Column(name = "numero", nullable = false)
+	private int numero;
+
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "id_jugador")
 	private EntidadJugador jugador;
@@ -33,9 +36,10 @@ public class EntidadArtilleria {
 	public EntidadArtilleria() {
 	}
 
-	public EntidadArtilleria(int id, EntidadJugador jugador, double ejeX, double ejeY, double angulo, boolean destruida,
-			boolean visible) {
+	public EntidadArtilleria(int id, int numero, EntidadJugador jugador, double ejeX, double ejeY, double angulo,
+			boolean destruida, boolean visible) {
 		this.id = id;
+		this.numero = numero;
 		this.jugador = jugador;
 		this.ejeX = ejeX;
 		this.ejeY = ejeY;
@@ -50,6 +54,14 @@ public class EntidadArtilleria {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 	public EntidadJugador getJugador() {

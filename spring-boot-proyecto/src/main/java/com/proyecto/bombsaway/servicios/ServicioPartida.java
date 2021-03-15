@@ -122,14 +122,24 @@ public class ServicioPartida {
 		return mensaje.toString();
 	}
 
-	public void guardarPartida(String nombrePartida) {
+	public void guardarPartida(DTOGuardarPartida guardarPartidaDto) {
 		try {
-			Partida partida = this.recuperarPartida(nombrePartida);
-			this.servicioPartidaDb.guardarPartida(partida);
+			Partida partida = this.recuperarPartida(guardarPartidaDto.getNombrePartida());
+			this.servicioPartidaDb.guardarPartida(partida, guardarPartidaDto.getIdJugador());
+			this.manejadorPartida.removePartidaEnJuego(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
 			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cargarPartida(DTOCargarPartida cargarPartidaDto) {
+		try {
+			Partida partida = this.servicioPartidaDb.cargarPartida(cargarPartidaDto.getNombrePartida(),
+					cargarPartidaDto.getNombreJugador());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -397,30 +407,35 @@ public class ServicioPartida {
 			String notificacion = null;
 			Partida partida = recuperarPartida(avionDTO.getNombrePartida());
 			if (partida != null && !partida.isFinalizada()) {
-				// si el avion se fue de los limites, estalla
-				boolean avionFueraLimites = this.checkAvionFueraLimites(avionDTO);
-				boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
-				DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
+				Jugador jugadorActual = avionDTO.getIdJugador() == 1 ? partida.getJugadorUno()
+						: partida.getJugadorDos();
+				Avion avionActual = jugadorActual.getListAviones().get(avionDTO.getIdAvion());
+				if (avionActual.getEstado() != EstadoAvion.QUIETO && avionActual.getEstado() != EstadoAvion.DESTRUIDO) {
+					// si el avion se fue de los limites, estalla
+					boolean avionFueraLimites = this.checkAvionFueraLimites(avionDTO);
+					boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
+					DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
 
-				if (avionFueraLimites || avionSinCombustible) {
-					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
-					// se actualiza la partida y se envia el avion a estallar
-					notificacion = this.updateAvionEnPartida(avionDTO, partida);
-					this.estallarAvion(notificacion.toString());
-				} else if (avionChoqueDto != null) {
-					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
-					avionChoqueDto.setEstado(EstadoAvion.DESTRUIDO);
-					this.estallarAvion(avionDTO.toString());
-					this.estallarAvion(avionChoqueDto.toString());
-					this.updateAvionEnPartida(avionDTO, partida);
-					this.updateAvionEnPartida(avionChoqueDto, partida);
-				} else {
-					// se actualiza la partida y se envia el status del avion a el canal
-					notificacion = this.updateAvionEnPartida(avionDTO, partida);
-					this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
+					if (avionFueraLimites || avionSinCombustible) {
+						avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+						// se actualiza la partida y se envia el avion a estallar
+						notificacion = this.updateAvionEnPartida(avionDTO, partida);
+						this.estallarAvion(notificacion.toString());
+					} else if (avionChoqueDto != null) {
+						avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+						avionChoqueDto.setEstado(EstadoAvion.DESTRUIDO);
+						this.estallarAvion(avionDTO.toString());
+						this.estallarAvion(avionChoqueDto.toString());
+						this.updateAvionEnPartida(avionDTO, partida);
+						this.updateAvionEnPartida(avionChoqueDto, partida);
+					} else {
+						// se actualiza la partida y se envia el status del avion a el canal
+						notificacion = this.updateAvionEnPartida(avionDTO, partida);
+						this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
+					}
 				}
-				this.comprobarResultadoPartida(partida);
 			}
+			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -676,6 +691,7 @@ public class ServicioPartida {
 					}
 				}
 			}
+			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -777,6 +793,7 @@ public class ServicioPartida {
 					}
 				}
 			}
+			this.comprobarResultadoPartida(partida);
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -1022,9 +1039,8 @@ public class ServicioPartida {
 								}
 
 								for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
-									if (!artilleriaEnemigo.isDestruida()
-											&& (avion.getEstado() == EstadoAvion.ALTURA_ALTA
-													|| avion.getEstado() == EstadoAvion.ALTURA_BAJA)) {
+									if (avion.getEstado() == EstadoAvion.ALTURA_ALTA
+											|| avion.getEstado() == EstadoAvion.ALTURA_BAJA) {
 										Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
 												artilleriaEnemigo.getPosicion());
 										if (visibilidadAvionArtilleria) {

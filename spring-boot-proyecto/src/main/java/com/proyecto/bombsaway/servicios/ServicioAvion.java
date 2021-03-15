@@ -23,9 +23,13 @@ public class ServicioAvion {
 
 	public EntidadAvion guardar(Avion avion, EntidadJugador jugador) {
 		Posicion posicion = avion.getPosicion();
-		return this.daoAvion.save(new EntidadAvion(0, jugador, posicion.getEjeX(), posicion.getEjeY(),
+		return this.daoAvion.save(new EntidadAvion(0, avion.getId(), jugador, posicion.getEjeX(), posicion.getEjeY(),
 				posicion.getAngulo(), avion.getEstado(), avion.getVida(), avion.getCombustible(), avion.isTieneBomba(),
 				avion.isVisible()));
+	}
+
+	public EntidadAvion actualizar(EntidadAvion avion) {
+		return this.daoAvion.save(avion);
 	}
 
 }

@@ -82,6 +82,31 @@ public class ManejadorPartida {
 		}
 	}
 
+	public synchronized void removePartidaEnJuego(Partida partidaEnJuego) throws ConcurrenciaException {
+		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
+			// se elimina la partida en juego //
+			Partida partidaParaRemover = null;
+			for (Partida partida : this.partidasEnJuego) {
+				if (partida.getNombre().equalsIgnoreCase(partidaEnJuego.getNombre())) {
+					partidaParaRemover = partida;
+				}
+			}
+			if (partidaParaRemover != null) {
+				this.partidasEnJuego.remove(partidaParaRemover);
+			}
+			this.jugadoresConectados--;
+			notify();
+		} catch (InterruptedException error) {
+			throw new ConcurrenciaException("Error de concurrencia al remover partida en juego");
+		} catch (Exception error) {
+			throw new ConcurrenciaException("Error en Manejador Partida al remover partida en juego");
+		}
+	}
+
 	public synchronized Partida getPartidaEnJuego(String nombrePartida) throws ConcurrenciaException {
 		Partida res = null;
 		try {

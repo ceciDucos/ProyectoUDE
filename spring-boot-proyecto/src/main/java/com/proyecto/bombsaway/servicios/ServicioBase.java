@@ -24,4 +24,8 @@ public class ServicioBase {
 		return this.daoBase.save(new EntidadBase(0, jugador, posicionBase.getEjeX(), posicionBase.getEjeY(),
 				posicionBase.getAngulo(), base.isVisible()));
 	}
+
+	public EntidadBase actualizar(EntidadBase base) {
+		return this.daoBase.save(base);
+	}
 }

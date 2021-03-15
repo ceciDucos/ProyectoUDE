@@ -27,4 +27,8 @@ public class ServicioElementoBase {
 				posicionBase.getEjeX(), posicionBase.getEjeY(), posicionBase.getAngulo(), elementoBase.isDestruido()));
 	}
 
+	public EntidadElementoBase actualizar(EntidadElementoBase elementoBase) {
+		return this.daoElementoBase.save(elementoBase);
+	}
+
 }

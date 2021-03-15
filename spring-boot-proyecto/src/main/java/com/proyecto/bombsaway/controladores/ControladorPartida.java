@@ -87,8 +87,8 @@ public class ControladorPartida {
 	}
 
 	@MessageMapping("/guardar-partida")
-	public void guardarPartida(String nombrePartida) {
-		this.servicioPartida.guardarPartida(nombrePartida);
+	public void guardarPartida(DTOGuardarPartida guardarPartidaDto) {
+		this.servicioPartida.guardarPartida(guardarPartidaDto);
 	}
 
 }

@@ -23,6 +23,9 @@ public class EntidadAvion {
 	@Column(name = "id_avion")
 	private int id;
 
+	@Column(name = "numero", nullable = false)
+	private int numero;
+
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "id_jugador")
 	private EntidadJugador jugador;
@@ -55,9 +58,10 @@ public class EntidadAvion {
 	public EntidadAvion() {
 	}
 
-	public EntidadAvion(int id, EntidadJugador jugador, double ejeX, double ejeY, double angulo, EstadoAvion estado,
-			int vida, int combustible, boolean tieneBomba, boolean visible) {
+	public EntidadAvion(int id, int numero, EntidadJugador jugador, double ejeX, double ejeY, double angulo,
+			EstadoAvion estado, int vida, int combustible, boolean tieneBomba, boolean visible) {
 		this.id = id;
+		this.numero = numero;
 		this.jugador = jugador;
 		this.ejeX = ejeX;
 		this.ejeY = ejeY;
@@ -75,6 +79,14 @@ public class EntidadAvion {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 	public EntidadJugador getJugador() {

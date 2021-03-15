@@ -22,17 +22,23 @@ public class EntidadPartida {
 	@JoinColumn(name = "id_jugador_2", referencedColumnName = "id_jugador")
 	private EntidadJugador jugador2;
 
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "id_jugador_guarda_partida", referencedColumnName = "id_jugador")
+	private EntidadJugador jugadorGuardaPartida;
+
 	@Column(name = "finalizada", nullable = false)
 	private boolean finalizada;
 
 	public EntidadPartida() {
 	}
 
-	public EntidadPartida(int id, String nombre, EntidadJugador jugador1, EntidadJugador jugador2, boolean finalizada) {
+	public EntidadPartida(int id, String nombre, EntidadJugador jugador1, EntidadJugador jugador2,
+			EntidadJugador jugadorGuardaPartida, boolean finalizada) {
 		this.id = id;
 		this.nombre = nombre;
 		this.jugador1 = jugador1;
 		this.jugador2 = jugador2;
+		this.jugadorGuardaPartida = jugadorGuardaPartida;
 		this.finalizada = finalizada;
 	}
 
@@ -66,6 +72,14 @@ public class EntidadPartida {
 
 	public void setJugador2(EntidadJugador jugador2) {
 		this.jugador2 = jugador2;
+	}
+
+	public EntidadJugador getJugadorGuardaPartida() {
+		return jugadorGuardaPartida;
+	}
+
+	public void setJugadorGuardaPartida(EntidadJugador jugadorGuardaPartida) {
+		this.jugadorGuardaPartida = jugadorGuardaPartida;
 	}
 
 	public boolean isFinalizada() {

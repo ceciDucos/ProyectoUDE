@@ -109,6 +109,7 @@ public class ServicioPartida {
 				this.manejadorPartida.addPartidaEnJuego(partidaEnJuego);
 				mensaje = new DTOMensaje("Bootloader");
 				mensaje.setNombrePartida(partidaEnJuego.getNombre());
+				mensaje.setCantidadMaxArtilleria(this.CANTIDAD_ARTILLERIA);
 			} else {
 				mensaje = new DTOMensaje("No se encuentran partidas creadas");
 			}

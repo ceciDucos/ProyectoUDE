@@ -6,4 +6,6 @@ import com.proyecto.bombsaway.entidades.EntidadPartida;
 
 public interface IDAOPartida extends JpaRepository<EntidadPartida, Integer> {
 
+	public EntidadPartida findByNombre(String nombre);
+
 }

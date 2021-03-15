@@ -136,7 +136,8 @@ public class ServicioPartidaDb {
 	public Partida cargarPartida(String nombre) {
 		Partida partida = null;
 		try {
-
+			EntidadPartida partidaDb = this.daoPartida.findByNombre(nombre);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

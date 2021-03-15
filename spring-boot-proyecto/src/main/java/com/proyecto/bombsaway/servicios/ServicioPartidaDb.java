@@ -1,18 +1,18 @@
 package com.proyecto.bombsaway.servicios;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.proyecto.bombsaway.clases.Artilleria;
 import com.proyecto.bombsaway.clases.Avion;
-import com.proyecto.bombsaway.clases.Bala;
 import com.proyecto.bombsaway.clases.Base;
 import com.proyecto.bombsaway.clases.ElementoBase;
 import com.proyecto.bombsaway.clases.Partida;
 import com.proyecto.bombsaway.daos.IDAOPartida;
 import com.proyecto.bombsaway.entidades.EntidadArtilleria;
 import com.proyecto.bombsaway.entidades.EntidadAvion;
-import com.proyecto.bombsaway.entidades.EntidadBala;
 import com.proyecto.bombsaway.entidades.EntidadBase;
 import com.proyecto.bombsaway.entidades.EntidadElementoBase;
 import com.proyecto.bombsaway.entidades.EntidadJugador;
@@ -39,18 +39,6 @@ public class ServicioPartidaDb {
 	@Autowired
 	private ServicioArtilleria servicioArtilleria;
 
-	@Autowired
-	private ServicioBala servicioBala;
-
-	@Autowired
-	private ServicioBalaAvion servicioBalaAvion;
-
-	@Autowired
-	private ServicioBalaArtilleria servicioBalaArtilleria;
-
-	@Autowired
-	private ServicioBalaTorreta servicioBalaTorreta;
-
 	public void guardarPartida(Partida partida) {
 		try {
 			if (partida != null) {
@@ -71,58 +59,22 @@ public class ServicioPartidaDb {
 						base2 = this.servicioBase.guardar(baseJ2, jugador2);
 						if (base1 != null && base2 != null) {
 							for (ElementoBase elementoBaseJ1 : baseJ1.getElementosBase()) {
-								if (elementoBaseJ1.getNombre() == "torreta") {
-									EntidadElementoBase torretaJ1 = this.servicioElementoBase.guardar(elementoBaseJ1,
-											base1);
-									for (Bala balaJ1 : elementoBaseJ1.getListBalas()) {
-										EntidadBala balaDb = this.servicioBala.guardar(balaJ1);
-										this.servicioBalaTorreta.guardar(balaDb, torretaJ1);
-									}
-								} else {
-									this.servicioElementoBase.guardar(elementoBaseJ1, base1);
-								}
+								this.servicioElementoBase.guardar(elementoBaseJ1, base1);
 							}
 							for (ElementoBase elementoBaseJ2 : baseJ2.getElementosBase()) {
-								if (elementoBaseJ2.getNombre() == "torreta") {
-									EntidadElementoBase torretaJ2 = this.servicioElementoBase.guardar(elementoBaseJ2,
-											base2);
-									for (Bala balaJ2 : elementoBaseJ2.getListBalas()) {
-										EntidadBala balaDb = this.servicioBala.guardar(balaJ2);
-										this.servicioBalaTorreta.guardar(balaDb, torretaJ2);
-									}
-								} else {
-									this.servicioElementoBase.guardar(elementoBaseJ2, base2);
-								}
+								this.servicioElementoBase.guardar(elementoBaseJ2, base2);
 							}
 							for (Avion avionJ1 : partida.getJugadorUno().getListAviones()) {
-								EntidadAvion avionDb = this.servicioAvion.guardar(avionJ1, jugador1);
-								for (Bala balaJ1 : avionJ1.getListBalas()) {
-									EntidadBala balaDb = this.servicioBala.guardar(balaJ1);
-									this.servicioBalaAvion.guardar(balaDb, avionDb);
-								}
+								this.servicioAvion.guardar(avionJ1, jugador1);
 							}
 							for (Avion avionJ2 : partida.getJugadorDos().getListAviones()) {
-								EntidadAvion avionDb = this.servicioAvion.guardar(avionJ2, jugador2);
-								for (Bala balaJ2 : avionJ2.getListBalas()) {
-									EntidadBala balaDb = this.servicioBala.guardar(balaJ2);
-									this.servicioBalaAvion.guardar(balaDb, avionDb);
-								}
+								this.servicioAvion.guardar(avionJ2, jugador2);
 							}
 							for (Artilleria artilleriaJ1 : partida.getJugadorUno().getListArtilleria()) {
-								EntidadArtilleria artilleriaDb = this.servicioArtilleria.guardar(artilleriaJ1,
-										jugador1);
-								for (Bala balaJ1 : artilleriaJ1.getListBalas()) {
-									EntidadBala balaDb = this.servicioBala.guardar(balaJ1);
-									this.servicioBalaArtilleria.guardar(balaDb, artilleriaDb);
-								}
+								this.servicioArtilleria.guardar(artilleriaJ1, jugador1);
 							}
 							for (Artilleria artilleriaJ2 : partida.getJugadorDos().getListArtilleria()) {
-								EntidadArtilleria artilleriaDb = this.servicioArtilleria.guardar(artilleriaJ2,
-										jugador2);
-								for (Bala balaJ2 : artilleriaJ2.getListBalas()) {
-									EntidadBala balaDb = this.servicioBala.guardar(balaJ2);
-									this.servicioBalaArtilleria.guardar(balaDb, artilleriaDb);
-								}
+								this.servicioArtilleria.guardar(artilleriaJ2, jugador2);
 							}
 						}
 					}
@@ -137,7 +89,20 @@ public class ServicioPartidaDb {
 		Partida partida = null;
 		try {
 			EntidadPartida partidaDb = this.daoPartida.findByNombre(nombre);
-			
+			EntidadJugador jugador1Db = partidaDb.getJugador1();
+			EntidadJugador jugador2Db = partidaDb.getJugador2();
+			EntidadBase baseJ1Db = this.servicioBase.buscarPorIdJugador(jugador1Db.getId());
+			EntidadBase baseJ2Db = this.servicioBase.buscarPorIdJugador(jugador2Db.getId());
+			List<EntidadElementoBase> elementosBaseJ1Db = this.servicioElementoBase
+					.buscarTodosPorIdBase(baseJ1Db.getId());
+			List<EntidadElementoBase> elementosBaseJ2Db = this.servicioElementoBase
+					.buscarTodosPorIdBase(baseJ2Db.getId());
+			List<EntidadAvion> avionesJ1Db = this.servicioAvion.buscarTodosPorIdJugador(jugador1Db.getId());
+			List<EntidadAvion> avionesJ2Db = this.servicioAvion.buscarTodosPorIdJugador(jugador2Db.getId());
+			List<EntidadArtilleria> artilleriaJ1Db = this.servicioArtilleria
+					.buscarTodosPorIdJugador(jugador1Db.getId());
+			List<EntidadArtilleria> artilleriaJ2Db = this.servicioArtilleria
+					.buscarTodosPorIdJugador(jugador2Db.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -9,7 +9,8 @@ public class ElementoBase {
 	private boolean destruido;
 	private List<Bala> listBalas;
 
-	public ElementoBase() {}
+	public ElementoBase() {
+	}
 
 	public ElementoBase(String nombre, Posicion posicion, boolean destruido) {
 		super();
@@ -28,11 +29,12 @@ public class ElementoBase {
 
 	public void inicializarBalas() {
 		this.listBalas = new ArrayList<Bala>();
-		for (int i = 0; i < 30; i++){
-			Bala balaAvion = new Bala();
-			balaAvion.setId(i);
-			balaAvion.setVisible(false);
-			listBalas.add(balaAvion);
+		for (int i = 0; i < 30; i++) {
+			Bala balaTorreta = new Bala();
+			balaTorreta.setId(i);
+			balaTorreta.setPosicion(this.posicion);
+			balaTorreta.setVisible(false);
+			listBalas.add(balaTorreta);
 		}
 	}
 
@@ -58,7 +60,6 @@ public class ElementoBase {
 
 	public void setDestruido(boolean destruido) {
 		this.destruido = destruido;
-	}	
-	
-}
+	}
 
+}

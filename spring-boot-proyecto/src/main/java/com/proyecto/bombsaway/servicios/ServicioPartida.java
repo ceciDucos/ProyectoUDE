@@ -465,10 +465,8 @@ public class ServicioPartida {
 			if (avion.getVida() > this.DANIO_DISPARO_BALA) {
 				// el avion tiene suficiente vida para recibir disparo, la vida desciende
 				int vidaActual = avion.getVida();
-				System.out.println(elemento);
 
 				int danio = elemento == "artilleria" ? this.DANIO_DISPARO_BALA_TORRETA : this.DANIO_DISPARO_BALA;
-				System.out.println(danio);
 				avion.setVida(vidaActual - danio);
 				dtoAvion = avion.getDTO();
 			} else {
@@ -725,7 +723,7 @@ public class ServicioPartida {
 				if (torre != null) {
 					Bala balaDisparada = torre.getListBalas().get(balaDto.getIdBala());
 					balaDisparada.setVisible(true);
-					this.mensajeriaUpdate.sendPosicionBalaArtilleria(balaDto.toString());
+					this.mensajeriaUpdate.sendPosicionBalaTorre(balaDto.toString());
 				}
 			}
 		} catch (ConcurrenciaException error) {
@@ -972,7 +970,6 @@ public class ServicioPartida {
 		try {
 			List<Partida> partidas = this.manejadorPartida.getPartidasEnJuego();
 			for (Partida partida : partidas) {
-				System.out.println(partida.isFinalizada());
 				if (!partida.isFinalizada()) {
 					Jugador jugadorActual = idJugador == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 					Jugador jugadorEnemigo = idJugador == 1 ? partida.getJugadorDos() : partida.getJugadorUno();

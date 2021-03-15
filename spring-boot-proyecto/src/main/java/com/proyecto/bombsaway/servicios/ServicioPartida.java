@@ -1024,9 +1024,8 @@ public class ServicioPartida {
 								}
 
 								for (Artilleria artilleriaEnemigo : listArtilleriaEnemigo) {
-									if (!artilleriaEnemigo.isDestruida()
-											&& (avion.getEstado() == EstadoAvion.ALTURA_ALTA
-													|| avion.getEstado() == EstadoAvion.ALTURA_BAJA)) {
+									if (avion.getEstado() == EstadoAvion.ALTURA_ALTA
+													|| avion.getEstado() == EstadoAvion.ALTURA_BAJA) {
 										Boolean visibilidadAvionArtilleria = this.checkVisibilidad(avion, "artilleria",
 												artilleriaEnemigo.getPosicion());
 										if (visibilidadAvionArtilleria) {

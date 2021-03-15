@@ -15,6 +15,10 @@ public class ServicioBase {
 	@Autowired
 	private IDAOBase daoBase;
 
+	public EntidadBase buscarPorIdJugador(int idJugador) {
+		return this.daoBase.findByIdJugador(idJugador);
+	}
+
 	public EntidadBase guardar(Base base, EntidadJugador jugador) {
 		Posicion posicionBase = base.getPosicion();
 		return this.daoBase.save(new EntidadBase(0, jugador, posicionBase.getEjeX(), posicionBase.getEjeY(),

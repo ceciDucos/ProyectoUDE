@@ -2,13 +2,11 @@ package com.proyecto.bombsaway.servicios;
 
 import com.proyecto.bombsaway.clases.*;
 import com.proyecto.bombsaway.controladores.ControladorMensajes;
-import com.proyecto.bombsaway.daos.IDAOPartida;
 import com.proyecto.bombsaway.dtos.*;
 import com.proyecto.bombsaway.excepciones.ConcurrenciaException;
 import com.proyecto.bombsaway.manejadores.ManejadorPartida;
 import com.proyecto.bombsaway.enumerados.EstadoAvion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -972,7 +970,6 @@ public class ServicioPartida {
 		try {
 			List<Partida> partidas = this.manejadorPartida.getPartidasEnJuego();
 			for (Partida partida : partidas) {
-				System.out.println(partida.isFinalizada());
 				if (!partida.isFinalizada()) {
 					Jugador jugadorActual = idJugador == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 					Jugador jugadorEnemigo = idJugador == 1 ? partida.getJugadorDos() : partida.getJugadorUno();

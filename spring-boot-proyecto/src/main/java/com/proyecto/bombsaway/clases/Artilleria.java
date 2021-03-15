@@ -9,8 +9,9 @@ public class Artilleria {
 	private boolean destruida;
 	private List<Bala> listBalas;
 	private boolean visible;
-	
-	public Artilleria() {}
+
+	public Artilleria() {
+	}
 
 	public Artilleria(int idArtilleria, Posicion posicion, boolean destruida) {
 		this.idArtilleria = idArtilleria;
@@ -20,11 +21,12 @@ public class Artilleria {
 
 	public void inicializarBalas() {
 		this.listBalas = new ArrayList<Bala>();
-		for (int i = 0; i < 30; i++){
-			Bala balaAvion = new Bala();
-			balaAvion.setId(i);
-			balaAvion.setVisible(false);
-			listBalas.add(balaAvion);
+		for (int i = 0; i < 30; i++) {
+			Bala balaArtilleria = new Bala();
+			balaArtilleria.setId(i);
+			balaArtilleria.setPosicion(this.posicion);
+			balaArtilleria.setVisible(false);
+			listBalas.add(balaArtilleria);
 		}
 	}
 
@@ -33,7 +35,7 @@ public class Artilleria {
 	}
 
 	public void setListaBalas(List<Bala> listaBalas) {
-		this.listBalas = listBalas;
+		this.listBalas = listaBalas;
 	}
 
 	public boolean isVisible() {
@@ -67,5 +69,5 @@ public class Artilleria {
 	public void setDestruida(boolean destruida) {
 		this.destruida = destruida;
 	}
-	
+
 }

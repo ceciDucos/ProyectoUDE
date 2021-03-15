@@ -1,5 +1,7 @@
 package com.proyecto.bombsaway.servicios;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,10 @@ public class ServicioElementoBase {
 
 	@Autowired
 	private IDAOElementoBase daoElementoBase;
+
+	public List<EntidadElementoBase> buscarTodosPorIdBase(int idBase) {
+		return this.daoElementoBase.findAllByIdBase(idBase);
+	}
 
 	public EntidadElementoBase guardar(ElementoBase elementoBase, EntidadBase base) {
 		Posicion posicionBase = elementoBase.getPosicion();

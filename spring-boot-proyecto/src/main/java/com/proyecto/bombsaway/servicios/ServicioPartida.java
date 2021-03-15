@@ -973,7 +973,7 @@ public class ServicioPartida {
 		try {
 			List<Partida> partidas = this.manejadorPartida.getPartidasEnJuego();
 			for (Partida partida : partidas) {
-				if (!partida.isFinalizada()) {
+				if (partida != null && !partida.isFinalizada()) {
 					Jugador jugadorActual = idJugador == 1 ? partida.getJugadorUno() : partida.getJugadorDos();
 					Jugador jugadorEnemigo = idJugador == 1 ? partida.getJugadorDos() : partida.getJugadorUno();
 					boolean jugadorActualPronto = false;

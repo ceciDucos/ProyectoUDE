@@ -4,14 +4,14 @@ public class DTOGuardarPartida {
 
 	private String nombrePartida;
 
-	private int idJugador;
+	private int idJugadorGuarda;
 
 	public DTOGuardarPartida() {
 	}
 
-	public DTOGuardarPartida(String nombrePartida, int idJugador) {
+	public DTOGuardarPartida(String nombrePartida, int idJugadorGuarda) {
 		this.nombrePartida = nombrePartida;
-		this.idJugador = idJugador;
+		this.idJugadorGuarda = idJugadorGuarda;
 	}
 
 	public String getNombrePartida() {
@@ -22,12 +22,12 @@ public class DTOGuardarPartida {
 		this.nombrePartida = nombrePartida;
 	}
 
-	public int getIdJugador() {
-		return idJugador;
+	public int getIdJugadorGuarda() {
+		return idJugadorGuarda;
 	}
 
-	public void setIdJugador(int idJugador) {
-		this.idJugador = idJugador;
+	public void setIdJugadorGuarda(int idJugadorGuarda) {
+		this.idJugadorGuarda = idJugadorGuarda;
 	}
 
 }

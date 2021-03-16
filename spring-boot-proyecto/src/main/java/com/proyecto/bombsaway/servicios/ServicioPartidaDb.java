@@ -129,12 +129,6 @@ public class ServicioPartidaDb {
 
 			Jugador jugador1 = partida.getJugadorUno();
 			Jugador jugador2 = partida.getJugadorDos();
-			/*jugador1Db = (this.servicioJugador.existeJugadorPorNumeroYNombre(jugador1.getId(), jugador1.getNombre()))
-					? jugador1Db
-					: this.servicioJugador.guardar(jugador1);
-			jugador2Db = (this.servicioJugador.existeJugadorPorNumeroYNombre(jugador2.getId(), jugador2.getNombre()))
-					? jugador2Db
-					: this.servicioJugador.guardar(jugador2);*/
 			jugadorGuardaPartidaDb = (jugador1Db.getNumero() == jugadorGuardaPartidaId) ? jugador1Db : jugador2Db;
 			partidaDb.setJugador1(jugador1Db);
 			partidaDb.setJugador2(jugador2Db);
@@ -145,16 +139,8 @@ public class ServicioPartidaDb {
 
 			// Actualizar datos de las bases //
 
-			baseJ1Db.setJugador(jugador1Db);
-			baseJ1Db.setEjeX(jugador1.getBase().getPosicion().getEjeX());
-			baseJ1Db.setEjeY(jugador1.getBase().getPosicion().getEjeY());
-			baseJ1Db.setAngulo(jugador1.getBase().getPosicion().getAngulo());
 			baseJ1Db.setVisible(jugador1.getBase().isVisible());
 			this.servicioBase.actualizar(baseJ1Db);
-			baseJ2Db.setJugador(jugador2Db);
-			baseJ2Db.setEjeX(jugador2.getBase().getPosicion().getEjeX());
-			baseJ2Db.setEjeY(jugador2.getBase().getPosicion().getEjeY());
-			baseJ2Db.setAngulo(jugador2.getBase().getPosicion().getAngulo());
 			baseJ2Db.setVisible(jugador2.getBase().isVisible());
 			this.servicioBase.actualizar(baseJ2Db);
 
@@ -164,24 +150,18 @@ public class ServicioPartidaDb {
 
 			for (EntidadElementoBase elementoBaseJ1Db : elementosBaseJ1Db) {
 				for (ElementoBase elementoBaseJ1 : jugador1.getBase().getElementosBase()) {
-					if (elementoBaseJ1.getNombre() == elementoBaseJ1Db.getNombre()) {
-						elementoBaseJ1Db.setBase(baseJ1Db);
-						elementoBaseJ1Db.setEjeX(elementoBaseJ1.getPosicion().getEjeX());
-						elementoBaseJ1Db.setEjeY(elementoBaseJ1.getPosicion().getEjeY());
-						elementoBaseJ1Db.setAngulo(elementoBaseJ1.getPosicion().getAngulo());
+					if (elementoBaseJ1.getNombre().trim().equals(elementoBaseJ1Db.getNombre().trim())) {
 						elementoBaseJ1Db.setDestruido(elementoBaseJ1.isDestruido());
+						this.servicioElementoBase.actualizar(elementoBaseJ1Db);
 					}
 				}
 			}
 
 			for (EntidadElementoBase elementoBaseJ2Db : elementosBaseJ2Db) {
 				for (ElementoBase elementoBaseJ2 : jugador2.getBase().getElementosBase()) {
-					if (elementoBaseJ2.getNombre() == elementoBaseJ2Db.getNombre()) {
-						elementoBaseJ2Db.setBase(baseJ2Db);
-						elementoBaseJ2Db.setEjeX(elementoBaseJ2.getPosicion().getEjeX());
-						elementoBaseJ2Db.setEjeY(elementoBaseJ2.getPosicion().getEjeY());
-						elementoBaseJ2Db.setAngulo(elementoBaseJ2.getPosicion().getAngulo());
+					if (elementoBaseJ2.getNombre().trim().equals(elementoBaseJ2Db.getNombre().trim())) {
 						elementoBaseJ2Db.setDestruido(elementoBaseJ2.isDestruido());
+						this.servicioElementoBase.actualizar(elementoBaseJ2Db);
 					}
 				}
 			}
@@ -193,7 +173,6 @@ public class ServicioPartidaDb {
 			for (EntidadAvion avionJ1Db : avionesJ1Db) {
 				for (Avion avionJ1 : jugador1.getListAviones()) {
 					if (avionJ1Db.getNumero() == avionJ1.getId()) {
-						avionJ1Db.setJugador(jugador1Db);
 						avionJ1Db.setEjeX(avionJ1.getPosicion().getEjeX());
 						avionJ1Db.setEjeY(avionJ1.getPosicion().getEjeY());
 						avionJ1Db.setAngulo(avionJ1.getPosicion().getAngulo());
@@ -210,7 +189,6 @@ public class ServicioPartidaDb {
 			for (EntidadAvion avionJ2Db : avionesJ2Db) {
 				for (Avion avionJ2 : jugador2.getListAviones()) {
 					if (avionJ2Db.getNumero() == avionJ2.getId()) {
-						avionJ2Db.setJugador(jugador2Db);
 						avionJ2Db.setEjeX(avionJ2.getPosicion().getEjeX());
 						avionJ2Db.setEjeY(avionJ2.getPosicion().getEjeY());
 						avionJ2Db.setAngulo(avionJ2.getPosicion().getAngulo());
@@ -231,7 +209,6 @@ public class ServicioPartidaDb {
 			for (EntidadArtilleria artilleriaJ1Db : artilleriasJ1Db) {
 				for (Artilleria artilleriaJ1 : jugador1.getListArtilleria()) {
 					if (artilleriaJ1.getIdArtilleria() == artilleriaJ1Db.getNumero()) {
-						artilleriaJ1Db.setJugador(jugador1Db);
 						artilleriaJ1Db.setEjeX(artilleriaJ1.getPosicion().getEjeX());
 						artilleriaJ1Db.setEjeY(artilleriaJ1.getPosicion().getEjeY());
 						artilleriaJ1Db.setAngulo(artilleriaJ1.getPosicion().getAngulo());
@@ -245,7 +222,6 @@ public class ServicioPartidaDb {
 			for (EntidadArtilleria artilleriaJ2Db : artilleriasJ2Db) {
 				for (Artilleria artilleriaJ2 : jugador2.getListArtilleria()) {
 					if (artilleriaJ2.getIdArtilleria() == artilleriaJ2Db.getNumero()) {
-						artilleriaJ2Db.setJugador(jugador2Db);
 						artilleriaJ2Db.setEjeX(artilleriaJ2.getPosicion().getEjeX());
 						artilleriaJ2Db.setEjeY(artilleriaJ2.getPosicion().getEjeY());
 						artilleriaJ2Db.setAngulo(artilleriaJ2.getPosicion().getAngulo());

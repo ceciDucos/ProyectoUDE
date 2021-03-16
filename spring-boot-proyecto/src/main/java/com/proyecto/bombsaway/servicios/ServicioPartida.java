@@ -402,18 +402,18 @@ public class ServicioPartida {
 				boolean avionSinCombustible = this.checkCombustibleAvion(avionDTO);
 				DTOAvion avionChoqueDto = this.checkChoqueEntreAviones(avionDTO);
 
-				if (avionFueraLimites || avionSinCombustible) {
-					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
-					// se actualiza la partida y se envia el avion a estallar
-					notificacion = this.updateAvionEnPartida(avionDTO, partida);
-					this.estallarAvion(notificacion.toString());
-				} else if (avionChoqueDto != null) {
+				if (avionChoqueDto != null) {
 					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
 					avionChoqueDto.setEstado(EstadoAvion.DESTRUIDO);
 					this.estallarAvion(avionDTO.toString());
 					this.estallarAvion(avionChoqueDto.toString());
 					this.updateAvionEnPartida(avionDTO, partida);
 					this.updateAvionEnPartida(avionChoqueDto, partida);
+				} else if (avionFueraLimites || avionSinCombustible) {
+					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
+					// se actualiza la partida y se envia el avion a estallar
+					notificacion = this.updateAvionEnPartida(avionDTO, partida);
+					this.estallarAvion(notificacion.toString());
 				} else {
 					// se actualiza la partida y se envia el status del avion a el canal
 					notificacion = this.updateAvionEnPartida(avionDTO, partida);
@@ -888,7 +888,12 @@ public class ServicioPartida {
 			}
 			this.manejadorPartida.updatePartidaEnJuego(partida);
 		}
-		return notificacion.toString();
+		if (notificacion != null) {
+			return notificacion.toString();
+		}
+		else {
+			return null;
+		}
 	}
 
 	public void moverArtilleria(DTOArtilleria artilleriaDto) {

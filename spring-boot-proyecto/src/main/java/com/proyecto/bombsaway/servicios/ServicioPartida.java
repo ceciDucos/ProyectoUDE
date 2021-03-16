@@ -851,8 +851,11 @@ public class ServicioPartida {
 							avionEnemigo.getPosicion(), radioAvion);
 					if (impacto) {
 						Avion avionActual = jugadorActual.getListAviones().get(avionDto.getIdAvion());
+						avionActual.setVida(0);
+						avionEnemigo.setVida(0);
 						avionActual.setEstado(EstadoAvion.DESTRUIDO);
 						avionEnemigo.setEstado(EstadoAvion.DESTRUIDO);
+
 						// se crea el DTOAvion del avion enemigo dstruido.
 						avionImpactado = avionEnemigo.getDTO();
 						avionImpactado.setNombrePartida(avionDto.getNombrePartida());

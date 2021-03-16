@@ -91,4 +91,19 @@ public class ControladorPartida {
 		this.servicioPartida.guardarPartida(guardarPartidaDto);
 	}
 
+	@MessageMapping("/abandonar-partida")
+	public void abandonarPartida(DTOAbandonarPartida abandonarPartidaDto) {
+		this.servicioPartida.abandonarPartida(abandonarPartidaDto);
+	}
+
+	@MessageMapping("/cargar-partida")
+	public void cargarPartida(DTOCargarPartida cargarPartidaDto) {
+		this.servicioPartida.cargarPartida(cargarPartidaDto);
+	}
+
+	@MessageMapping("/unirse-partida-guardada")
+	public void unirsePartidaGuardada(DTOPartidaEnEspera partidaEnEsperaDto) {
+		this.servicioPartida.unirsePartidaGuardada(partidaEnEsperaDto);
+	}
+
 }

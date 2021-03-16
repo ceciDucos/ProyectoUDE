@@ -9,7 +9,8 @@ public class Base {
 	private List<ElementoBase> elementosBase;
 	private boolean visible;
 
-	public Base() { }
+	public Base() {
+	}
 
 	public Base(Posicion posicion, List<ElementoBase> elementosBase) {
 		this.posicion = posicion;

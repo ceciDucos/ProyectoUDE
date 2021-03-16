@@ -7,6 +7,7 @@ import com.proyecto.bombsaway.excepciones.ConcurrenciaException;
 import com.proyecto.bombsaway.manejadores.ManejadorPartida;
 import com.proyecto.bombsaway.enumerados.EstadoAvion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.parser.Part.IgnoreCaseType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -122,6 +123,46 @@ public class ServicioPartida {
 		return mensaje.toString();
 	}
 
+	public void unirsePartidaGuardada(DTOPartidaEnEspera partidaEnEsperaDto) {
+		try {
+			List<PartidaCargada> partidasCargadas = this.manejadorPartida.getPartidasCargadas();
+			PartidaCargada partidaActual = null;
+			boolean iniciarPartida = false;
+			for (PartidaCargada partidaCargada : partidasCargadas) {
+				if (partidaCargada.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombrePartida())) {
+					partidaActual = partidaCargada;
+				}
+			}
+			if (partidaActual != null) {
+				Jugador jugador1 = partidaActual.getJugadorUno();
+				Jugador jugador2 = partidaActual.getJugadorDos();
+				if (jugador1.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombreJugador())) {
+					if (partidaActual.isJugadorDosListo()) {
+						iniciarPartida = true;
+					}
+				} else if (jugador2.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombreJugador())) {
+					if (partidaActual.isJugadorUnoListo()) {
+						iniciarPartida = true;
+					}
+				}
+				if (iniciarPartida) {
+					Partida partida = this.servicioPartidaDb.cargarPartida(partidaEnEsperaDto.getNombrePartida(),
+							partidaEnEsperaDto.getNombreJugador());
+					this.manejadorPartida.addPartidaCargadaEnJuego(partida);
+					DTOPartidaRecuperada partidaRecuperadaDto = new DTOPartidaRecuperada(partida.getNombre(),
+							partida.getJugadorUno(), partida.getJugadorDos());
+					this.mensajeriaUpdate.sendRecuperarPartida(partidaRecuperadaDto.toString());
+				}
+			}
+		} catch (ConcurrenciaException error) {
+			String mensajeError = this.getMensajeError(error.getMensaje());
+			this.mensajeriaUpdate.sendErrores(mensajeError);
+			System.out.println("Error: " + error.getMensaje());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void guardarPartida(DTOGuardarPartida guardarPartidaDto) {
 		try {
 			Partida partida = this.recuperarPartida(guardarPartidaDto.getNombrePartida());
@@ -139,6 +180,20 @@ public class ServicioPartida {
 		try {
 			Partida partida = this.servicioPartidaDb.cargarPartida(cargarPartidaDto.getNombrePartida(),
 					cargarPartidaDto.getNombreJugador());
+			if (partida != null) {
+				PartidaCargada partidaCargada = new PartidaCargada();
+				partidaCargada.setNombre(partida.getNombre());
+				partidaCargada.setJugadorUno(partida.getJugadorUno());
+				partidaCargada.setJugadorDos(partida.getJugadorDos());
+				if (cargarPartidaDto.getNombreJugador().equalsIgnoreCase(partida.getJugadorUno().getNombre())) {
+					partidaCargada.setJugadorUnoListo(true);
+				} else {
+					partidaCargada.setJugadorDosListo(true);
+				}
+				this.manejadorPartida.addPartidaCargada(partidaCargada);
+			} else {
+				this.mensajeriaUpdate.sendErrores("La partida no existe.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

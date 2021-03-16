@@ -1,6 +1,7 @@
 package com.proyecto.bombsaway.manejadores;
 
 import com.proyecto.bombsaway.clases.Partida;
+import com.proyecto.bombsaway.clases.PartidaCargada;
 import com.proyecto.bombsaway.clases.PartidaEnEspera;
 import com.proyecto.bombsaway.excepciones.ConcurrenciaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class ManejadorPartida {
 	private List<PartidaEnEspera> partidasEnEspera = new ArrayList<>();
 	private List<Partida> partidasEnJuego = new ArrayList<>();
 	private int jugadoresConectados = 0;
+	private List<PartidaCargada> partidasCargadas = new ArrayList<>();
 
 	@Scope("singleton")
 	public static ManejadorPartida getManejadorPartida() {
@@ -36,6 +38,10 @@ public class ManejadorPartida {
 
 	public List<Partida> getPartidasEnJuego() {
 		return partidasEnJuego;
+	}
+
+	public List<PartidaCargada> getPartidasCargadas() {
+		return partidasCargadas;
 	}
 
 	// Se inicia una nueva partida por un jugador
@@ -72,6 +78,49 @@ public class ManejadorPartida {
 			if (partidaParaRemover != null) {
 				this.partidasEnEspera.remove(partidaParaRemover);
 				this.partidasEnJuego.add(partidaEnJuego);
+			}
+			this.jugadoresConectados--;
+			notify();
+		} catch (InterruptedException error) {
+			throw new ConcurrenciaException("Error de concurrencia al pasar partida de espera a en juego");
+		} catch (Exception error) {
+			throw new ConcurrenciaException("Error en Manejador Partida al pasar partida de espera a en juego");
+		}
+	}
+
+	public synchronized void addPartidaCargada(PartidaCargada partidaCargada) throws ConcurrenciaException {
+		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
+			// se elimina la partida de la espera y se agrega a partidas en juego
+			this.partidasCargadas.add(partidaCargada);
+			this.jugadoresConectados--;
+			notify();
+		} catch (InterruptedException error) {
+			throw new ConcurrenciaException("Error de concurrencia al pasar partida de espera a en juego");
+		} catch (Exception error) {
+			throw new ConcurrenciaException("Error en Manejador Partida al pasar partida de espera a en juego");
+		}
+	}
+
+	public synchronized void addPartidaCargadaEnJuego(Partida partida) throws ConcurrenciaException {
+		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
+			// se elimina la partida de la espera y se agrega a partidas en juego
+			PartidaCargada partidaParaRemover = null;
+			for (PartidaCargada partidaCargada : partidasCargadas) {
+				if (partidaCargada.getNombre().equalsIgnoreCase(partida.getNombre())) {
+					partidaParaRemover = partidaCargada;
+				}
+			}
+			if (partidaParaRemover != null) {
+				this.partidasCargadas.remove(partidaParaRemover);
+				this.partidasEnJuego.add(partida);
 			}
 			this.jugadoresConectados--;
 			notify();

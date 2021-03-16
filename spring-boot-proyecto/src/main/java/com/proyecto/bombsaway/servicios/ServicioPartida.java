@@ -33,9 +33,15 @@ public class ServicioPartida {
 	private final int RADIO_VISION_ARTILLERIA = 40;
 	private final ManejadorPartida manejadorPartida;
 	private final ControladorMensajes mensajeriaUpdate;
+	private int cantUsuarios = 0;
 
 	@Autowired
 	private ServicioPartidaDb servicioPartidaDb;
+
+	@Scope("singleton")
+	public static ServicioPartida getManejadorPartida() {
+		return new ServicioPartida();
+	}
 
 	@Autowired
 	public ServicioPartida(ManejadorPartida manejadorPartida, ControladorMensajes mensajeriaUpdate) {
@@ -45,6 +51,10 @@ public class ServicioPartida {
 
 	public int crearPartidaEnEspera(DTOPartidaEnEspera partidaEnEspera) {
 		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
 			PartidaEnEspera nuevaPartida = new PartidaEnEspera(partidaEnEspera.getNombrePartida(),
 					partidaEnEspera.getNombreJugador());
 			this.manejadorPartida.addPartidaEnEspera(nuevaPartida);
@@ -53,8 +63,12 @@ public class ServicioPartida {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
 			System.out.println("Error: " + error.getMensaje());
+			no
 		} catch (Exception error) {
 			error.printStackTrace();
+		} finally {
+			this.jugadoresConectados--;
+			notify();
 		}
 		return 1;
 	}
@@ -99,6 +113,10 @@ public class ServicioPartida {
 	public String unirseAPartida(DTOUsuario usuario) {
 		DTOMensaje mensaje = new DTOMensaje();
 		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
 			List<PartidaEnEspera> partidasEnEpera = this.manejadorPartida.getPartidasEnEspera();
 			if (partidasEnEpera != null && !partidasEnEpera.isEmpty()) {
 				PartidaEnEspera partidaEnEspera = partidasEnEpera.get(0);
@@ -118,6 +136,9 @@ public class ServicioPartida {
 			System.out.println("Error: " + error.getMensaje());
 		} catch (Exception error) {
 			error.printStackTrace();
+		} finally {
+			this.jugadoresConectados--;
+			notify();
 		}
 		return mensaje.toString();
 	}
@@ -394,6 +415,10 @@ public class ServicioPartida {
 
 	public void moverAvion(DTOAvion avionDTO) {
 		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
 			String notificacion = null;
 			Partida partida = recuperarPartida(avionDTO.getNombrePartida());
 			if (partida != null && !partida.isFinalizada()) {
@@ -428,6 +453,9 @@ public class ServicioPartida {
 			System.out.println("Error: " + error.getMensaje());
 		} catch (Exception error) {
 			error.printStackTrace();
+		} finally {
+			this.jugadoresConectados--;
+			notify();
 		}
 	}
 
@@ -526,6 +554,10 @@ public class ServicioPartida {
 
 	public void dispararBala(DTOBala balaDto) {
 		try {
+			while (this.jugadoresConectados > 0) {
+				wait();
+			}
+			this.jugadoresConectados++;
 			Partida partida = this.recuperarPartida(balaDto.getNombrePartida());
 			if (partida != null && !partida.isFinalizada()) {
 				Jugador jugadorEnemigo = null;
@@ -574,6 +606,9 @@ public class ServicioPartida {
 			System.out.println("Error: " + error.getMensaje());
 		} catch (Exception error) {
 			error.printStackTrace();
+		} finally {
+			this.jugadoresConectados--;
+			notify();
 		}
 	}
 

@@ -128,6 +128,9 @@ public class ServicioPartida {
 			List<PartidaCargada> partidasCargadas = this.manejadorPartida.getPartidasCargadas();
 			PartidaCargada partidaActual = null;
 			boolean iniciarPartida = false;
+			int jugadorCreoPartida = 0;
+			boolean error = false;
+			String mensajeError = "";
 			for (PartidaCargada partidaCargada : partidasCargadas) {
 				if (partidaCargada.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombrePartida())) {
 					partidaActual = partidaCargada;
@@ -139,18 +142,24 @@ public class ServicioPartida {
 				if (jugador1.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombreJugador())) {
 					if (partidaActual.isJugadorDosListo()) {
 						iniciarPartida = true;
+						jugadorCreoPartida = 2;
 					}
 				} else if (jugador2.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombreJugador())) {
 					if (partidaActual.isJugadorUnoListo()) {
 						iniciarPartida = true;
+						jugadorCreoPartida = 1;
 					}
+				} else {
+					error = true;
+					mensajeError = "Los datos no coinciden";
 				}
 				if (iniciarPartida) {
 					Partida partida = this.servicioPartidaDb.cargarPartida(partidaEnEsperaDto.getNombrePartida(),
 							partidaEnEsperaDto.getNombreJugador());
 					this.manejadorPartida.addPartidaCargadaEnJuego(partida);
 					DTOPartidaRecuperada partidaRecuperadaDto = new DTOPartidaRecuperada(partida.getNombre(),
-							partida.getJugadorUno(), partida.getJugadorDos());
+							partida.getJugadorUno(), partida.getJugadorDos(), jugadorCreoPartida,
+							this.CANTIDAD_ARTILLERIA, error, mensajeError);
 					this.mensajeriaUpdate.sendRecuperarPartida(partidaRecuperadaDto.toString());
 				}
 			}

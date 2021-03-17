@@ -504,17 +504,18 @@ public class ServicioPartida {
 					this.estallarAvion(avionChoqueDto.toString());
 					this.updateAvionEnPartida(avionDTO, partida);
 					this.updateAvionEnPartida(avionChoqueDto, partida);
+					this.comprobarResultadoPartida(partida);
 				} else if (avionFueraLimites || avionSinCombustible) {
 					avionDTO.setEstado(EstadoAvion.DESTRUIDO);
 					// se actualiza la partida y se envia el avion a estallar
 					notificacion = this.updateAvionEnPartida(avionDTO, partida);
 					this.estallarAvion(notificacion.toString());
+					this.comprobarResultadoPartida(partida);
 				} else {
 					// se actualiza la partida y se envia el status del avion a el canal
 					notificacion = this.updateAvionEnPartida(avionDTO, partida);
 					this.mensajeriaUpdate.sendAvionesEnemigos(notificacion.toString());
 				}
-				this.comprobarResultadoPartida(partida);
 			}
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
@@ -758,6 +759,7 @@ public class ServicioPartida {
 						balaDisparada.setVisible(false);
 						balaDto.setVisible(false);
 						this.mensajeriaUpdate.sendPosicionBalaArtilleria(balaDto.toString());
+						this.comprobarResultadoPartida(partida);
 					} else {
 						// se actualiza la posicion de la bala y se avisa a los clientes
 						balaDisparada
@@ -859,6 +861,7 @@ public class ServicioPartida {
 						balaDisparada.setVisible(false);
 						balaDto.setVisible(false);
 						this.mensajeriaUpdate.sendPosicionBalaTorre(balaDto.toString());
+						this.comprobarResultadoPartida(partida);
 					} else {
 						// se actualiza la posicion de la bala y se avisa a los clientes
 						balaDisparada

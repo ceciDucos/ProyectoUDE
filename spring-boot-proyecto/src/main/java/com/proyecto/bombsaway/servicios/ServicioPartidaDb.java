@@ -252,6 +252,7 @@ public class ServicioPartidaDb {
 			System.out.println(jugadorNombre);
 			System.out.println(partidaDb.getJugadorGuardaPartida().getNombre());
 			System.out.println(jugadorNombre.equalsIgnoreCase(partidaDb.getJugadorGuardaPartida().getNombre()));
+			//if (jugadorNombre.equalsIgnoreCase(partidaDb.getJugadorGuardaPartida().getNombre())) {
 			if (true) {
 				System.out.println("entro al if cargar partida db");
 				EntidadJugador jugador1Db = partidaDb.getJugador1();

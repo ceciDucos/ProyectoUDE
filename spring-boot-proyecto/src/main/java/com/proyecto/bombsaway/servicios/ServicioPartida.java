@@ -848,6 +848,16 @@ public class ServicioPartida {
 					}
 				}
 				if (torre != null) {
+					System.out.println("torre");
+					System.out.println(torre);
+					System.out.println("torre balas");
+					System.out.println(torre.getListBalas());
+					System.out.println("balasdto");
+					System.out.println(balaDto);
+					System.out.println("balasdto id bala");
+					System.out.println(balaDto.getIdBala());
+					System.out.println("se rompe");
+					System.out.println(torre.getListBalas().get(balaDto.getIdBala()));
 					Bala balaDisparada = torre.getListBalas().get(balaDto.getIdBala());
 					balaDisparada.setVisible(true);
 					this.mensajeriaUpdate.sendPosicionBalaTorre(balaDto.toString());

@@ -101,7 +101,7 @@ public class DTOPartidaRecuperada {
 				+ ", \"cargarPartida\": true, \"unirsePartida\": false, \"jugadorCreo\": " + this.jugadorCreo
 				+ ", \"errorMensaje\": \"" + this.mensajeError + "\", \"jugadorUno\": "
 				+ this.toStringJugador(this.jugador1) + ", \"jugadorDos\": " + this.toStringJugador(this.jugador2)
-				+ "\", \"error\": " + this.error + "}";
+				+ ", \"error\": " + this.error + "}";
 		return response;
 	}
 

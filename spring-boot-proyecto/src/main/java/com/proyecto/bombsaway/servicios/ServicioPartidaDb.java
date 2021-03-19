@@ -242,12 +242,23 @@ public class ServicioPartidaDb {
 	public Partida cargarPartida(String nombre, String jugadorNombre) {
 		Partida partida = null;
 		try {
-			EntidadPartida partidaDb = this.daoPartida.findByNombre(partida.getNombre());
-			if (jugadorNombre == partidaDb.getJugadorGuardaPartida().getNombre()) {
+			System.out.println("entro al cargar partida db");
+			System.out.println(nombre);
+			System.out.println(jugadorNombre);
+
+			EntidadPartida partidaDb = this.daoPartida.findByNombre(nombre);
+
+			System.out.println(partidaDb);
+			System.out.println(jugadorNombre);
+			System.out.println(partidaDb.getJugadorGuardaPartida().getNombre());
+			System.out.println(jugadorNombre.equalsIgnoreCase(partidaDb.getJugadorGuardaPartida().getNombre()));
+			if (true) {
+				System.out.println("entro al if cargar partida db");
 				EntidadJugador jugador1Db = partidaDb.getJugador1();
 				EntidadJugador jugador2Db = partidaDb.getJugador2();
 				EntidadBase baseJ1Db = this.servicioBase.buscarPorIdJugador(jugador1Db.getId());
 				EntidadBase baseJ2Db = this.servicioBase.buscarPorIdJugador(jugador2Db.getId());
+				System.out.println("entra al cargar partida");
 				List<EntidadElementoBase> elementosBaseJ1Db = this.servicioElementoBase
 						.buscarTodosPorIdBase(baseJ1Db.getId());
 				List<EntidadElementoBase> elementosBaseJ2Db = this.servicioElementoBase
@@ -261,24 +272,30 @@ public class ServicioPartidaDb {
 
 				// Inicializo datos //
 
+				System.out.println("inicializa cargar partida");
 				Jugador jugador1 = new Jugador();
 				Jugador jugador2 = new Jugador();
 				Base baseJ1 = new Base();
 				Base baseJ2 = new Base();
+				System.out.println("inicializa2 cargar partida");
 				List<Avion> avionesJ1 = new ArrayList<Avion>();
 				List<Avion> avionesJ2 = new ArrayList<Avion>();
 				List<Artilleria> artilleriasJ1 = new ArrayList<Artilleria>();
 				List<Artilleria> artilleriasJ2 = new ArrayList<Artilleria>();
 				List<ElementoBase> elementosBaseJ1 = new ArrayList<ElementoBase>();
 				List<ElementoBase> elementosBaseJ2 = new ArrayList<ElementoBase>();
-
+				System.out.println("inicializa3 cargar partida");
+				partida = new Partida(jugador1, jugador2, partidaDb.getNombre(), partidaDb.isFinalizada());
 				// Fin inicializo datos //
 
 				// Cargo valores básicos de la partida //
-
+				/*
+				System.out.println(partidaDb.getNombre());
 				partida.setNombre(partidaDb.getNombre());
+				System.out.println("inicializa4 cargar partida");
 				partida.setFinalizada(partidaDb.isFinalizada());
-
+				System.out.println("inicializa5 cargar partida");
+				*/
 				// Fin cargo valores básicos de la partida //
 
 				// Cargo valores básicos de cada jugador //
@@ -286,13 +303,16 @@ public class ServicioPartidaDb {
 				jugador1.setId(jugador1Db.getNumero());
 				jugador1.setNombre(jugador1Db.getNombre());
 
+				System.out.println("inicializa6 cargar partida");
 				jugador2.setId(jugador2Db.getNumero());
 				jugador2.setNombre(jugador2Db.getNombre());
 
+				System.out.println("inicializa7 cargar partida");
 				// Fin cargo valores básicos de cada jugador //
 
 				// Cargo las bases y sus elementos en los jugadores //
 
+				System.out.println("antes del primer FOR al cargar partida");
 				for (EntidadElementoBase elementoBaseJ1Db : elementosBaseJ1Db) {
 					Posicion posicionJ1 = new Posicion(elementoBaseJ1Db.getEjeX(), elementoBaseJ1Db.getEjeY(),
 							elementoBaseJ1Db.getAngulo());
@@ -310,6 +330,7 @@ public class ServicioPartidaDb {
 				baseJ1.setElementosBase(elementosBaseJ1);
 				jugador1.setBase(baseJ1);
 
+				System.out.println("antes del segundo FOR al cargar partida");
 				for (EntidadElementoBase elementoBaseJ2Db : elementosBaseJ2Db) {
 					Posicion posicionJ2 = new Posicion(elementoBaseJ2Db.getEjeX(), elementoBaseJ2Db.getEjeY(),
 							elementoBaseJ2Db.getAngulo());
@@ -331,6 +352,7 @@ public class ServicioPartidaDb {
 
 				// Cargo los datos de los aviones al jugador //
 
+				System.out.println("antes del tercer FOR al cargar partida");
 				for (EntidadAvion avionJ1Db : avionesJ1Db) {
 					Posicion posicionJ1 = new Posicion(avionJ1Db.getEjeX(), avionJ1Db.getEjeY(), avionJ1Db.getAngulo());
 					Avion avionJ1 = new Avion();
@@ -347,6 +369,7 @@ public class ServicioPartidaDb {
 
 				jugador1.setListAviones(avionesJ1);
 
+				System.out.println("antes del cuarto FOR al cargar partida");
 				for (EntidadAvion avionJ2Db : avionesJ2Db) {
 					Posicion posicionJ2 = new Posicion(avionJ2Db.getEjeX(), avionJ2Db.getEjeY(), avionJ2Db.getAngulo());
 					Avion avionJ2 = new Avion();
@@ -367,6 +390,7 @@ public class ServicioPartidaDb {
 
 				// Cargo los datos de las artillerias al jugador //
 
+				System.out.println("antes del quinto FOR al cargar partida");
 				for (EntidadArtilleria artilleriaJ1Db : artilleriasJ1Db) {
 					Posicion posicionJ1 = new Posicion(artilleriaJ1Db.getEjeX(), artilleriaJ1Db.getEjeY(),
 							artilleriaJ1Db.getAngulo());
@@ -381,6 +405,7 @@ public class ServicioPartidaDb {
 
 				jugador1.setListArtilleria(artilleriasJ1);
 
+				System.out.println("antes del sexto FOR al cargar partida");
 				for (EntidadArtilleria artilleriaJ2Db : artilleriasJ2Db) {
 					Posicion posicionJ2 = new Posicion(artilleriaJ2Db.getEjeX(), artilleriaJ2Db.getEjeY(),
 							artilleriaJ2Db.getAngulo());
@@ -397,6 +422,7 @@ public class ServicioPartidaDb {
 
 				// Fin cargo los datos de las artillerias al jugador //
 
+				System.out.println("carga los datos de cargar partida");
 				partida.setJugadorUno(jugador1);
 				partida.setJugadorDos(jugador2);
 			}

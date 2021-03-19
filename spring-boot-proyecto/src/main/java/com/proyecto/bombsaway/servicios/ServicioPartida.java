@@ -125,44 +125,67 @@ public class ServicioPartida {
 
 	public void unirsePartidaGuardada(DTOPartidaEnEspera partidaEnEsperaDto) {
 		try {
+
+			System.out.println("entra al unirse a partida guardada");
 			List<PartidaCargada> partidasCargadas = this.manejadorPartida.getPartidasCargadas();
 			PartidaCargada partidaActual = null;
 			boolean iniciarPartida = false;
 			int jugadorCreoPartida = 0;
 			boolean error = false;
 			String mensajeError = "";
+			System.out.println("antes del primer for partida guardada");
 			for (PartidaCargada partidaCargada : partidasCargadas) {
 				if (partidaCargada.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombrePartida())) {
 					partidaActual = partidaCargada;
 				}
 			}
+
+			System.out.println("despues del primer for partida guardada");
 			if (partidaActual != null) {
+				System.out.println("entra al if partida guardada");
+				System.out.println(partidaEnEsperaDto.getNombreJugador());
+
 				Jugador jugador1 = partidaActual.getJugadorUno();
 				Jugador jugador2 = partidaActual.getJugadorDos();
 				if (jugador1.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombreJugador())) {
+
+					System.out.println("entra al segundo if partida guardada");
 					if (partidaActual.isJugadorDosListo()) {
+						System.out.println("entra al tercer if partida guardada");
 						iniciarPartida = true;
 						jugadorCreoPartida = 2;
 					}
 				} else if (jugador2.getNombre().equalsIgnoreCase(partidaEnEsperaDto.getNombreJugador())) {
+					System.out.println("entra al else if del segundo if partida guardada");
 					if (partidaActual.isJugadorUnoListo()) {
+
+						System.out.println("entra al cuarto if partida guardada");
 						iniciarPartida = true;
 						jugadorCreoPartida = 1;
 					}
 				} else {
+					System.out.println("entra al else del segundo if partida guardada");
 					error = true;
 					mensajeError = "Los datos no coinciden";
 				}
+				System.out.println("esta tratando de unirse a la partida cargada");
 				if (iniciarPartida) {
+					System.out.println(partidaEnEsperaDto.getNombrePartida());
+					System.out.println(partidaEnEsperaDto.getNombreJugador());
 					Partida partida = this.servicioPartidaDb.cargarPartida(partidaEnEsperaDto.getNombrePartida(),
 							partidaEnEsperaDto.getNombreJugador());
+
+					System.out.println(partida);
 					this.manejadorPartida.addPartidaCargadaEnJuego(partida);
 					DTOPartidaRecuperada partidaRecuperadaDto = new DTOPartidaRecuperada(partida.getNombre(),
 							partida.getJugadorUno(), partida.getJugadorDos(), jugadorCreoPartida,
 							this.CANTIDAD_ARTILLERIA, error, mensajeError);
+					System.out.println("manda mensaje de unirse a la partida cargada");
 					this.mensajeriaUpdate.sendRecuperarPartida(partidaRecuperadaDto.toString());
 				}
 			}
+
+			System.out.println("final de partida guardada");
 		} catch (ConcurrenciaException error) {
 			String mensajeError = this.getMensajeError(error.getMensaje());
 			this.mensajeriaUpdate.sendErrores(mensajeError);
@@ -187,8 +210,16 @@ public class ServicioPartida {
 
 	public void cargarPartida(DTOCargarPartida cargarPartidaDto) {
 		try {
+			System.out.println("entro al cargar la partida");
+
+			System.out.println(cargarPartidaDto.getNombrePartida());
+			System.out.println(cargarPartidaDto.getNombreJugador());
+
 			Partida partida = this.servicioPartidaDb.cargarPartida(cargarPartidaDto.getNombrePartida(),
 					cargarPartidaDto.getNombreJugador());
+			System.out.println("antes del if cargar la partida");
+
+			System.out.println(partida);
 			if (partida != null) {
 				PartidaCargada partidaCargada = new PartidaCargada();
 				partidaCargada.setNombre(partida.getNombre());
@@ -199,6 +230,7 @@ public class ServicioPartida {
 				} else {
 					partidaCargada.setJugadorDosListo(true);
 				}
+				System.out.println("esta cargando la partida");
 				this.manejadorPartida.addPartidaCargada(partidaCargada);
 			} else {
 				this.mensajeriaUpdate.sendErrores("La partida no existe.");

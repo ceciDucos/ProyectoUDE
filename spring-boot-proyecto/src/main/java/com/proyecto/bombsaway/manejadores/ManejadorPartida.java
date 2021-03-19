@@ -107,21 +107,32 @@ public class ManejadorPartida {
 
 	public synchronized void addPartidaCargadaEnJuego(Partida partida) throws ConcurrenciaException {
 		try {
+			System.out.println("entro al addPartidaCargadaEnJuego");
 			while (this.jugadoresConectados > 0) {
 				wait();
 			}
+
+			System.out.println("salio del wait");
 			this.jugadoresConectados++;
 			// se elimina la partida de la espera y se agrega a partidas en juego
 			PartidaCargada partidaParaRemover = null;
 			for (PartidaCargada partidaCargada : partidasCargadas) {
+				System.out.println("entra al for");
+				System.out.println(partidaCargada.getNombre());
+				System.out.println(partida.getNombre());
 				if (partidaCargada.getNombre().equalsIgnoreCase(partida.getNombre())) {
+					System.out.println("entra al primer if");
 					partidaParaRemover = partidaCargada;
+					System.out.println("sale del primer if");
 				}
 			}
+			System.out.println("antes del segundo if");
 			if (partidaParaRemover != null) {
+				System.out.println("entra al segundo if");
 				this.partidasCargadas.remove(partidaParaRemover);
 				this.partidasEnJuego.add(partida);
 			}
+			System.out.println("sale del segundo if y notifica");
 			this.jugadoresConectados--;
 			notify();
 		} catch (InterruptedException error) {
